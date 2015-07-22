@@ -5,7 +5,9 @@ namespace UnityCommonLibrary {
 
         public static void Toggle(bool enabled, params Behaviour[] behaviors) {
             foreach(var b in behaviors) {
-                b.enabled = enabled;
+                if(b != null) {
+                    b.enabled = enabled;
+                }
             }
         }
 

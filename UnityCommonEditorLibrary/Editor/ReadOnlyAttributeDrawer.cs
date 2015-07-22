@@ -1,5 +1,4 @@
-﻿using System;
-using UnityCommonLibrary;
+﻿using UnityCommonLibrary;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,6 +7,9 @@ namespace UnityCommonEditorLibrary {
     public class ReadOnlyAttributeDrawer : PropertyDrawer {
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
+            if(!EditorPrefs.HasKey("ShowReadOnlyFields")) {
+                EditorPrefs.SetBool("ShowReadOnlyFields", true);
+            }
             return EditorPrefs.GetBool("ShowReadOnlyFields") ? EditorGUI.GetPropertyHeight(property, label, true) : 0f;
         }
 
