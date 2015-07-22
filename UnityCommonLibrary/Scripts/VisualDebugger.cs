@@ -8,7 +8,7 @@ namespace UnityCommonLibrary {
     public class VisualDebugger : UCSingleton<VisualDebugger> {
         KeyCode toggle = KeyCode.F1;
         List<DebugElement> elements = new List<DebugElement>();
-        bool visible;
+        public bool visible { get; private set; }
 
         public void RegisterFor(IVisualDebuggable target) {
             RegisterFor(target, target.GetType().Name);
