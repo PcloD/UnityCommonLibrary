@@ -2,11 +2,11 @@
 using UnityEngine;
 
 namespace UnityCommonEditorLibrary {
-    public class CanvasGroupActivator : UnityEditor.EditorWindow {
+    public class CanvasGroupActivator : EditorWindow {
 
         [MenuItem("Window/Tools/Canvas Groups Activator")]
         public static void InitWindow() {
-            EditorWindow.GetWindow<CanvasGroupActivator>();
+            GetWindow<CanvasGroupActivator>();
         }
 
         CanvasGroup[] canvasGroups;
@@ -31,7 +31,7 @@ namespace UnityCommonEditorLibrary {
             GUILayout.Space(10f);
             GUILayout.Label("Canvas Groups");
 
-            for(int i = 0;i < canvasGroups.Length;i++) {
+            for(int i = 0; i < canvasGroups.Length; i++) {
                 if(canvasGroups[i] == null) {
                     continue;
                 }
