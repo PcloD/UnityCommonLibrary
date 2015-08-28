@@ -8,24 +8,28 @@ namespace UnityCommonEditorLibrary {
 
         SerializedProperty camera,
                            bounds,
-                           targetSprites,
-                           gizmosColor,
-                           boundedX,
-                           boundedY;
+                           boundedXMin,
+                           boundedXMax,
+                           boundedYMin,
+                           boundedYMax;
 
-        CameraBounds2D cb2d;
+        CameraBounds2D obj;
 
-        const string CANT_FIT_ERR = "Camera's frustum CANNOT fit into current bounds, camera's position WILL NOT be altered!";
-        const string UNBOUNDED_ERR = "Set to unbounded in both axes, camera's position WILL NOT be altered!";
+        const string NOCAM_ERR = "There is no camera assigned!";
+        const string BOUNDSMISMATCH_ERR = "Camera's frustum CANNOT fit into current bounds, camera's position WILL NOT be altered!";
+        const string UNBOUNDED_ERR = "Set to unbounded in all directions, camera's position WILL NOT be altered!";
+        const string NOCOLLIDER_ERR = "No collider provided, camera's position WILL NOT be altered!";
+
+        bool isBoundsNull;
 
         void OnEnable() {
-            cb2d = (CameraBounds2D)target;
+            obj = (CameraBounds2D)target;
             camera = serializedObject.FindProperty("camera");
             bounds = serializedObject.FindProperty("bounds");
-            targetSprites = serializedObject.FindProperty("targetSprites");
-            gizmosColor = serializedObject.FindProperty("gizmosColor");
-            boundedX = serializedObject.FindProperty("boundedX");
-            boundedY = serializedObject.FindProperty("boundedY");
+            boundedXMin = serializedObject.FindProperty("boundedXMin");
+            boundedXMax = serializedObject.FindProperty("boundedXMax");
+            boundedYMin = serializedObject.FindProperty("boundedYMin");
+            boundedYMax = serializedObject.FindProperty("boundedYMax");
         }
 
         public override void OnInspectorGUI() {
@@ -34,35 +38,39 @@ namespace UnityCommonEditorLibrary {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Configuration", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(camera);
-
-            EditorGUILayout.Space();
-
-            //Bounds field
-            GUI.enabled = targetSprites.arraySize == 0;
-            var boundsLabel = targetSprites.arraySize == 0 ? "Bounds" : "Bounds (From Sprites)";
-            EditorGUILayout.PropertyField(bounds, new GUIContent(boundsLabel));
-            GUI.enabled = true;
-
-
+            EditorGUILayout.PropertyField(bounds);
             EditorGUILayout.Space();
 
             EditorGUILayout.LabelField("Misc.", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(boundedX);
-            EditorGUILayout.PropertyField(boundedY);
-            EditorGUILayout.PropertyField(gizmosColor);
-
-            EditorGUILayout.PropertyField(targetSprites, true);
+            EditorGUILayout.PropertyField(boundedXMin);
+            EditorGUILayout.PropertyField(boundedXMax);
+            EditorGUILayout.PropertyField(boundedYMin);
+            EditorGUILayout.PropertyField(boundedYMax);
             EditorGUILayout.Space();
+
+            isBoundsNull = Equals(camera.objectReferenceValue, null);
             //Show Errors
-            if(!cb2d.canFit) {
+            if(isBoundsNull) {
                 GUI.color = Color.red;
-                EditorGUILayout.LabelField(CANT_FIT_ERR, EditorStyles.helpBox);
+                EditorGUILayout.LabelField(NOCAM_ERR, EditorStyles.helpBox);
             }
-            if(!boundedX.boolValue && !boundedY.boolValue) {
-                GUI.color = Color.red;
-                EditorGUILayout.LabelField(UNBOUNDED_ERR, EditorStyles.helpBox);
+            else {
+                if(Equals(bounds.objectReferenceValue, null)) {
+                    GUI.color = Color.red;
+                    EditorGUILayout.LabelField(NOCOLLIDER_ERR, EditorStyles.helpBox);
+                }
+                if(!obj.canFit) {
+                    GUI.color = Color.red;
+                    EditorGUILayout.LabelField(BOUNDSMISMATCH_ERR, EditorStyles.helpBox);
+                }
+                if(!boundedXMin.boolValue && !boundedXMax.boolValue && !boundedYMin.boolValue && !boundedYMax.boolValue) {
+                    GUI.color = Color.red;
+                    EditorGUILayout.LabelField(UNBOUNDED_ERR, EditorStyles.helpBox);
+                }
             }
+
             serializedObject.ApplyModifiedProperties();
         }
+
     }
 }

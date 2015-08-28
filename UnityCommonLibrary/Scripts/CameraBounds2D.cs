@@ -3,87 +3,83 @@
 namespace UnityCommonLibrary {
     [ExecuteInEditMode]
     public class CameraBounds2D : UCScript {
-        [SerializeField]
-        new Camera camera;
-        [SerializeField]
-        SpriteRenderer[] targetSprites;
-        [SerializeField]
-        Bounds bounds;
-        [SerializeField]
-        Color gizmosColor = Color.green;
-        [SerializeField]
-        bool boundedX = true, boundedY = true;
+        public BoxCollider2D bounds;
+        public new Camera camera;
+        public bool boundedXMin = true,
+                    boundedXMax = true,
+                    boundedYMin = true,
+                    boundedYMax = true;
 
-        Bounds camBounds;
+        [SerializeField]
+        bool runInEditor = true;
 
         public bool canFit { get; private set; }
 
-        void Awake() {
-            if(camera == null) {
-                camera = GetComponent<Camera>();
+        // Update is called once per frame
+        void LateUpdate() {
+            if(Application.isPlaying == false && !runInEditor) {
+                return;
             }
-        }
+            if(bounds == null || camera == null) {
+                return;
+            }
+            var camRect = camera.OrthographicBounds();
+            var lvlBoundsRect = bounds.bounds;
 
-        void Update() {
-            if(camera == null) {
+            canFit = lvlBoundsRect.CouldContain(camRect);
+
+            if(!canFit || (!boundedXMin && !boundedXMax && !boundedYMin && !boundedYMax)) {
                 return;
             }
 
-            camBounds = OrthoBounds();
-            if(targetSprites != null) {
-                bounds = new Bounds();
-                foreach(var s in targetSprites) {
-                    bounds.Encapsulate(s.bounds);
+            var cbl = (Vector2)camRect.min;
+            var cbr = (Vector2)camRect.max;
+            var lbl = (Vector2)lvlBoundsRect.min;
+            var lbr = (Vector2)lvlBoundsRect.max;
+
+            //Check and correct X differences
+            if(boundedXMin || boundedXMax) {
+                var lDiff = cbl.x - lbl.x;
+                var rDiff = cbr.x - lbr.x;
+                if(lDiff < 0f && boundedXMin) {
+                    OffsetXPosition(lDiff);
+                }
+                else if(rDiff > 0f && boundedXMax) {
+                    OffsetXPosition(rDiff);
                 }
             }
-
-            canFit = bounds.size.y >= camBounds.size.y || !boundedY;
-            canFit &= bounds.size.x >= camBounds.size.x || !boundedX;
-
-            if(canFit) {
-                ClampCamera();
+            //Check and correct Y differences
+            if(boundedYMin || boundedYMax) {
+                var bDiff = cbl.y - lbl.y;
+                var tDiff = cbr.y - lbr.y;
+                if(bDiff < 0f && boundedYMin) {
+                    OffsetYPosition(bDiff);
+                }
+                else if(tDiff > 0f && boundedYMax) {
+                    OffsetYPosition(tDiff);
+                }
             }
         }
 
-        void ClampCamera() {
-            var blFixed = bounds.min;
-            var trFixed = bounds.max;
-            blFixed.x += camBounds.size.x / 2f;
-            trFixed.x -= camBounds.size.x / 2f;
-            blFixed.y += camBounds.size.y / 2f;
-            trFixed.y -= camBounds.size.y / 2f;
-
-            var pos = transform.position;
-            var newX = boundedX ? Mathf.Clamp(pos.x, blFixed.x, trFixed.x) : pos.x;
-            var newY = boundedY ? Mathf.Clamp(pos.y, blFixed.y, trFixed.y) : pos.y;
-            pos = new Vector3(newX, newY, pos.z);
-            transform.position = pos;
+        void OffsetXPosition(float offset) {
+            var position = transform.position;
+            position.x -= offset;
+            transform.position = position;
         }
 
-        /// <summary>
-        /// Determine bounds of orthographic camera frustrum.
-        /// </summary>
-        /// <returns></returns>
-        Bounds OrthoBounds() {
-            var height = camera.orthographicSize * 2f;
-            var bounds = new Bounds(camera.transform.position, new Vector3(height * camera.aspect, height, 0f));
-            return bounds;
+        void OffsetYPosition(float offset) {
+            var position = transform.position;
+            position.y -= offset;
+            transform.position = position;
         }
 
         void OnDrawGizmosSelected() {
-            var oldColor = Gizmos.color;
-            Gizmos.color = gizmosColor;
-
-            var bl = bounds.min;
-            var tr = bounds.max;
-            var tl = new Vector2(bl.x, tr.y);
-            var br = new Vector2(tr.x, bl.y);
-            Gizmos.DrawLine(bl, tl);
-            Gizmos.DrawLine(tl, tr);
-            Gizmos.DrawLine(tr, br);
-            Gizmos.DrawLine(br, bl);
-
-            Gizmos.color = oldColor;
+            if(bounds != null) {
+                GizmosUtils.StoreColor(Color.green);
+                GizmosUtils.DrawBounds(bounds.bounds);
+                GizmosUtils.RestoreColor();
+            }
         }
+
     }
 }

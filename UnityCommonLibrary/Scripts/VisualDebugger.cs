@@ -73,7 +73,7 @@ namespace UnityCommonLibrary {
         }
 
         public static string MakeColored(string s, Color color) {
-            return string.Format("<color=#{0}>{1}</color>", color.ToHexStringRGBA(), s);
+            return string.Format("<color=#{0}>{1}</color>", ColorUtility.ToHtmlStringRGBA(color), s);
         }
 
         public static string MakeSized(string s, int size) {

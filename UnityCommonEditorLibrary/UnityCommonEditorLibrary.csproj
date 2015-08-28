@@ -47,6 +47,7 @@
     <Compile Include="Editor\EditorGUIHelper.cs" />
     <Compile Include="Editor\EnableShadows.cs" />
     <Compile Include="Editor\EnumMaskDrawer.cs" />
+    <Compile Include="Editor\HandlesUtils.cs" />
     <Compile Include="Editor\ImmediateWindow.cs" />
     <Compile Include="Editor\MeshRendererSortingLayersEditor.cs" />
     <Compile Include="Editor\ParallaxOptionEditor.cs" />
@@ -66,6 +67,9 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)ucel_post.cmd" $(TargetPath)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
