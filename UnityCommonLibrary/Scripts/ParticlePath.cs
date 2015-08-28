@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace UnityCommonLibrary {
     [RequireComponent(typeof(ParticleSystem))]
-    public class ParticlePath : MonoBehaviour {
+    public class ParticlePath : UCScript {
 
         //setting up your 6 targets
         public Transform target1;

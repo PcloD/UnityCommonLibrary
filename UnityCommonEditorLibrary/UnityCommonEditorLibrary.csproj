@@ -46,7 +46,7 @@
     <Compile Include="Editor\CanvasGroupActivator.cs" />
     <Compile Include="Editor\EditorGUIHelper.cs" />
     <Compile Include="Editor\EnumMaskDrawer.cs" />
-    <Compile Include="Editor\GameTextInspector.cs" />
+    <Compile Include="Editor\HandlesUtils.cs" />
     <Compile Include="Editor\ImmediateWindow.cs" />
     <Compile Include="Editor\MeshRendererSortingLayersEditor.cs" />
     <Compile Include="Editor\ParallaxOptionEditor.cs" />
@@ -68,7 +68,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)post-editor.cmd" "$(TargetName)"</PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)ucel_post.cmd" $(TargetPath)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
