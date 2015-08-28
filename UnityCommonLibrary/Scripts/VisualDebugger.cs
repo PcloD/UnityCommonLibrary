@@ -1,13 +1,14 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using UnityEngine;
+using System.Reflection;
 
 namespace UnityCommonLibrary {
     public class VisualDebugger : UCSingleton<VisualDebugger> {
         KeyCode toggle = KeyCode.F1;
         List<DebugElement> elements = new List<DebugElement>();
+        IntentHistory selectedHistory;
+        Vector2 scroll;
         public bool visible { get; private set; }
 
         public void RegisterFor(IVisualDebuggable target) {
@@ -40,12 +41,59 @@ namespace UnityCommonLibrary {
                 }
 
                 GUILayout.BeginVertical(GUI.skin.box);
-                GUILayout.Label(string.Format("<b>{0}</b>", e.header));
-                GUILayout.Label(string.Format("{0}", (e.target as UnityEngine.Object).GetInstanceID()));
-                e.target.ShowDebugGUI();
+                GUILayout.Label(string.Format(RichText.MakeBold("{0} [{1}]"), e.header, (e.target as Object).GetInstanceID()));
+                DrawReflectionGUI(e.target);
                 GUILayout.EndVertical();
             }
             GUILayout.EndHorizontal();
+        }
+
+        private void DrawReflectionGUI(IVisualDebuggable target) {
+            //Show fields
+            var fields = target.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic).ToArray();
+            var values = fields.Select(f => f.GetValue(target)).ToArray();
+            for(var i = 0; i < fields.Length; i++) {
+                var f = fields[i];
+                var val = values[i];
+                var valStr = val == null ? "null" : val.ToString();
+                valStr = RichText.MakeBold(valStr);
+                if(f.Name.Contains("k__BackingField")) {
+                    continue;
+                }
+                GUILayout.Label(string.Format("{0}: {1}", f.Name, valStr));
+            }
+
+            //Show properties
+            var props = target.GetType().GetProperties(BindingFlags.Instance | BindingFlags.NonPublic).ToArray();
+            values = props.Select(p => p.GetValue(target, null)).ToArray();
+            for(var i = 0; i < props.Length; i++) {
+                var p = props[i];
+                var val = values[i];
+                var valStr = val == null ? "null" : val.ToString();
+                valStr = RichText.MakeBold(valStr);
+                GUILayout.Label(string.Format("{0}: {1}", p.Name, valStr));
+            }
+        }
+
+        private string BeautifyFieldName(string name) {
+            if(name == "Single") {
+                return "float";
+            }
+            else if(name == "Boolean") {
+                return "bool";
+            }
+            else if(name == "Int32") {
+                return "int";
+            }
+            else if(name == "Int16") {
+                return "short";
+            }
+            else if(name == "Byte" || name == "SByte" || name == "Char" || name == "Double" || name == "String") {
+                return name.ToLower();
+            }
+            else {
+                return name;
+            }
         }
     }
 
@@ -59,9 +107,7 @@ namespace UnityCommonLibrary {
         }
     }
 
-    public interface IVisualDebuggable {
-        void ShowDebugGUI();
-    }
+    public interface IVisualDebuggable { }
 
     public static class RichText {
         public static string MakeBold(string s) {

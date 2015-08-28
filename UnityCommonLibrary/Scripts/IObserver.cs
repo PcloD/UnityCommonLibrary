@@ -1,4 +1,5 @@
 ﻿namespace UnityCommonLibrary {
+
     /// <summary>
     /// An object that can be subscribed to an Observable of type O.
     /// Will always respond to notifications. Cannot receive arguments.
@@ -19,4 +20,5 @@
     public interface IObserver<O, T> where O : Observable<O, T> {
         void OnNotify(T arg);
     }
+
 }

@@ -45,16 +45,17 @@
     <Compile Include="Editor\CameraBounds2DEditor.cs" />
     <Compile Include="Editor\CanvasGroupActivator.cs" />
     <Compile Include="Editor\EditorGUIHelper.cs" />
-    <Compile Include="Editor\EnableShadows.cs" />
     <Compile Include="Editor\EnumMaskDrawer.cs" />
+    <Compile Include="Editor\GameTextInspector.cs" />
     <Compile Include="Editor\ImmediateWindow.cs" />
     <Compile Include="Editor\MeshRendererSortingLayersEditor.cs" />
     <Compile Include="Editor\ParallaxOptionEditor.cs" />
     <Compile Include="Editor\ReadOnlyAttributeDrawer.cs" />
     <Compile Include="Editor\ReadOnlyAttributeToggler.cs" />
+    <Compile Include="Editor\Ruler.cs" />
+    <Compile Include="Editor\RulerUtils.cs" />
     <Compile Include="Editor\ScriptableAssetWizard.cs" />
     <Compile Include="Editor\SkinnedMeshRendererSortingLayersEditor.cs" />
-    <Compile Include="Editor\SpriteMeasurerEditor.cs" />
     <Compile Include="Editor\SpriteTools.cs" />
     <Compile Include="Editor\UICircleInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,6 +67,9 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)post-editor.cmd" "$(TargetName)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

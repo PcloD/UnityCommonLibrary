@@ -39,13 +39,16 @@ namespace UnityCommonEditorLibrary {
         private static bool IsCorrectType(Type t) {
             return !t.IsAbstract &&
                     t.IsSubclassOf(typeof(ScriptableObject)) &&
-                   !t.IsSubclassOf(typeof(UnityEditor.Editor)) &&
+                   !t.IsSubclassOf(typeof(Editor)) &&
                    !t.IsSubclassOf(typeof(EditorWindow)) &&
                    t.GetCustomAttributes(false).Any(a => a is ScriptableAssetWizardAttribute);
         }
 
         private void GenerateChoices() {
             types = assembly.GetTypes().Where(t => IsCorrectType(t)).ToArray();
+            types = types.Concat(AppDomain.CurrentDomain
+                             .GetAssemblies()
+                             .First(a => a.FullName.StartsWith("UnityCommonLibrary")).GetTypes().Where(t => IsCorrectType(t)).ToArray()).ToArray();
             typeNames = types.Select(t => t.Name).ToArray();
         }
 

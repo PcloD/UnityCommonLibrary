@@ -24,13 +24,13 @@ namespace UnityCommonLibrary {
             }
         }
 
-        void Update() {
+        void LateUpdate() {
             if(camera == null) {
                 return;
             }
 
             camBounds = OrthoBounds();
-            if(targetSprites != null) {
+            if(targetSprites != null && targetSprites.Length > 0) {
                 bounds = new Bounds();
                 foreach(var s in targetSprites) {
                     bounds.Encapsulate(s.bounds);

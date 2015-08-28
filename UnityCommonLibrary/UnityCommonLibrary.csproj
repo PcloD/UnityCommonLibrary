@@ -54,13 +54,15 @@
     <Compile Include="Scripts\EnumMaskAttribute.cs" />
     <Compile Include="Scripts\FloatRange.cs" />
     <Compile Include="Scripts\GameMode.cs" />
-    <Compile Include="Scripts\GameState.cs" />
     <Compile Include="Scripts\GammaEffect.cs" />
+    <Compile Include="Scripts\GOUtility.cs" />
     <Compile Include="Scripts\GravityModifier.cs" />
     <Compile Include="Scripts\InferSize.cs" />
+    <Compile Include="Scripts\IntentHistory.cs" />
     <Compile Include="Scripts\IObserver.cs" />
     <Compile Include="Scripts\IWorldBounded.cs" />
     <Compile Include="Scripts\LabeledGraphic.cs" />
+    <Compile Include="Scripts\GameText.cs" />
     <Compile Include="Scripts\Math.cs" />
     <Compile Include="Scripts\Math2D.cs" />
     <Compile Include="Scripts\MouseRelativeUIRotate.cs" />
@@ -73,9 +75,10 @@
     <Compile Include="Scripts\RotateObject.cs" />
     <Compile Include="Scripts\SceneList.cs" />
     <Compile Include="Scripts\ScriptableAssetWizardAttribute.cs" />
+    <Compile Include="Scripts\SerializableDictionary.cs" />
     <Compile Include="Scripts\SliderEffects.cs" />
     <Compile Include="Scripts\SpriteMeasurer.cs" />
-    <Compile Include="Scripts\StateManager.cs" />
+    <Compile Include="Scripts\TextAssetUtils.cs" />
     <Compile Include="Scripts\TransformUtility.cs" />
     <Compile Include="Scripts\UCObject.cs" />
     <Compile Include="Scripts\UCOSingleton.cs" />
@@ -83,15 +86,18 @@
     <Compile Include="Scripts\UCSingleton.cs" />
     <Compile Include="Scripts\UICircle.cs" />
     <Compile Include="Scripts\UIList.cs" />
-    <Compile Include="Scripts\UIState.cs" />
     <Compile Include="Scripts\UIStyleConsistency.cs" />
     <Compile Include="Scripts\UtilityObj.cs" />
     <Compile Include="Scripts\VisualDebugger.cs" />
+    <Compile Include="Scripts\CoroutineUtils.cs" />
     <Compile Include="Scripts\WorldBounds.cs" />
     <Compile Include="Scripts\WorldBounds2D.cs" />
     <Compile Include="Scripts\WorldBounds3D.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)post.cmd" "$(TargetName)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
