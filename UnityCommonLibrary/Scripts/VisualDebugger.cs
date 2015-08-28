@@ -7,7 +7,6 @@ namespace UnityCommonLibrary {
     public class VisualDebugger : UCSingleton<VisualDebugger> {
         KeyCode toggle = KeyCode.F1;
         List<DebugElement> elements = new List<DebugElement>();
-        IntentHistory selectedHistory;
         Vector2 scroll;
         public bool visible { get; private set; }
 

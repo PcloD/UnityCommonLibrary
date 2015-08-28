@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AFBB74D2-433A-4B2C-B04B-44EA70C68C3B}</ProjectGuid>
+    <ProjectGuid>{BEA0947A-3A51-4B6F-B27C-7A3A17CA9530}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UnityCommonLibrary</RootNamespace>
@@ -12,6 +12,15 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -26,14 +35,14 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="UnityEngine.UI">
       <HintPath>C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -48,16 +57,19 @@
     <Compile Include="Scripts\ColliderStore.cs" />
     <Compile Include="Scripts\ColliderWatcher.cs" />
     <Compile Include="Scripts\CopyToScreenRT.cs" />
+    <Compile Include="Scripts\CoroutineUtils.cs" />
     <Compile Include="Scripts\DynamicDoF.cs" />
     <Compile Include="Scripts\EditorCoroutine.cs" />
     <Compile Include="Scripts\EnumMaskAttribute.cs" />
     <Compile Include="Scripts\FloatRange.cs" />
     <Compile Include="Scripts\GameMode.cs" />
-    <Compile Include="Scripts\GameState.cs" />
+    <Compile Include="Scripts\GameText.cs" />
     <Compile Include="Scripts\GammaEffect.cs" />
     <Compile Include="Scripts\GizmosUtils.cs" />
+    <Compile Include="Scripts\GOUtility.cs" />
     <Compile Include="Scripts\GravityModifier.cs" />
     <Compile Include="Scripts\InferSize.cs" />
+    <Compile Include="Scripts\IntentHistory.cs" />
     <Compile Include="Scripts\IObserver.cs" />
     <Compile Include="Scripts\IWorldBounded.cs" />
     <Compile Include="Scripts\LabeledGraphic.cs" />
@@ -73,10 +85,11 @@
     <Compile Include="Scripts\RotateObject.cs" />
     <Compile Include="Scripts\SceneList.cs" />
     <Compile Include="Scripts\ScriptableAssetWizardAttribute.cs" />
+    <Compile Include="Scripts\SerializableDictionary.cs" />
     <Compile Include="Scripts\SliderEffects.cs" />
     <Compile Include="Scripts\SnapCameraBounds.cs" />
     <Compile Include="Scripts\SpriteMeasurer.cs" />
-    <Compile Include="Scripts\StateManager.cs" />
+    <Compile Include="Scripts\TextAssetUtils.cs" />
     <Compile Include="Scripts\TransformUtility.cs" />
     <Compile Include="Scripts\UCObject.cs" />
     <Compile Include="Scripts\UCOSingleton.cs" />
@@ -84,7 +97,6 @@
     <Compile Include="Scripts\UCSingleton.cs" />
     <Compile Include="Scripts\UICircle.cs" />
     <Compile Include="Scripts\UIList.cs" />
-    <Compile Include="Scripts\UIState.cs" />
     <Compile Include="Scripts\UIStyleConsistency.cs" />
     <Compile Include="Scripts\UtilityObj.cs" />
     <Compile Include="Scripts\VisualDebugger.cs" />
