@@ -75,6 +75,7 @@
     <Compile Include="Scripts\LabeledGraphic.cs" />
     <Compile Include="Scripts\Math.cs" />
     <Compile Include="Scripts\Math2D.cs" />
+    <Compile Include="Scripts\UCSequence.cs" />
     <Compile Include="Scripts\MouseRelativeUIRotate.cs" />
     <Compile Include="Scripts\Observable.cs" />
     <Compile Include="Scripts\ParallaxCamera.cs" />
