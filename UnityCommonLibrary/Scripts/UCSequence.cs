@@ -37,12 +37,20 @@ namespace UnityCommonLibrary {
 
         public delegate void OnEventCompleted();
         public event OnEventCompleted EventCompleted;
+
+        public delegate void OnTaskStarted();
+        public event OnTaskStarted TaskStarted;
+
+        public delegate void OnTaskCompleted();
+        public event OnTaskCompleted TaskCompleted;
         #endregion
 
-        public bool executeOnStart, loop, destroyOnComplete;
+        public bool executeOnStart, loop, destroyOnComplete, logTaskEvents;
 
         public EventStatus status { get; private set; }
         public bool isRunningTask { get { return taskRoutine != null; } }
+        public int totalTaskCount { get; private set; }
+        public int tasksLeft { get { return tasks.Count; } }
 
         Queue<IEnumerator> tasks = new Queue<IEnumerator>();
         Coroutine sequenceRoutine;
@@ -60,11 +68,18 @@ namespace UnityCommonLibrary {
 
         IEnumerator ExecuteSequence() {
             while(true) {
-                if(tasks.Count == 0 && !isRunningTask) {
+                if(tasksLeft == 0 && !isRunningTask) {
                     break;
                 }
                 else if(status == EventStatus.Active && !isRunningTask) {
-                    taskRoutine = StartCoroutine(ExecSequenceTask(tasks.Dequeue()));
+                    if(TaskStarted != null) {
+                        TaskStarted();
+                    }
+                    if(logTaskEvents) {
+                        print(ToString());
+                    }
+                    var task = tasks.Dequeue();
+                    taskRoutine = StartCoroutine(ExecSequenceTask(task));
                 }
                 yield return null;
             }
@@ -81,6 +96,9 @@ namespace UnityCommonLibrary {
                 yield return task.Current;
             }
             taskRoutine = null;
+            if(TaskCompleted != null) {
+                TaskCompleted();
+            }
         }
 
         void OnDestroy() {
@@ -95,6 +113,7 @@ namespace UnityCommonLibrary {
                 StopCoroutine(sequenceRoutine);
             }
             tasks = new Queue<IEnumerator>(Initialize());
+            totalTaskCount = tasks.Count;
         }
 
         void CompleteEvent() {
@@ -244,7 +263,7 @@ namespace UnityCommonLibrary {
         }
 
         public static T Create<T>(bool destroyOnComplete = true) where T : UCSequence {
-            var parent = new GameObject(string.Format("[{0}] {1}", Guid.NewGuid().ToString(), typeof(T).Name));
+            var parent = new GameObject(typeof(T).Name);
             var me = parent.AddComponent<T>();
             me.destroyOnComplete = destroyOnComplete;
             if(destroyOnComplete) {
@@ -259,6 +278,10 @@ namespace UnityCommonLibrary {
             Inactive,
             Active,
             Paused
+        }
+
+        public override string ToString() {
+            return string.Format("{0} in task {1}", GetType().Name, totalTaskCount - tasksLeft);
         }
 
     }

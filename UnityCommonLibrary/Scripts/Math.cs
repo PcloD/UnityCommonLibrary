@@ -18,5 +18,14 @@
             }
         }
 
+        public static float SignOrZero(float f) {
+            if(f == 0f) {
+                return 0f;
+            }
+            else {
+                return UnityEngine.Mathf.Sign(f);
+            }
+        }
+
     }
 }
