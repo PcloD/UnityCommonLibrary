@@ -59,7 +59,6 @@
     <Compile Include="Scripts\CopyToScreenRT.cs" />
     <Compile Include="Scripts\CoroutineUtils.cs" />
     <Compile Include="Scripts\DynamicDoF.cs" />
-    <Compile Include="Scripts\EditorCoroutine.cs" />
     <Compile Include="Scripts\EnumMaskAttribute.cs" />
     <Compile Include="Scripts\FloatRange.cs" />
     <Compile Include="Scripts\GameMode.cs" />
@@ -73,6 +72,7 @@
     <Compile Include="Scripts\IObserver.cs" />
     <Compile Include="Scripts\IWorldBounded.cs" />
     <Compile Include="Scripts\LabeledGraphic.cs" />
+    <Compile Include="Scripts\LogicalObject.cs" />
     <Compile Include="Scripts\Math.cs" />
     <Compile Include="Scripts\Math2D.cs" />
     <Compile Include="Scripts\UCSequence.cs" />

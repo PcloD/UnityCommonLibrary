@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Editor\CameraBounds2DEditor.cs" />
     <Compile Include="Editor\CanvasGroupActivator.cs" />
+    <Compile Include="Editor\EditorCoroutine.cs" />
     <Compile Include="Editor\EditorGUIHelper.cs" />
     <Compile Include="Editor\EnumMaskDrawer.cs" />
     <Compile Include="Editor\GameTextInspector.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Editor\ScriptableAssetWizard.cs" />
     <Compile Include="Editor\SkinnedMeshRendererSortingLayersEditor.cs" />
     <Compile Include="Editor\SpriteTools.cs" />
+    <Compile Include="Editor\TestMaterialGenerator.cs" />
     <Compile Include="Editor\UICircleInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
