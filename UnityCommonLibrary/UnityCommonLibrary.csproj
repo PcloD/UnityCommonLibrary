@@ -84,7 +84,6 @@
     <Compile Include="Scripts\PhysCharacter.cs" />
     <Compile Include="Scripts\ReadOnlyAttribute.cs" />
     <Compile Include="Scripts\RotateObject.cs" />
-    <Compile Include="Scripts\SceneList.cs" />
     <Compile Include="Scripts\ScriptableAssetWizardAttribute.cs" />
     <Compile Include="Scripts\SerializableDictionary.cs" />
     <Compile Include="Scripts\SliderEffects.cs" />

@@ -45,7 +45,9 @@ namespace UnityCommonLibrary {
         public event OnTaskCompleted TaskCompleted;
         #endregion
 
-        public bool executeOnStart, loop, destroyOnComplete, logTaskEvents;
+        public bool executeOnStart, loop, destroyOnComplete;
+
+        public static bool logTaskEvents;
 
         public EventStatus status { get; private set; }
         public bool isRunningTask { get { return taskRoutine != null; } }

@@ -67,16 +67,33 @@
     <Compile Include="Editor\ScriptableAssetWizard.cs" />
     <Compile Include="Editor\SkinnedMeshRendererSortingLayersEditor.cs" />
     <Compile Include="Editor\SpriteTools.cs" />
+    <Compile Include="Editor\StaticsGenerator.cs" />
     <Compile Include="Editor\TestMaterialGenerator.cs" />
     <Compile Include="Editor\UICircleInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\UnityCommonLibrary\UnityCommonLibrary.csproj">
       <Project>{bea0947a-3a51-4b6f-b27c-7a3a17ca9530}</Project>
       <Name>UnityCommonLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\StaticGenerator.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
