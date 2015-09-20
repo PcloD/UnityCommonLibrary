@@ -5,7 +5,7 @@ namespace UnityCommonLibrary {
     [Serializable]
     public abstract class SaveField<T, S> where S : SaveField<T, S> {
         protected T _value;
-        public virtual T value {
+        public T value {
             get {
                 return _value;
             }
@@ -24,11 +24,6 @@ namespace UnityCommonLibrary {
 
         public SaveField(T initialVal) {
             this._value = default(T);
-        }
-
-        public S Set(T newValue) {
-            this.value = newValue;
-            return (S)this;
         }
 
         protected abstract void OnValueChanged();
@@ -179,7 +174,9 @@ namespace UnityCommonLibrary {
         public int maxLength;
         public bool isClamped;
 
-        public SaveString() : base(string.Empty) { }
+        public SaveString() {
+            _value = string.Empty;
+        }
         public SaveString(string initVal) : base(initVal) { }
         public SaveString(string initVal, int maxLength) : base(initVal) {
             this.maxLength = maxLength;
