@@ -1,6 +1,6 @@
-using UnityEngine;
-using UnityEditor;
 using UnityCommonLibrary;
+using UnityEditor;
+using UnityEngine;
 
 namespace UnityCommonEditorLibrary {
     public class SpriteTools : UCScript {

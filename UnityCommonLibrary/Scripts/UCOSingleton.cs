@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace UnityCommonLibrary {
     public class UCOSingleton<T> : UCObject where T : UCOSingleton<T> {

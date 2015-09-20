@@ -66,7 +66,7 @@ namespace UnityCommonLibrary {
                 StartCoroutine(_RefreshList());
             }
             if(!refreshing) {
-                for(int i = 0;i < elements.Count;i++) {
+                for(int i = 0; i < elements.Count; i++) {
                     if(elements.Count != cells.Count) {
                         //safety check for refreshing
                         break;

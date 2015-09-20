@@ -1,16 +1,12 @@
-using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace UnityCommonLibrary {
     public class ArraySelector<T> : UCObject {
         T[] array;
         int lastSelected;
-        List<int> indiciesLeft = new List<int>();
-
-        public ArraySelector(ref T[] array) {
-            this.array = array;
-        }
+        Queue<int> indiciesLeft = new Queue<int>();
 
         public ArraySelector(T[] array) {
             this.array = array;
@@ -18,11 +14,13 @@ namespace UnityCommonLibrary {
 
         void ResetIndexList() {
             if(array.Length == 1) {
-                indiciesLeft = new List<int>();
-                indiciesLeft.Add(0);
+                indiciesLeft = new Queue<int>();
+                indiciesLeft.Enqueue(0);
             }
             else {
-                indiciesLeft = new List<int>(Enumerable.Range(0, array.Length - 1));
+                var list = new List<int>(Enumerable.Range(0, array.Length - 1));
+                list.Shuffle();
+                indiciesLeft = new Queue<int>(list);
             }
         }
 
@@ -37,7 +35,7 @@ namespace UnityCommonLibrary {
             if(CheckArray()) {
                 return default(T);
             }
-            return array[Random.Range(0, array.Length - 1)];
+            return array[Random.Range(0, array.Length)];
         }
 
         public T GetRandomNew() {
@@ -48,7 +46,6 @@ namespace UnityCommonLibrary {
             var index = 0;
             do index = Random.Range(0, array.Length - 1);
             while(index == lastSelected && array.Length > 1);
-
             return array[index];
         }
 
@@ -59,7 +56,7 @@ namespace UnityCommonLibrary {
             if(indiciesLeft.Count == 0) {
                 ResetIndexList();
             }
-            var index = indiciesLeft[Random.Range(0, indiciesLeft.Count - 1)];
+            var index = indiciesLeft.Dequeue();
             return array[index];
         }
     }

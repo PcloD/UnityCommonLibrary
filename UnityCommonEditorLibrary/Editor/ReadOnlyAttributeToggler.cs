@@ -1,10 +1,8 @@
-﻿using System.Reflection;
-using UnityEditor;
+﻿using UnityEditor;
 
 namespace UnityCommonEditorLibrary {
     [InitializeOnLoad]
     public class ReadOnlyAttributeToggler {
-
 
         [PreferenceItem("Misc.")]
         static void ReadOnlyPreferences() {

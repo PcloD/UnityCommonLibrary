@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace UnityCommonLibrary {
@@ -72,7 +71,6 @@ namespace UnityCommonLibrary {
         public static Dictionary<IObserver<O, T>, T[]> filteredObservers = new Dictionary<IObserver<O, T>, T[]>();
         public static bool hasObservers { get { return observers.Count + restrictedObservers.Count + filteredObservers.Count > 0; } }
         public static List<IObserver<O, T>> toRemove = new List<IObserver<O, T>>();
-
 
         public static bool HasObserverForFilter(T filter) {
             return filteredObservers.Any(p => p.Value.Any(v => v.Equals(filter)));

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +20,6 @@ namespace UnityCommonLibrary {
                 return keys.Count;
             }
         }
-
 
         public bool ContainsKey(TKey key) {
             return keys.Contains(key);
@@ -62,6 +60,5 @@ namespace UnityCommonLibrary {
             values.RemoveAt(index);
         }
     }
-
 
 }

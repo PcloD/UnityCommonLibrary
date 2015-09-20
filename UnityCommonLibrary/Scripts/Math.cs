@@ -27,5 +27,29 @@
             }
         }
 
+        public static byte ClampByte(byte current, byte min, byte max) {
+            if(current > max) {
+                return max;
+            }
+            else if(current < min) {
+                return min;
+            }
+            else {
+                return current;
+            }
+        }
+
+        public static sbyte ClampSByte(sbyte current, sbyte min, sbyte max) {
+            if(current > max) {
+                return max;
+            }
+            else if(current < min) {
+                return min;
+            }
+            else {
+                return current;
+            }
+        }
+
     }
 }

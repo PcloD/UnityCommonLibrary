@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -114,7 +113,6 @@ namespace UnityCommonEditorLibrary {
             GUI.enabled = false;
             EditorGUILayout.TextField("Save Folder", projRelativeSaveFolder);
             GUI.enabled = true;
-
 
             filename = EditorGUILayout.TextField("Filename", filename);
         }

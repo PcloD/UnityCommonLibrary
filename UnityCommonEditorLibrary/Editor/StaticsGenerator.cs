@@ -1,10 +1,9 @@
 ﻿using System.IO;
-using System.Text;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
-using UnityEngine;
 using UnityEditorInternal;
-using System.Linq;
+using UnityEngine;
 
 namespace UnityCommonEditorLibrary {
     public class StaticsGenerator : Editor {

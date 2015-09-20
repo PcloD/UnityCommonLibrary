@@ -205,7 +205,6 @@ namespace UnityCommonLibrary {
         }
         #endregion
 
-
         #region Utility/Batch Methods
         public static void PauseAll() {
             foreach(var s in sequences) {
