@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public static class SaveSystem<T> where T : AbstractSaveData {
+    public static class SaveSystem<T> where T : AbstractSaveData<T> {
         public static Encoding ENCODING = Encoding.UTF8;
         public static string SAVE_FOLDER = Application.persistentDataPath + "/SaveData";
         public static string SAVE_PREFIX = "save";
@@ -34,7 +34,7 @@ namespace UnityCommonLibrary {
             }
         }
 
-        public static string GetSavePath(AbstractSaveData data) {
+        public static string GetSavePath(T data) {
             return string.Format("{0}/{1}{2}", SAVE_FOLDER, SAVE_PREFIX, data.slot);
         }
 
