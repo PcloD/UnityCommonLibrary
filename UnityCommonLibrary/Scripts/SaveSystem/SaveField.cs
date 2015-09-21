@@ -1,16 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityCommonLibrary {
     [Serializable]
     public abstract class SaveField<T, S> where S : SaveField<T, S> {
+        protected static EqualityComparer<T> comparer = EqualityComparer<T>.Default;
+
         protected T _value;
-        public T value {
+        public virtual T value {
             get {
                 return _value;
             }
             set {
-                var changed = !_value.Equals(value);
+                var changed = !comparer.Equals(_value, value);
+                if(changed && !AllowChange(value)) {
+                    return;
+                }
                 _value = value;
                 if(changed && Application.isPlaying) {
                     OnValueChanged();
@@ -23,8 +29,10 @@ namespace UnityCommonLibrary {
         }
 
         public SaveField(T initialVal) {
-            this._value = default(T);
+            this._value = initialVal;
         }
+
+        protected virtual bool AllowChange(T newValue) { return true; }
 
         protected abstract void OnValueChanged();
 
@@ -194,5 +202,10 @@ namespace UnityCommonLibrary {
             ClampValue();
             SaveStringChanged.Notify(this, this);
         }
+
+        protected override bool AllowChange(string newValue) {
+            return newValue != null;
+        }
+
     }
 }

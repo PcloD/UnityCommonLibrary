@@ -5,14 +5,15 @@ using System.Text;
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public static class SaveSystem {
+    public static class SaveSystem<T> where T : AbstractSaveData {
         public static Encoding ENCODING = Encoding.UTF8;
         public static string SAVE_FOLDER = Application.persistentDataPath + "/SaveData";
+        public static string SAVE_PREFIX = "save";
 
-        public static AbstractSaveData data;
+        public static T data;
 
-        public static T LoadData<T>(int slot) where T : AbstractSaveData {
-            var path = string.Format("{0}/{1}{2}", SAVE_FOLDER, "save", slot);
+        public static T LoadData(int slot) {
+            var path = string.Format("{0}/{1}{2}", SAVE_FOLDER, SAVE_PREFIX, slot);
             T data;
             var bf = new BinaryFormatter();
             using(var fs = File.OpenRead(path)) {
@@ -21,7 +22,7 @@ namespace UnityCommonLibrary {
             return data;
         }
 
-        public static void WriteData<T>() where T : AbstractSaveData {
+        public static void WriteData() {
             if(!data.writeable.value) {
                 return;
             }
@@ -29,12 +30,12 @@ namespace UnityCommonLibrary {
             var bf = new BinaryFormatter();
             Directory.CreateDirectory(SAVE_FOLDER);
             using(var fs = File.OpenWrite(path)) {
-                bf.Serialize(fs, (T)data);
+                bf.Serialize(fs, data);
             }
         }
 
         public static string GetSavePath(AbstractSaveData data) {
-            return string.Format("{0}/{1}{2}", SAVE_FOLDER, "save", data.slot);
+            return string.Format("{0}/{1}{2}", SAVE_FOLDER, SAVE_PREFIX, data.slot);
         }
 
     }

@@ -7,7 +7,6 @@ namespace UnityCommonLibrary {
     public class VisualDebugger : UCSingleton<VisualDebugger> {
         KeyCode toggle = KeyCode.F1;
         List<DebugElement> elements = new List<DebugElement>();
-        Vector2 scroll;
         public bool visible { get; private set; }
 
         public void RegisterFor(IVisualDebuggable target) {
@@ -15,9 +14,8 @@ namespace UnityCommonLibrary {
         }
 
         public void RegisterFor(IVisualDebuggable target, string header) {
-            var exists = elements.FirstOrDefault(e => e.target == target);
+            var exists = elements.FirstOrDefault(e => e.target.GetType() == target.GetType());
             if(exists != null) {
-                Debug.LogErrorFormat("TARGET ALREADY EXISTS! {0} was to replace {1}", target.GetType().Name, exists.target.GetType().Name);
                 return;
             }
             elements.Add(new DebugElement(target, header));

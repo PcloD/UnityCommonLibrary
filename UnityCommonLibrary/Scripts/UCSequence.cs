@@ -88,7 +88,7 @@ namespace UnityCommonLibrary {
             CompleteEvent();
         }
 
-        private IEnumerator ExecSequenceTask(IEnumerator task) {
+        IEnumerator ExecSequenceTask(IEnumerator task) {
             while(true) {
                 var hasInstruction = task.MoveNext();
 
