@@ -52,20 +52,19 @@
   <ItemGroup>
     <Compile Include="Editor\CameraBounds2DEditor.cs" />
     <Compile Include="Editor\CanvasGroupActivator.cs" />
+    <Compile Include="Editor\ComponentEditorUtils.cs" />
     <Compile Include="Editor\EditorCoroutine.cs" />
     <Compile Include="Editor\EditorGUIHelper.cs" />
     <Compile Include="Editor\EnumMaskDrawer.cs" />
     <Compile Include="Editor\GameTextInspector.cs" />
     <Compile Include="Editor\HandlesUtils.cs" />
     <Compile Include="Editor\ImmediateWindow.cs" />
-    <Compile Include="Editor\MeshRendererSortingLayersEditor.cs" />
     <Compile Include="Editor\ParallaxOptionEditor.cs" />
     <Compile Include="Editor\ReadOnlyAttributeDrawer.cs" />
     <Compile Include="Editor\ReadOnlyAttributeToggler.cs" />
     <Compile Include="Editor\Ruler.cs" />
     <Compile Include="Editor\RulerUtils.cs" />
     <Compile Include="Editor\ScriptableAssetWizard.cs" />
-    <Compile Include="Editor\SkinnedMeshRendererSortingLayersEditor.cs" />
     <Compile Include="Editor\SpriteTools.cs" />
     <Compile Include="Editor\StaticsGenerator.cs" />
     <Compile Include="Editor\TestMaterialGenerator.cs" />
