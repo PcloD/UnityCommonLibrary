@@ -1,24 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public class PrefabPool {
-        readonly static GameObject poolParent = new GameObject("PrefabPool", typeof(LogicalObject));
 
-        readonly Stack<GameObject> m_Stack = new Stack<GameObject>();
-        readonly GameObject prefab;
+    public abstract class AbstractPool<T> {
+        readonly Stack pool = new Stack();
 
-        public int countActive { get; private set; }
-        public int countInactive { get { return m_Stack.Count; } }
+        public int countActive { get; protected set; }
+        public int countInactive { get { return pool.Count; } }
         public int count { get { return countActive + countInactive; } }
 
-        public PrefabPool(GameObject prefab) : this(prefab, 0) { }
+        public AbstractPool(int initCount) {
+            InitFillPool(initCount);
+        }
 
-        public PrefabPool(GameObject prefab, int initCount) {
-            this.prefab = prefab;
+        private void InitFillPool(int initCount) {
             initCount = (initCount < 0) ? 0 : initCount;
             if(initCount > 0) {
-                var objs = new GameObject[initCount];
+                var objs = new T[initCount];
                 for(int i = 0; i < initCount; i++) {
                     objs[i] = Get();
                 }
@@ -28,30 +27,61 @@ namespace UnityCommonLibrary {
             }
         }
 
-        public GameObject Get() {
-            GameObject obj;
-            if(m_Stack.Count == 0) {
-                obj = Object.Instantiate(prefab);
-                obj.transform.parent = poolParent.transform;
-                countActive++;
+        public T Get() {
+            if(pool.Count == 0) {
+                return CreateNew();
             }
             else {
-                obj = m_Stack.Pop();
+                T obj = (T)pool.Pop();
+                OnGetFromPool(obj);
+                return obj;
             }
-            Observables.PrefabRetrievedFromPool.Notify(this, obj);
-            return obj;
         }
 
-        public void Return(GameObject obj) {
-            if(m_Stack.Count > 0 && ReferenceEquals(m_Stack.Peek(), obj)) {
+        protected virtual T CreateNew() {
+            return System.Activator.CreateInstance<T>();
+        }
+
+        protected abstract void OnGetFromPool(T obj);
+        protected abstract void OnReturnToPool(T obj);
+
+        public void Return(T obj) {
+            if(pool.Count > 0 && ReferenceEquals(pool.Peek(), obj)) {
                 Debug.LogError("Trying to destroy object that is already released to pool.");
             }
             else {
-                Observables.PrefabReturnedToPool.Notify(this, obj);
-                obj.SetActive(false);
-                m_Stack.Push(obj);
+                OnReturnToPool(obj);
+                pool.Push(obj);
                 countActive--;
             }
         }
     }
+
+    public class PrefabPool : AbstractPool<GameObject> {
+        public readonly static GameObject poolParent = new GameObject("PrefabPool", typeof(LogicalObject));
+        protected readonly GameObject prefab;
+
+        public PrefabPool(GameObject prefab) : this(prefab, 0) { }
+        public PrefabPool(GameObject prefab, int initCount) : base(initCount) {
+            this.prefab = prefab;
+        }
+
+        protected override GameObject CreateNew() {
+            var obj = Object.Instantiate(prefab);
+            obj.transform.parent = poolParent.transform;
+            return obj;
+        }
+
+        protected sealed override void OnGetFromPool(GameObject obj) {
+            obj.SendMessage("OnEnable", SendMessageOptions.DontRequireReceiver);
+            obj.SendMessage("Awake", SendMessageOptions.DontRequireReceiver);
+            obj.SendMessage("Start", SendMessageOptions.DontRequireReceiver);
+        }
+
+        protected sealed override void OnReturnToPool(GameObject obj) {
+            obj.SendMessage("OnDisable", SendMessageOptions.DontRequireReceiver);
+            obj.SendMessage("OnDestroy", SendMessageOptions.DontRequireReceiver);
+        }
+    }
+
 }

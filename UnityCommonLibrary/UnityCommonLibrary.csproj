@@ -11,7 +11,7 @@
     <AssemblyName>UnityCommonLibrary</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,23 +71,16 @@
     <Compile Include="Scripts\GradientExtensions.cs" />
     <Compile Include="Scripts\GravityModifier.cs" />
     <Compile Include="Scripts\PrefabPool.cs" />
-    <Compile Include="Scripts\SaveSystem\AbstractSaveData.cs" />
     <Compile Include="Scripts\InferSize.cs" />
     <Compile Include="Scripts\IntentHistory.cs" />
-    <Compile Include="Scripts\IObserver.cs" />
     <Compile Include="Scripts\IWorldBounded.cs" />
     <Compile Include="Scripts\LabeledGraphic.cs" />
     <Compile Include="Scripts\ListExtensions.cs" />
     <Compile Include="Scripts\LogicalObject.cs" />
     <Compile Include="Scripts\Math.cs" />
     <Compile Include="Scripts\Math2D.cs" />
-    <Compile Include="Scripts\SaveSystem\SaveField.cs" />
-    <Compile Include="Scripts\SaveSystem\SaveSystem.cs" />
-    <Compile Include="Scripts\SaveSystem\SaveSystemObservables.cs" />
-    <Compile Include="Scripts\UCLObservables.cs" />
     <Compile Include="Scripts\UCSequence.cs" />
     <Compile Include="Scripts\MouseRelativeUIRotate.cs" />
-    <Compile Include="Scripts\Observable.cs" />
     <Compile Include="Scripts\ParallaxCamera.cs" />
     <Compile Include="Scripts\ParallaxLayer.cs" />
     <Compile Include="Scripts\ParticlePath.cs" />

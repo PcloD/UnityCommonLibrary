@@ -62,17 +62,22 @@ namespace UnityCommonEditorLibrary.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to public static class Statics {{
-        ///    public static class Layers {{
+        ///    public enum Layer {{
         ///        {0}
         ///    }}
         ///
-        ///    public static class Tags {{
+        ///    public enum Tag {{
         ///        {1}
         ///    }}
         ///
-        ///    public static class Scenes {{
+        ///    public enum Scene {{
         ///        {2}
         ///    }}
+        ///
+        ///    public static T Parse&lt;T&gt;(string name) {{
+        ///        return (T)System.Enum.Parse(typeof(T), name);
+        ///    }}
+        ///
         ///}}.
         /// </summary>
         internal static string StaticGenerator {

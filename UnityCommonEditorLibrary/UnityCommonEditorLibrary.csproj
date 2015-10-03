@@ -11,7 +11,7 @@
     <AssemblyName>UnityCommonEditorLibrary</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,7 +58,6 @@
     <Compile Include="Editor\EnumMaskDrawer.cs" />
     <Compile Include="Editor\GameTextInspector.cs" />
     <Compile Include="Editor\HandlesUtils.cs" />
-    <Compile Include="Editor\ImmediateWindow.cs" />
     <Compile Include="Editor\ParallaxOptionEditor.cs" />
     <Compile Include="Editor\ReadOnlyAttributeDrawer.cs" />
     <Compile Include="Editor\ReadOnlyAttributeToggler.cs" />
