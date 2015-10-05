@@ -36,9 +36,11 @@
     <Reference Include="System.Data" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +67,7 @@
     <Compile Include="Scripts\GOUtility.cs" />
     <Compile Include="Scripts\GradientExtensions.cs" />
     <Compile Include="Scripts\GravityModifier.cs" />
+    <Compile Include="Scripts\PathUtils.cs" />
     <Compile Include="Scripts\PrefabPool.cs" />
     <Compile Include="Scripts\InferSize.cs" />
     <Compile Include="Scripts\IntentHistory.cs" />
