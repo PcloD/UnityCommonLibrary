@@ -207,5 +207,4 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 
-ucel_post.cmd
-ucl_post.cmd
+post.cmd
