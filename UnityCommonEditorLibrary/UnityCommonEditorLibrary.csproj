@@ -62,6 +62,7 @@
     <Compile Include="Editor\Ruler.cs" />
     <Compile Include="Editor\RulerUtils.cs" />
     <Compile Include="Editor\ScriptableAssetWizard.cs" />
+    <Compile Include="Editor\SelectorEditor.cs" />
     <Compile Include="Editor\SpriteTools.cs" />
     <Compile Include="Editor\StaticsGenerator.cs" />
     <Compile Include="Editor\TestMaterialGenerator.cs" />

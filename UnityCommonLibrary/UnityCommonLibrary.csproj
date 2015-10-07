@@ -100,6 +100,7 @@
     <Compile Include="Scripts\WorldBounds.cs" />
     <Compile Include="Scripts\WorldBounds2D.cs" />
     <Compile Include="Scripts\WorldBounds3D.cs" />
+    <Compile Include="UI\Selector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
