@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public static class HandlesUtils {
+    public static class HandlesUtility {
         static Color stored;
 
         public static void StoreColor(Color color) {

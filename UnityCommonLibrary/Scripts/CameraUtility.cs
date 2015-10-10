@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public static class CameraExtensions {
+    public static class CameraUtility {
 
         public static Bounds OrthographicBounds(this Camera camera) {
             var camHeight = camera.orthographicSize * 2f;

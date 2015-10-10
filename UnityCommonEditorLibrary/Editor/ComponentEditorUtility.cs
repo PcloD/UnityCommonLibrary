@@ -3,7 +3,7 @@ using UnityEditorInternal;
 using UnityEngine;
 
 namespace UnityCommonEditorLibrary {
-    public class ComponentEditorUtils {
+    public class ComponentEditorUtility {
 
         [MenuItem("CONTEXT/Component/Move To Top")]
         public static void MoveToTop(MenuCommand cmd) {

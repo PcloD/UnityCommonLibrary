@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace UnityCommonLibrary {
 
@@ -10,11 +11,7 @@ namespace UnityCommonLibrary {
         public int countInactive { get { return pool.Count; } }
         public int count { get { return countActive + countInactive; } }
 
-        public AbstractPool(int initCount) {
-            InitFillPool(initCount);
-        }
-
-        private void InitFillPool(int initCount) {
+        protected void InitFillPool(int initCount) {
             initCount = (initCount < 0) ? 0 : initCount;
             if(initCount > 0) {
                 var objs = new T[initCount];
@@ -27,9 +24,37 @@ namespace UnityCommonLibrary {
             }
         }
 
+        public T[] Get(int count) {
+            if(count <= 0) {
+                throw new System.ArgumentOutOfRangeException("count");
+            }
+            var array = new T[count];
+            for(int i = 0; i < count; i++) {
+                array[i] = Get();
+            }
+            return array;
+        }
+
+        /// <summary>
+        /// Same as <see cref="Get(int)"/> without allocating a new array
+        /// </summary>
+        public void Get(ref T[] array) {
+            if(array == null) {
+                throw new System.ArgumentNullException("array");
+            }
+            if(array.Length == 0) {
+                throw new System.IndexOutOfRangeException("array.Length must be > 0");
+            }
+            for(int i = 0; i < array.Length; i++) {
+                array[i] = Get();
+            }
+        }
+
         public T Get() {
             if(pool.Count == 0) {
-                return CreateNew();
+                var newObj = CreateNew();
+                ProcessNew(newObj);
+                return newObj;
             }
             else {
                 T obj = (T)pool.Pop();
@@ -41,6 +66,7 @@ namespace UnityCommonLibrary {
         protected virtual T CreateNew() {
             return System.Activator.CreateInstance<T>();
         }
+        protected virtual void ProcessNew(T obj) { }
 
         protected abstract void OnGetFromPool(T obj);
         protected abstract void OnReturnToPool(T obj);
@@ -58,28 +84,33 @@ namespace UnityCommonLibrary {
     }
 
     public class PrefabPool : AbstractPool<GameObject> {
-        public readonly static GameObject poolParent = new GameObject("PrefabPool", typeof(LogicalObject));
-        protected readonly GameObject prefab;
+        public static GameObject poolParent { get; protected set; }
+        protected GameObject prefab;
 
         public PrefabPool(GameObject prefab) : this(prefab, 0) { }
-        public PrefabPool(GameObject prefab, int initCount) : base(initCount) {
+        public PrefabPool(GameObject prefab, int initCount) {
             this.prefab = prefab;
+            InitFillPool(initCount);
+        }
+
+        protected override void ProcessNew(GameObject obj) {
+            if(poolParent == null) {
+                poolParent = new GameObject("PrefabPool", typeof(LogicalObject));
+            }
+            obj.transform.parent = poolParent.transform;
         }
 
         protected override GameObject CreateNew() {
-            var obj = Object.Instantiate(prefab);
-            obj.transform.parent = poolParent.transform;
-            return obj;
+            return Object.Instantiate(prefab);
         }
 
         protected sealed override void OnGetFromPool(GameObject obj) {
-            obj.SendMessage("OnEnable", SendMessageOptions.DontRequireReceiver);
-            obj.SendMessage("Awake", SendMessageOptions.DontRequireReceiver);
+            obj.SetActive(true);
             obj.SendMessage("Start", SendMessageOptions.DontRequireReceiver);
         }
 
         protected sealed override void OnReturnToPool(GameObject obj) {
-            obj.SendMessage("OnDisable", SendMessageOptions.DontRequireReceiver);
+            obj.SetActive(false);
             obj.SendMessage("OnDestroy", SendMessageOptions.DontRequireReceiver);
         }
     }

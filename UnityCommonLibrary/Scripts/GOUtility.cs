@@ -19,5 +19,13 @@ namespace UnityCommonLibrary {
             return path;
         }
 
+        public static void Toggle(bool enabled, params GameObject[] gameObjects) {
+            foreach(var go in gameObjects) {
+                if(go != null) {
+                    go.SetActive(enabled);
+                }
+            }
+        }
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public static class BoundsExtensions {
+    public static class BoundsUtility {
 
         /// <summary>
         /// Returns true if this bounds.size >= target.size in all axes.

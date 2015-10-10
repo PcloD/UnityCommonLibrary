@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace UnityCommonEditorLibrary {
-    public class SpriteTools : UCScript {
+    public class SpriteUtility : UCScript {
 
         [MenuItem("CONTEXT/Rigidbody2D/Ground Sprite")]
         public static void GroundSprite(MenuCommand command) {

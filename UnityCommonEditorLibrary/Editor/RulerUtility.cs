@@ -4,7 +4,7 @@ using UnityEngine;
 namespace UnityCommonEditorLibrary {
 
     [CustomEditor(typeof(Ruler))]
-    public class RulerUtils : Editor {
+    public class RulerUtility : Editor {
         [MenuItem("GameObject/Create Other/Ruler")]
         public static void Create() {
             var obj = new GameObject("RULER", typeof(Ruler));

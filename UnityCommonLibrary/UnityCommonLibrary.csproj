@@ -38,6 +38,10 @@
       <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
@@ -48,30 +52,30 @@
     <Compile Include="Scripts\AreaEffector.cs" />
     <Compile Include="Scripts\ArraySelector.cs" />
     <Compile Include="Scripts\AutoFitCollider2D.cs" />
-    <Compile Include="Scripts\BehaviorUtils.cs" />
-    <Compile Include="Scripts\BoundsExtensions.cs" />
+    <Compile Include="Scripts\BehaviourUtility.cs" />
+    <Compile Include="Scripts\BoundsUtility.cs" />
     <Compile Include="Scripts\CameraBounds2D.cs" />
-    <Compile Include="Scripts\CameraExtensions.cs" />
+    <Compile Include="Scripts\CameraUtility.cs" />
     <Compile Include="Scripts\ColliderStore.cs" />
     <Compile Include="Scripts\ColliderWatcher.cs" />
     <Compile Include="Scripts\CopyToScreenRT.cs" />
-    <Compile Include="Scripts\CoroutineUtils.cs" />
+    <Compile Include="Scripts\CoroutineUtility.cs" />
     <Compile Include="Scripts\EnumMaskAttribute.cs" />
     <Compile Include="Scripts\FakeParent.cs" />
     <Compile Include="Scripts\FloatRange.cs" />
     <Compile Include="Scripts\GameMode.cs" />
     <Compile Include="Scripts\GameText.cs" />
     <Compile Include="Scripts\GammaEffect.cs" />
-    <Compile Include="Scripts\GizmosUtils.cs" />
+    <Compile Include="Scripts\GizmosUtility.cs" />
     <Compile Include="Scripts\GOUtility.cs" />
-    <Compile Include="Scripts\GradientExtensions.cs" />
+    <Compile Include="Scripts\GradientUtility.cs" />
     <Compile Include="Scripts\GravityModifier.cs" />
-    <Compile Include="Scripts\PathUtils.cs" />
+    <Compile Include="Scripts\PathUtility.cs" />
     <Compile Include="Scripts\PrefabPool.cs" />
     <Compile Include="Scripts\InferSize.cs" />
     <Compile Include="Scripts\IWorldBounded.cs" />
     <Compile Include="Scripts\LabeledGraphic.cs" />
-    <Compile Include="Scripts\ListExtensions.cs" />
+    <Compile Include="Scripts\ListUtility.cs" />
     <Compile Include="Scripts\LogicalObject.cs" />
     <Compile Include="Scripts\Math.cs" />
     <Compile Include="Scripts\Math2D.cs" />

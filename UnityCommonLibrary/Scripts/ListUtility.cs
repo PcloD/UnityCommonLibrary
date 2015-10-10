@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace UnityCommonLibrary {
-    public static class ListExtensions {
+    public static class ListUtility {
 
         public static void Shuffle<T>(this IList<T> list) {
             var random = new Random();

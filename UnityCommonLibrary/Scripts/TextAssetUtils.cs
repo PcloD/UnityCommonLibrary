@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public static class TextAssetUtils {
+    public static class TextAssetUtility {
         static readonly string[] newlineArray = new string[] { "\r\n", "\n" };
 
         public static string[] GetLines(this TextAsset asset) {

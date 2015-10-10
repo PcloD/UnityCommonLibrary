@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public static class GizmosUtils {
+    public static class GizmosUtility {
         static Color storedColor;
 
         public static void DrawBounds(Bounds b) {

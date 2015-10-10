@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public static class GradientExtensions {
+    public static class GradientUtility {
 
         public static Gradient MakeRainbow(this Gradient g) {
             g.colorKeys = new GradientColorKey[] {

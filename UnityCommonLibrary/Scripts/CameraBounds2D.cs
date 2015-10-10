@@ -75,9 +75,9 @@ namespace UnityCommonLibrary {
 
         void OnDrawGizmosSelected() {
             if(bounds != null) {
-                GizmosUtils.StoreColor(Color.green);
-                GizmosUtils.DrawBounds(bounds.bounds);
-                GizmosUtils.RestoreColor();
+                GizmosUtility.StoreColor(Color.green);
+                GizmosUtility.DrawBounds(bounds.bounds);
+                GizmosUtility.RestoreColor();
             }
         }
 

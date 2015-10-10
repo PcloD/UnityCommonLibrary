@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UnityCommonLibrary {
 
-    public static class CoroutineUtils {
+    public static class CoroutineUtility {
         public static IEnumerator WaitForSecondsUnscaled(float seconds) {
             var start = Time.realtimeSinceStartup;
             while(Time.realtimeSinceStartup - start < seconds) {
