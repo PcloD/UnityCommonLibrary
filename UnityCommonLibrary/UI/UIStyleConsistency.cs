@@ -6,6 +6,8 @@ namespace UnityCommonLibrary {
     public class UIStyleConsistency : UCScript {
         [SerializeField, Header("Selectables")]
         ColorBlock selectable;
+        [SerializeField, Header("Font")]
+        Font font;
 
         void Update() {
             var selectables = Selectable.allSelectables;
@@ -14,8 +16,17 @@ namespace UnityCommonLibrary {
             }
         }
 
+        public void FullUpdate() {
+            Update();
+            var texts = FindObjectsOfType<Text>();
+            foreach(var t in texts) {
+                t.font = font;
+            }
+        }
+
         void Reset() {
             selectable = ColorBlock.defaultColorBlock;
         }
+
     }
 }

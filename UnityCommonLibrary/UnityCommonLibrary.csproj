@@ -88,7 +88,7 @@
     <Compile Include="Scripts\RotateObject.cs" />
     <Compile Include="Scripts\ScriptableAssetWizardAttribute.cs" />
     <Compile Include="Scripts\SerializableDictionary.cs" />
-    <Compile Include="Scripts\SliderEffects.cs" />
+    <Compile Include="UI\SliderEffects.cs" />
     <Compile Include="Scripts\SnapCameraBounds.cs" />
     <Compile Include="Scripts\SpriteMeasurer.cs" />
     <Compile Include="Scripts\TextAssetUtils.cs" />
@@ -97,9 +97,9 @@
     <Compile Include="Scripts\UCOSingleton.cs" />
     <Compile Include="Scripts\UCScript.cs" />
     <Compile Include="Scripts\UCSingleton.cs" />
-    <Compile Include="Scripts\UICircle.cs" />
-    <Compile Include="Scripts\UIList.cs" />
-    <Compile Include="Scripts\UIStyleConsistency.cs" />
+    <Compile Include="UI\UICircle.cs" />
+    <Compile Include="UI\UIList.cs" />
+    <Compile Include="UI\UIStyleConsistency.cs" />
     <Compile Include="Scripts\VisualDebugger.cs" />
     <Compile Include="Scripts\WorldBounds.cs" />
     <Compile Include="Scripts\WorldBounds2D.cs" />
