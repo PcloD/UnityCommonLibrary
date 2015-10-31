@@ -2,8 +2,6 @@
 
 namespace UnityCommonLibrary {
     public class UCSingleton<T> : UCScript where T : UCSingleton<T> {
-        public bool dontDestroyOnLoad = true;
-
         private static bool appQuitting;
         private static object @lock = new object();
         private static T _get;
@@ -12,6 +10,10 @@ namespace UnityCommonLibrary {
             get {
                 return GetSingleton();
             }
+        }
+
+        public static T DummyCreate() {
+            return get;
         }
 
         private static T GetSingleton() {
@@ -28,7 +30,6 @@ namespace UnityCommonLibrary {
                     }
                     else if(allInstances.Length == 0) {
                         _get = new GameObject("[Singleton] " + typeof(T).Name).AddComponent<T>();
-                        DontDestroyOnLoad(_get);
                     }
                     else {
                         _get = allInstances[0];
@@ -38,16 +39,14 @@ namespace UnityCommonLibrary {
             }
         }
 
-        void Awake() {
+        protected virtual void Awake() {
             if(_get != null) {
                 Destroy(this);
             }
-            if(dontDestroyOnLoad) {
-                DontDestroyOnLoad(this);
-            }
+            DontDestroyOnLoad(this);
         }
 
-        void OnDestroy() {
+        protected virtual void OnDestroy() {
             appQuitting = true;
         }
     }
