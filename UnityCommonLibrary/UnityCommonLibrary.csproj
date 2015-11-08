@@ -65,7 +65,6 @@
     <Compile Include="Scripts\FloatRange.cs" />
     <Compile Include="Scripts\GameMode.cs" />
     <Compile Include="Scripts\GameText.cs" />
-    <Compile Include="Scripts\GammaEffect.cs" />
     <Compile Include="Scripts\GizmosUtility.cs" />
     <Compile Include="Scripts\GOUtility.cs" />
     <Compile Include="Scripts\GradientUtility.cs" />
@@ -79,6 +78,8 @@
     <Compile Include="Scripts\LogicalObject.cs" />
     <Compile Include="Scripts\Math.cs" />
     <Compile Include="Scripts\Math2D.cs" />
+    <Compile Include="Scripts\RandomUtility.cs" />
+    <Compile Include="Scripts\RectUtility.cs" />
     <Compile Include="Scripts\UCSequence.cs" />
     <Compile Include="Scripts\MouseRelativeUIRotate.cs" />
     <Compile Include="Scripts\ParallaxCamera.cs" />
