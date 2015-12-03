@@ -58,7 +58,6 @@
     <Compile Include="Scripts\FakeParent.cs" />
     <Compile Include="Scripts\FloatRange.cs" />
     <Compile Include="Scripts\GameMode.cs" />
-    <Compile Include="Scripts\GameText.cs" />
     <Compile Include="Scripts\GizmosUtility.cs" />
     <Compile Include="Scripts\GOUtility.cs" />
     <Compile Include="Scripts\GradientUtility.cs" />
@@ -73,6 +72,7 @@
     <Compile Include="Scripts\Math.cs" />
     <Compile Include="Scripts\Math2D.cs" />
     <Compile Include="Scripts\RandomUtility.cs" />
+    <Compile Include="Scripts\DisplayNameAttribute.cs" />
     <Compile Include="Scripts\RectUtility.cs" />
     <Compile Include="Scripts\UCSequence.cs" />
     <Compile Include="Scripts\MouseRelativeUIRotate.cs" />
@@ -100,6 +100,7 @@
     <Compile Include="Scripts\WorldBounds2D.cs" />
     <Compile Include="Scripts\WorldBounds3D.cs" />
     <Compile Include="UI\Selector.cs" />
+    <Compile Include="UI\WorldCanvasSizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

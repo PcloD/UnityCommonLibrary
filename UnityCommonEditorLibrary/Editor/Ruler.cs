@@ -4,10 +4,9 @@ using UnityEngine;
 namespace UnityCommonEditorLibrary {
     public class Ruler : UCScript {
         [SerializeField]
-        internal Vector3 end;
-
+        protected internal Vector3 end;
         [SerializeField]
-        internal Transform endTransform;
+        protected internal Transform endTransform;
 
         [SerializeField]
         [ReadOnly]

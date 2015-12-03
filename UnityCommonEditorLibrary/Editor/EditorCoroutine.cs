@@ -10,11 +10,11 @@ public class EditorCoroutine {
         return coroutine;
     }
 
-    EditorCoroutine(IEnumerator routine) {
+    private EditorCoroutine(IEnumerator routine) {
         this.routine = routine;
     }
 
-    void Start() {
+    private void Start() {
         EditorApplication.update += Update;
     }
 

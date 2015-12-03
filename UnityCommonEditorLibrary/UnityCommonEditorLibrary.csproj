@@ -51,11 +51,10 @@
     <Compile Include="Editor\EditorCoroutine.cs" />
     <Compile Include="Editor\EditorGUIHelper.cs" />
     <Compile Include="Editor\EnumMaskDrawer.cs" />
-    <Compile Include="Editor\GameTextInspector.cs" />
     <Compile Include="Editor\HandlesUtility.cs" />
     <Compile Include="Editor\ParallaxOptionEditor.cs" />
+    <Compile Include="Editor\DisplayNameAttributeDrawer.cs" />
     <Compile Include="Editor\ReadOnlyAttributeDrawer.cs" />
-    <Compile Include="Editor\ReadOnlyAttributeToggler.cs" />
     <Compile Include="Editor\Ruler.cs" />
     <Compile Include="Editor\RulerUtility.cs" />
     <Compile Include="Editor\ScriptableAssetWizard.cs" />

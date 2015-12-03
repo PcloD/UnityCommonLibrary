@@ -12,9 +12,9 @@ namespace UnityCommonEditorLibrary {
             Selection.activeGameObject = obj;
         }
 
-        void OnSceneGUI() {
+        private void OnSceneGUI() {
             var obj = target as Ruler;
-            if(obj.endTransform == null) {
+            if(obj.selectedEnd == null) {
                 obj.end = Handles.DoPositionHandle(obj.end, Quaternion.identity);
             }
             Handles.Label((obj.transform.position + obj.selectedEnd) / 2f, obj.distance.ToString() + " units", EditorStyles.helpBox);
