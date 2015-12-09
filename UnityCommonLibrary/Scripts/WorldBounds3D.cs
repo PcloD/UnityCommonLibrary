@@ -7,19 +7,11 @@ namespace UnityCommonLibrary {
         public Collider c { get; private set; }
 
         public void OnTriggerEnter(Collider other) {
-            SendAlertEntered(other.gameObject, "OnEnteredWorldBounds");
+            SendAlertEntered(other.gameObject);
         }
 
         public void OnTriggerExit(Collider other) {
-            SendAlertExited(other.gameObject, "OnLeftWorldBounds");
-        }
-
-        protected override void EnforceBehaviors() {
-            if(c == null) {
-                c = GetComponent<Collider>();
-            }
-            c.isTrigger = true;
-            c.sharedMaterial = null;
+            SendAlertExited(other.gameObject);
         }
     }
 }

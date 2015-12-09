@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UnityCommonLibrary {
     [RequireComponent(typeof(SpriteRenderer))]
-    public class ColliderStore : UCScript {
+    public class ColliderStore : MonoBehaviour {
 
         [SerializeField]
         StoreType type = StoreType.Circle;

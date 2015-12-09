@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public class AreaEffector : UCScript {
+    public class AreaEffector : MonoBehaviour {
         [SerializeField, Header("Force")]
         Vector3 force;
         [SerializeField]

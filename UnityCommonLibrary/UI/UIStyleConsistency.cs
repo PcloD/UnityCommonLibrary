@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace UnityCommonLibrary {
     [ExecuteInEditMode]
-    public class UIStyleConsistency : UCScript {
+    public class UIStyleConsistency : MonoBehaviour {
         [SerializeField, Header("Selectables")]
         ColorBlock selectable;
         [SerializeField, Header("Font")]

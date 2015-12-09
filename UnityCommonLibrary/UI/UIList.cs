@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace UnityCommonLibrary {
     [ExecuteInEditMode]
     [RequireComponent(typeof(VerticalLayoutGroup))]
-    public class UIList : UCScript {
+    public class UIList : MonoBehaviour {
 
         public delegate void OnSelectionChanged(ListItem oldItem, ListItem newItem);
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public class UCSingleton<T> : UCScript where T : UCSingleton<T> {
+    public class Singleton<T> : MonoBehaviour where T : Singleton<T> {
         private static bool appQuitting;
         private static object @lock = new object();
         private static T _get;

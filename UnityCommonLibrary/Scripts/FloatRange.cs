@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public class FloatRange : UCScript {
+    public class FloatRange : MonoBehaviour {
         [SerializeField]
         Vector3 offset;
 

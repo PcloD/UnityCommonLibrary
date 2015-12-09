@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public class MouseRelativeUIRotate : UCScript {
+    public class MouseRelativeUIRotate : MonoBehaviour {
 
         [SerializeField]
         Vector2 followMultiplier;

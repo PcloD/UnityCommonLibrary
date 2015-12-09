@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public class ParallaxCamera : UCScript {
+    public class ParallaxCamera : MonoBehaviour {
         public bool moveParallax;
 
         [SerializeField]

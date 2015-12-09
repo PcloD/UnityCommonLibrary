@@ -4,7 +4,7 @@ using UnityEngine;
 namespace UnityCommonLibrary {
     /// <typeparam name="C">The type of collider to check.</typeparam>
     /// <typeparam name="I">The information to pass to the watchers.</typeparam>
-    public abstract class AbstractWatcher<C, I> : UCScript {
+    public abstract class AbstractWatcher<C, I> : MonoBehaviour {
 
         /// <summary>
         ///

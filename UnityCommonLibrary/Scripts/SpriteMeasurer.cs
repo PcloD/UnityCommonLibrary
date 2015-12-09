@@ -3,7 +3,7 @@ using UnityEngine;
 namespace UnityCommonLibrary {
     [RequireComponent(typeof(PolygonCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public class SpriteMeasurer : UCScript {
+    public class SpriteMeasurer : MonoBehaviour {
         PolygonCollider2D _p2d;
         public PolygonCollider2D p2d {
             get {

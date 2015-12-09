@@ -2,7 +2,7 @@
 
 namespace UnityCommonLibrary {
     [ExecuteInEditMode]
-    public class ParallaxLayer : UCScript {
+    public class ParallaxLayer : MonoBehaviour {
         new public ParallaxCamera camera;
 
         [SerializeField]

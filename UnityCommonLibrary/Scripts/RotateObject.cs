@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public class RotateObject : UCScript {
+    public class RotateObject : MonoBehaviour {
 
         [SerializeField]
         Vector3 axis = Vector3.one;

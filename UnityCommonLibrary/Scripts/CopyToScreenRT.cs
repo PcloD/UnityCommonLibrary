@@ -5,7 +5,7 @@ using UEGFX = UnityEngine.Graphics;
 // NOTE: The script must be the last in the image effect chain, so order it in the inspector!
 namespace UnityCommonLibrary {
     [ExecuteInEditMode]
-    public class CopyToScreenRT : UCScript {
+    public class CopyToScreenRT : MonoBehaviour {
         private RenderTexture activeRT; // hold the org. screen RT
 
         void OnPreRender() {

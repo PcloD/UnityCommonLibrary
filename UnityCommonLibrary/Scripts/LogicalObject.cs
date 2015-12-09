@@ -2,7 +2,7 @@
 
 namespace UnityCommonLibrary {
     [ExecuteInEditMode]
-    public class LogicalObject : UCScript {
+    public class LogicalObject : MonoBehaviour {
 
         void Update() {
             transform.hideFlags = HideFlags.HideInInspector;

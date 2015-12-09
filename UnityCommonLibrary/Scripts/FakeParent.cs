@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public class FakeParent : UCScript {
+    public class FakeParent : MonoBehaviour {
         public Transform fakeParent;
 
         void Update() {

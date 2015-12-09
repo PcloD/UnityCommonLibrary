@@ -2,7 +2,7 @@
 
 namespace UnityCommonLibrary {
     [RequireComponent(typeof(Animator))]
-    public class PhysCharacter : UCScript {
+    public class PhysCharacter : MonoBehaviour {
 
         [SerializeField]
         Transform skeletonRoot;

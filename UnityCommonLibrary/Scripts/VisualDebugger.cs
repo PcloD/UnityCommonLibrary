@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public class VisualDebugger : UCSingleton<VisualDebugger> {
+    public class VisualDebugger : Singleton<VisualDebugger> {
         KeyCode toggle = KeyCode.F1;
         List<DebugElement> elements = new List<DebugElement>();
         public bool visible { get; private set; }

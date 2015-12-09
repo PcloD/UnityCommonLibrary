@@ -65,7 +65,6 @@
     <Compile Include="Scripts\PathUtility.cs" />
     <Compile Include="Scripts\PrefabPool.cs" />
     <Compile Include="Scripts\InferSize.cs" />
-    <Compile Include="Scripts\IWorldBounded.cs" />
     <Compile Include="Scripts\LabeledGraphic.cs" />
     <Compile Include="Scripts\ListUtility.cs" />
     <Compile Include="Scripts\LogicalObject.cs" />
@@ -74,7 +73,7 @@
     <Compile Include="Scripts\RandomUtility.cs" />
     <Compile Include="Scripts\DisplayNameAttribute.cs" />
     <Compile Include="Scripts\RectUtility.cs" />
-    <Compile Include="Scripts\UCSequence.cs" />
+    <Compile Include="Scripts\Sequence.cs" />
     <Compile Include="Scripts\MouseRelativeUIRotate.cs" />
     <Compile Include="Scripts\ParallaxCamera.cs" />
     <Compile Include="Scripts\ParallaxLayer.cs" />
@@ -84,14 +83,10 @@
     <Compile Include="Scripts\ScriptableAssetWizardAttribute.cs" />
     <Compile Include="Scripts\SerializableDictionary.cs" />
     <Compile Include="UI\SliderEffects.cs" />
-    <Compile Include="Scripts\SnapCameraBounds.cs" />
     <Compile Include="Scripts\SpriteMeasurer.cs" />
     <Compile Include="Scripts\TextAssetUtils.cs" />
     <Compile Include="Scripts\TransformUtility.cs" />
-    <Compile Include="Scripts\UCObject.cs" />
-    <Compile Include="Scripts\UCOSingleton.cs" />
-    <Compile Include="Scripts\UCScript.cs" />
-    <Compile Include="Scripts\UCSingleton.cs" />
+    <Compile Include="Scripts\Singleton.cs" />
     <Compile Include="UI\UICircle.cs" />
     <Compile Include="UI\UIList.cs" />
     <Compile Include="UI\UIStyleConsistency.cs" />

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace UnityCommonEditorLibrary {
-    public class Ruler : UCScript {
+    public class Ruler : MonoBehaviour {
         [SerializeField]
         protected internal Vector3 end;
         [SerializeField]

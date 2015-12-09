@@ -2,7 +2,7 @@
 
 namespace UnityCommonLibrary {
     [ExecuteInEditMode]
-    public class CameraBounds2D : UCScript {
+    public class CameraBounds2D : MonoBehaviour {
         public BoxCollider2D bounds;
         public new Camera camera;
         public bool boundedXMin = true,
@@ -11,12 +11,11 @@ namespace UnityCommonLibrary {
                     boundedYMax = true;
 
         [SerializeField]
-        bool runInEditor = true;
+        private bool runInEditor = true;
 
         public bool canFit { get; private set; }
 
-        // Update is called once per frame
-        void LateUpdate() {
+        private void LateUpdate() {
             if(Application.isPlaying == false && !runInEditor) {
                 return;
             }
@@ -61,19 +60,19 @@ namespace UnityCommonLibrary {
             }
         }
 
-        void OffsetXPosition(float offset) {
+        private void OffsetXPosition(float offset) {
             var position = transform.position;
             position.x -= offset;
             transform.position = position;
         }
 
-        void OffsetYPosition(float offset) {
+        private void OffsetYPosition(float offset) {
             var position = transform.position;
             position.y -= offset;
             transform.position = position;
         }
 
-        void OnDrawGizmosSelected() {
+        private void OnDrawGizmosSelected() {
             if(bounds != null) {
                 GizmosUtility.StoreColor(Color.green);
                 GizmosUtility.DrawBounds(bounds.bounds);

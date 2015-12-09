@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public class ArraySelector<T> : UCObject {
+    public class ArraySelector<T>  {
         T[] array;
         int lastSelected;
         Queue<int> indiciesLeft = new Queue<int>();

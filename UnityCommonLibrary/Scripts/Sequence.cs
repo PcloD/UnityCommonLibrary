@@ -4,23 +4,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public abstract class UCSequence : UCScript {
-        static List<UCSequence> sequences = new List<UCSequence>();
+    public abstract class Sequence : MonoBehaviour {
+        static List<Sequence> sequences = new List<Sequence>();
 
         #region Events & Delegates
-        public delegate void OnAnyEventStarted(UCSequence ucs);
+        public delegate void OnAnyEventStarted(Sequence ucs);
         public static event OnAnyEventStarted AnyEventStarted;
 
-        public delegate void OnAnyEventPaused(UCSequence ucs);
+        public delegate void OnAnyEventPaused(Sequence ucs);
         public static event OnAnyEventPaused AnyEventPaused;
 
-        public delegate void OnAnyEventResumed(UCSequence ucs);
+        public delegate void OnAnyEventResumed(Sequence ucs);
         public static event OnAnyEventResumed AnyEventResumed;
 
-        public delegate void OnAnyEventHalted(UCSequence ucs);
+        public delegate void OnAnyEventHalted(Sequence ucs);
         public static event OnAnyEventHalted AnyEventHalted;
 
-        public delegate void OnAnyEventCompleted(UCSequence ucs);
+        public delegate void OnAnyEventCompleted(Sequence ucs);
         public static event OnAnyEventCompleted AnyEventCompleted;
 
         public delegate void OnEventStarted();
@@ -263,7 +263,7 @@ namespace UnityCommonLibrary {
             yield return null;
         }
 
-        public static T Create<T>(bool destroyOnComplete = true) where T : UCSequence {
+        public static T Create<T>(bool destroyOnComplete = true) where T : Sequence {
             var parent = new GameObject(typeof(T).Name);
             var me = parent.AddComponent<T>();
             me.destroyOnComplete = destroyOnComplete;

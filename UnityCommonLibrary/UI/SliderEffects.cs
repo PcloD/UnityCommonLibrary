@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace UnityCommonLibrary {
     [RequireComponent(typeof(Slider))]
     [ExecuteInEditMode]
-    public class SliderEffects : UCScript {
+    public class SliderEffects : MonoBehaviour {
 
         [SerializeField]
         Text text;

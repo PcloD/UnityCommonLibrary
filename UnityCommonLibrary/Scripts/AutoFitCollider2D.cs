@@ -3,7 +3,7 @@ using UnityEngine.Sprites;
 
 namespace UnityCommonLibrary {
     [RequireComponent(typeof(Collider2D))]
-    public class AutoFitCollider2D : UCScript {
+    public class AutoFitCollider2D : MonoBehaviour {
         [SerializeField]
         new SpriteRenderer renderer;
         [SerializeField]

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace UnityCommonLibrary {
     [ExecuteInEditMode]
     [RequireComponent(typeof(LayoutElement))]
-    public class InferSize : UCScript {
+    public class InferSize : MonoBehaviour {
         public Graphic targetGraphic;
 
         [Header("Rect Size")]

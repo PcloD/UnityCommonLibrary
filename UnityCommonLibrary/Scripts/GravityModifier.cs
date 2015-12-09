@@ -2,7 +2,7 @@
 
 namespace UnityCommonLibrary {
     [RequireComponent(typeof(Rigidbody))]
-    public class GravityModifier : UCScript {
+    public class GravityModifier : MonoBehaviour {
 
         [SerializeField]
         float multiplier = 0f;

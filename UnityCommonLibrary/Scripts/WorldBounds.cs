@@ -2,21 +2,24 @@
 
 namespace UnityCommonLibrary {
     [ExecuteInEditMode]
-    public abstract class WorldBounds : UCScript {
-
-        void Update() {
-            transform.localScale = Vector3.one;
-            EnforceBehaviors();
+    public abstract class WorldBounds : MonoBehaviour {
+        protected void SendAlertEntered(GameObject obj) {
+            var listeners = obj.GetComponents<WorldBoundsEventListener>();
+            foreach(var l in listeners) {
+                l.OnEnteredWorldBounds();
+            }
         }
 
-        protected void SendAlertEntered(GameObject g, string message) {
-            g.SendMessageUpwards(message, this, SendMessageOptions.DontRequireReceiver);
+        protected void SendAlertExited(GameObject obj) {
+            var listeners = obj.GetComponents<WorldBoundsEventListener>();
+            foreach(var l in listeners) {
+                l.OnLeftWorldBounds();
+            }
         }
+    }
 
-        protected void SendAlertExited(GameObject g, string message) {
-            g.SendMessageUpwards(message, this, SendMessageOptions.DontRequireReceiver);
-        }
-
-        protected abstract void EnforceBehaviors();
+    public interface WorldBoundsEventListener {
+        void OnEnteredWorldBounds();
+        void OnLeftWorldBounds();
     }
 }

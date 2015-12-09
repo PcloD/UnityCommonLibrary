@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace UnityCommonLibrary {
     [RequireComponent(typeof(Selectable))]
-    public class LabeledGraphic : UCScript {
+    public class LabeledGraphic : MonoBehaviour {
         [SerializeField]
         Text _label;
 

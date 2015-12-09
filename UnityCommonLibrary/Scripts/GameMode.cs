@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public abstract class GameMode : UCObject {
+    public abstract class GameMode {
         int lastTickFrame = -1;
 
         public virtual void Setup() { }
