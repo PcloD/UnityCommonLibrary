@@ -10,20 +10,12 @@ namespace UnityCommonLibrary {
         [Serializable]
         public class OnTriggerEvent : UnityEvent<ColliderUnityEvents, Collider> { }
 
-        [Header("Collision Events")]
-        [DisplayName("On Enter")]
         public OnCollisionEvent collisionEnter;
-        [DisplayName("On Exit")]
         public OnCollisionEvent collisionExit;
-        [DisplayName("On Stay")]
         public OnCollisionEvent collisionStay;
 
-        [Header("Trigger Events")]
-        [DisplayName("On Enter")]
         public OnTriggerEvent triggerEnter;
-        [DisplayName("On Exit")]
         public OnTriggerEvent triggerExit;
-        [DisplayName("On Stay")]
         public OnTriggerEvent triggerStay;
 
         public Collider eventCollider { get; private set; }

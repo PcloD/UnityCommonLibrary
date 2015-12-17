@@ -10,20 +10,12 @@ namespace UnityCommonLibrary {
         [Serializable]
         public class OnTriggerEvent2D : UnityEvent<ColliderUnityEvents2D, Collider2D> { }
 
-        [Header("Collision Events")]
-        [DisplayName("On Enter 2D")]
         public OnCollisionEvent2D collisionEnter2D;
-        [DisplayName("On Exit 2D")]
         public OnCollisionEvent2D collisionExit2D;
-        [DisplayName("On Stay 2D")]
         public OnCollisionEvent2D collisionStay2D;
 
-        [Header("Trigger Events")]
-        [DisplayName("On Enter 2D")]
         public OnTriggerEvent2D triggerEnter2D;
-        [DisplayName("On Exit 2D")]
         public OnTriggerEvent2D triggerExit2D;
-        [DisplayName("On Stay 2D")]
         public OnTriggerEvent2D triggerStay2D;
 
         public Collider2D eventCollider2D { get; private set; }

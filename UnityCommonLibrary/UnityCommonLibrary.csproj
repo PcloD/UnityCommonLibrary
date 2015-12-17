@@ -42,6 +42,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColliderEvents\ColliderEvents2D.cs" />
+    <Compile Include="ColliderEvents\ColliderUnityEvents2D.cs" />
+    <Compile Include="ColliderEvents\ColliderUnityEvents.cs" />
+    <Compile Include="ColliderEvents\ColliderEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\AreaEffector.cs" />
     <Compile Include="Scripts\ArraySelector.cs" />
@@ -51,7 +55,6 @@
     <Compile Include="Scripts\CameraBounds2D.cs" />
     <Compile Include="Scripts\CameraUtility.cs" />
     <Compile Include="Scripts\ColliderStore.cs" />
-    <Compile Include="Scripts\ColliderWatcher.cs" />
     <Compile Include="Scripts\CopyToScreenRT.cs" />
     <Compile Include="Scripts\CoroutineUtility.cs" />
     <Compile Include="Scripts\EnumMaskAttribute.cs" />
@@ -97,6 +100,7 @@
     <Compile Include="UI\Selector.cs" />
     <Compile Include="UI\WorldCanvasSizer.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)post.cmd" $(TargetPath)</PostBuildEvent>
