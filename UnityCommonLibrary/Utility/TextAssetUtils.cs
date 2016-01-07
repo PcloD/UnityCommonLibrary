@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace UnityCommonLibrary {
     public static class TextAssetUtility {
-        static readonly string[] newlineArray = new string[] { "\r\n", "\n" };
+        static readonly string[] newline = new string[] { Environment.NewLine };
 
         public static string[] GetLines(this TextAsset asset) {
-            return asset.text.Split(newlineArray, StringSplitOptions.RemoveEmptyEntries);
+            return asset.text.Split(newline, StringSplitOptions.RemoveEmptyEntries);
         }
 
     }

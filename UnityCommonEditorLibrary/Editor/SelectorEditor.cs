@@ -61,11 +61,11 @@ namespace UnityCommonEditorLibrary {
                 parent = GetOrCreateCanvasGameObject();
             }
 
-            var uniqueName = GameObjectUtility.GetUniqueNameForSibling(parent.transform, element.name);
+            var uniqueName = UnityEditor.GameObjectUtility.GetUniqueNameForSibling(parent.transform, element.name);
             element.name = uniqueName;
             Undo.RegisterCreatedObjectUndo(element, "Create " + element.name);
             Undo.SetTransformParent(element.transform, parent.transform, "Parent " + element.name);
-            GameObjectUtility.SetParentAndAlign(element, parent);
+            UnityEditor.GameObjectUtility.SetParentAndAlign(element, parent);
             if(parent != menuCommand.context) {
                 SetPositionVisibleinSceneView(parent.GetComponent<RectTransform>(), element.GetComponent<RectTransform>());
             }
@@ -154,7 +154,7 @@ namespace UnityCommonEditorLibrary {
             var esys = Object.FindObjectOfType<EventSystem>();
             if(esys == null) {
                 var eventSystem = new GameObject("EventSystem");
-                GameObjectUtility.SetParentAndAlign(eventSystem, parent);
+                UnityEditor.GameObjectUtility.SetParentAndAlign(eventSystem, parent);
                 esys = eventSystem.AddComponent<EventSystem>();
                 eventSystem.AddComponent<StandaloneInputModule>();
                 eventSystem.AddComponent<TouchInputModule>();

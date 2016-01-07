@@ -4,16 +4,14 @@ using UnityEngine;
 
 namespace UnityCommonEditorLibrary {
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
-    public class ReadOnlyAttributeDrawer : PropertyDrawer {
+    public class ReadOnlyAttributeDrawer : DecoratorDrawer {
 
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-            return EditorGUI.GetPropertyHeight(property, label);
+        public override float GetHeight() {
+            return 0f;
         }
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+        public override void OnGUI(Rect position) {
             GUI.enabled = false;
-            EditorGUI.PropertyField(position, property, label, true);
-            GUI.enabled = true;
         }
 
     }

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace UnityCommonLibrary {
-    public static class GOUtility {
+    public static class GameObjectUtility {
 
         public static T AddOrGetComponent<T>(this GameObject obj) where T : Component {
             T component = obj.GetComponent<T>();
@@ -13,17 +14,13 @@ namespace UnityCommonLibrary {
             }
         }
 
-        public static T EnsureComponent<T>(this GameObject obj) where T : Component {
-            if(obj == null) {
-                throw new System.ArgumentNullException("obj");
-            }
-            T component = obj.GetComponent<T>();
-            if(component == null) {
-                throw new System.NullReferenceException(string.Format("{0} does not exist on {1}", typeof(T).Name, obj));
-            }
-            else {
-                return obj.AddComponent<T>();
-            }
+        public static T AssertComponent<T>(this GameObject obj) where T : Component {
+            Assert.IsTrue(obj);
+            Assert.IsNotNull(obj);
+            var component = obj.GetComponent<T>();
+            Assert.IsTrue(component);
+            Assert.IsNotNull(component);
+            return obj.AddComponent<T>();
         }
 
         public static void SetLayerRecursive(this GameObject obj, int layer) {
@@ -34,12 +31,12 @@ namespace UnityCommonLibrary {
         }
 
         public static string GetPath(GameObject obj) {
-            var path = "/" + obj.name;
+            var sb = new System.Text.StringBuilder("/" + obj.name);
             while(obj.transform.parent != null) {
                 obj = obj.transform.parent.gameObject;
-                path = "/" + obj.name + path;
+                sb.Insert(0, "/" + obj.name);
             }
-            return path;
+            return sb.ToString();
         }
 
         public static void Toggle(bool enabled, params GameObject[] gameObjects) {

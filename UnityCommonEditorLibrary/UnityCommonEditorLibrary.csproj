@@ -52,6 +52,7 @@
     <Compile Include="Editor\EditorGUIHelper.cs" />
     <Compile Include="Editor\EnumMaskDrawer.cs" />
     <Compile Include="Editor\HandlesUtility.cs" />
+    <Compile Include="Editor\NoteAttributeDrawer.cs" />
     <Compile Include="Editor\ParallaxOptionEditor.cs" />
     <Compile Include="Editor\DisplayNameAttributeDrawer.cs" />
     <Compile Include="Editor\ReadOnlyAttributeDrawer.cs" />
