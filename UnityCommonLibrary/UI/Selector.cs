@@ -55,6 +55,7 @@ namespace UnityCommonLibrary {
             }
         }
 
+#if UNITY_EDITOR
         protected override void OnValidate() {
             base.OnValidate();
             Update();
@@ -65,6 +66,7 @@ namespace UnityCommonLibrary {
             options = new List<string>(new string[] { "Option A", "Option B", "Option C" });
             label = GetComponentInChildren<Text>();
         }
+#endif
 
         // Custom logic for mouse support
         public void OnPointerClick(PointerEventData eventData) {
