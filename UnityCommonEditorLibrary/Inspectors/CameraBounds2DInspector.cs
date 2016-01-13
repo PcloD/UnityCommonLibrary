@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UnityCommonEditorLibrary {
     [CustomEditor(typeof(CameraBounds2D))]
-    public class CameraBounds2DEditor : Editor {
+    public class CameraBounds2DInspector : Editor {
 
         SerializedProperty camera,
                            bounds,

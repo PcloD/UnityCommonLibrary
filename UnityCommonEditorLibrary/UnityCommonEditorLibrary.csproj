@@ -45,25 +45,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Editor\CameraBounds2DEditor.cs" />
+    <Compile Include="Inspectors\CameraBounds2DInspector.cs" />
     <Compile Include="Editor\CanvasGroupActivator.cs" />
     <Compile Include="Editor\ComponentEditorUtility.cs" />
     <Compile Include="Editor\EditorCoroutine.cs" />
     <Compile Include="Editor\EditorGUIHelper.cs" />
-    <Compile Include="Editor\EnumMaskDrawer.cs" />
+    <Compile Include="Inspectors\EnumMaskAttributeDrawer.cs" />
     <Compile Include="Editor\HandlesUtility.cs" />
-    <Compile Include="Editor\NoteAttributeDrawer.cs" />
-    <Compile Include="Editor\ParallaxOptionEditor.cs" />
-    <Compile Include="Editor\DisplayNameAttributeDrawer.cs" />
-    <Compile Include="Editor\ReadOnlyAttributeDrawer.cs" />
+    <Compile Include="Inspectors\NoteAttributeDrawer.cs" />
+    <Compile Include="Inspectors\ParallaxCameraInspector.cs" />
+    <Compile Include="Inspectors\DisplayNameAttributeDrawer.cs" />
+    <Compile Include="Inspectors\ReadOnlyAttributeDrawer.cs" />
     <Compile Include="Editor\Ruler.cs" />
-    <Compile Include="Editor\RulerUtility.cs" />
+    <Compile Include="Inspectors\SequenceInspector.cs" />
+    <Compile Include="Inspectors\RulerInspector.cs" />
     <Compile Include="Editor\ScriptableAssetWizard.cs" />
-    <Compile Include="Editor\SelectorEditor.cs" />
+    <Compile Include="Inspectors\SelectorInspector.cs" />
     <Compile Include="Editor\SpriteUtility.cs" />
     <Compile Include="Editor\StaticsGenerator.cs" />
     <Compile Include="Editor\TestMaterialGenerator.cs" />
-    <Compile Include="Editor\UIStyleConsistencyEditor.cs" />
+    <Compile Include="Editor\UIStyleConsistencyInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -92,7 +93,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)post.cmd" $(TargetPath)</PostBuildEvent>
+    <PostBuildEvent>echo F|xcopy $(TargetPath) "D:\GameDev\Unity5Plugins\DLLs\UCL\Editor\" /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

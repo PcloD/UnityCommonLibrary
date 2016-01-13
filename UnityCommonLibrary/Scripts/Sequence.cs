@@ -45,6 +45,7 @@ namespace UnityCommonLibrary {
         public event OnTaskCompleted TaskCompleted;
         #endregion
 
+        [HideInInspector]
         public bool executeOnStart, loop, destroyOnComplete;
 
         public static bool logTaskEvents;
@@ -58,11 +59,11 @@ namespace UnityCommonLibrary {
         Coroutine sequenceRoutine;
         Coroutine taskRoutine;
 
-        void Awake() {
+        protected virtual void Awake() {
             sequences.Add(this);
         }
 
-        void Start() {
+        protected virtual void Start() {
             if(executeOnStart) {
                 Execute();
             }
@@ -88,7 +89,7 @@ namespace UnityCommonLibrary {
             CompleteEvent();
         }
 
-        IEnumerator ExecSequenceTask(IEnumerator task) {
+        private IEnumerator ExecSequenceTask(IEnumerator task) {
             while(true) {
                 var hasInstruction = task.MoveNext();
 
@@ -103,11 +104,11 @@ namespace UnityCommonLibrary {
             }
         }
 
-        void OnDestroy() {
+        protected virtual void OnDestroy() {
             sequences.Remove(this);
         }
 
-        void ResetEvent() {
+        private void ResetEvent() {
             if(taskRoutine != null) {
                 StopCoroutine(taskRoutine);
             }
@@ -118,7 +119,7 @@ namespace UnityCommonLibrary {
             totalTaskCount = tasks.Count;
         }
 
-        void CompleteEvent() {
+        private void CompleteEvent() {
             ResetEvent();
 
             status = EventStatus.Inactive;

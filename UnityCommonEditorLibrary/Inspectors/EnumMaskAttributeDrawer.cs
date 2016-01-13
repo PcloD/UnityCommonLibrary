@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace UnityCommonEditorLibrary {
     [CustomPropertyDrawer(typeof(EnumMaskAttribute))]
-    public class EnumMaskDrawer : PropertyDrawer {
+    public class EnumMaskAttributeDrawer : PropertyDrawer {
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
             var targetEnum = PropertyDrawerUtils.GetBaseProperty<Enum>(property);

@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UnityCommonEditorLibrary {
-    public static class SelectorEditor {
+    public static class SelectorInspector {
 
         [MenuItem("GameObject/UI/Selector", false)]
         public static void CreateSelector(MenuCommand command) {

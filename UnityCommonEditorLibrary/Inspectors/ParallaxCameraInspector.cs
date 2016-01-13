@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UnityCommonEditorLibrary {
     [CustomEditor(typeof(ParallaxCamera))]
-    class ParallaxOptionEditor : Editor {
+    public class ParallaxCameraInspector : Editor {
         private ParallaxCamera options;
 
         void Awake() {

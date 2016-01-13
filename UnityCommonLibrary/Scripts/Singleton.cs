@@ -16,20 +16,22 @@ namespace UnityCommonLibrary {
             return get;
         }
 
+        private static readonly string TYPE_STRING = string.Format("Singleton<{0}>", typeof(T).Name);
         private static T GetSingleton() {
-            if(appQuitting) {
-                return null;
-            }
-
             lock (@lock) {
+                if(appQuitting) {
+                    Debug.Log(TYPE_STRING + " REQUESTED: APP IS QUITTING");
+                    return null;
+                }
+
                 if(_get == null) {
                     var allInstances = FindObjectsOfType<T>();
                     if(allInstances.Length > 1) {
-                        Debug.LogError(typeof(T).Name + " duplicates found.");
+                        Debug.LogError(TYPE_STRING + " duplicates found.");
                         _get = allInstances[0];
                     }
                     else if(allInstances.Length == 0) {
-                        _get = new GameObject("[Singleton] " + typeof(T).Name).AddComponent<T>();
+                        _get = new GameObject(TYPE_STRING).AddComponent<T>();
                     }
                     else {
                         _get = allInstances[0];
@@ -40,13 +42,10 @@ namespace UnityCommonLibrary {
         }
 
         protected virtual void Awake() {
-            if(_get != null) {
-                Destroy(this);
-            }
             DontDestroyOnLoad(this);
         }
 
-        protected virtual void OnDestroy() {
+        private void OnApplicationQuit() {
             appQuitting = true;
         }
     }
