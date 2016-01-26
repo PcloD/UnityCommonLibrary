@@ -51,6 +51,7 @@
     <Compile Include="Scripts\ArraySelector.cs" />
     <Compile Include="Scripts\AutoFitCollider2D.cs" />
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
+    <Compile Include="Utility\TrigUtility.cs" />
     <Compile Include="Utility\BehaviourUtility.cs" />
     <Compile Include="Utility\BoundsUtility.cs" />
     <Compile Include="Scripts\CameraBounds2D.cs" />
@@ -73,8 +74,8 @@
     <Compile Include="Scripts\LabeledGraphic.cs" />
     <Compile Include="Utility\ListUtility.cs" />
     <Compile Include="Scripts\LogicalObject.cs" />
-    <Compile Include="Scripts\Math.cs" />
-    <Compile Include="Scripts\Math2D.cs" />
+    <Compile Include="Utility\MathUtility.cs" />
+    <Compile Include="Utility\Math2DUtility.cs" />
     <Compile Include="Utility\RandomUtility.cs" />
     <Compile Include="Attributes\DisplayNameAttribute.cs" />
     <Compile Include="Utility\RectUtility.cs" />

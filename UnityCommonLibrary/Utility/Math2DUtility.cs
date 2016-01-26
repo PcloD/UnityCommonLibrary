@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public static class Math2D {
+    public static class Math2DUtility {
 
         public static float AngleRaw(Transform a, Transform b) {
             return AngleRaw(a.position, b.position);
