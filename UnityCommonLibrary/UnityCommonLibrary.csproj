@@ -52,6 +52,7 @@
     <Compile Include="Scripts\AutoFitCollider2D.cs" />
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
     <Compile Include="Utility\TrigUtility.cs" />
+    <Compile Include="Scripts\PixelPerfectCamera.cs" />
     <Compile Include="Utility\BehaviourUtility.cs" />
     <Compile Include="Utility\BoundsUtility.cs" />
     <Compile Include="Scripts\CameraBounds2D.cs" />
@@ -106,7 +107,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo F|xcopy $(TargetPath) "D:\GameDev\Unity5Plugins\DLLs\UCL\" /Y</PostBuildEvent>
+    <PostBuildEvent>echo F|xcopy $(TargetPath) "D:\GameDev\Unity5Plugins\Plugins\UCL\" /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
