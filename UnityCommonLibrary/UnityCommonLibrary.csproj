@@ -103,6 +103,7 @@
     <Compile Include="Scripts\WorldBounds3D.cs" />
     <Compile Include="UI\Selector.cs" />
     <Compile Include="UI\WorldCanvasSizer.cs" />
+    <Compile Include="Utility\VectorUtility.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

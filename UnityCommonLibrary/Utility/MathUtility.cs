@@ -1,5 +1,7 @@
-﻿namespace UnityCommonLibrary {
-    public static class Math {
+﻿using System;
+
+namespace UnityCommonLibrary {
+    public static class MathUtility {
 
         /// <summary>
         /// Clamps a float to the -1...1 inclusive range
@@ -49,6 +51,14 @@
             else {
                 return current;
             }
+        }
+
+        public static float RoundTo(float f, float nearest) {
+            if(UnityEngine.Mathf.Approximately(nearest, 0f)) {
+                return f;
+            }
+            var multiple = 1f / nearest;
+            return (float)System.Math.Round(f * multiple, MidpointRounding.AwayFromZero) / multiple;
         }
 
     }
