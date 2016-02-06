@@ -54,11 +54,8 @@ namespace UnityCommonLibrary {
         }
 
         public static float RoundTo(float f, float nearest) {
-            if(UnityEngine.Mathf.Approximately(nearest, 0f)) {
-                return f;
-            }
             var multiple = 1f / nearest;
-            return (float)System.Math.Round(f * multiple, MidpointRounding.AwayFromZero) / multiple;
+            return (float)Math.Round(f * multiple, MidpointRounding.AwayFromZero) / multiple;
         }
 
     }
