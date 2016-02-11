@@ -53,7 +53,7 @@
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
     <Compile Include="Utility\TrigUtility.cs" />
     <Compile Include="Scripts\PixelPerfectCamera.cs" />
-    <Compile Include="Utility\BehaviourUtility.cs" />
+    <Compile Include="Utility\ComponentUtility.cs" />
     <Compile Include="Utility\BoundsUtility.cs" />
     <Compile Include="Scripts\CameraBounds2D.cs" />
     <Compile Include="Utility\CameraUtility.cs" />
@@ -93,7 +93,7 @@
     <Compile Include="Scripts\SpriteMeasurer.cs" />
     <Compile Include="Utility\TextAssetUtils.cs" />
     <Compile Include="Utility\TransformUtility.cs" />
-    <Compile Include="Scripts\Singleton.cs" />
+    <Compile Include="Scripts\MonoSingleton.cs" />
     <Compile Include="UI\UICircle.cs" />
     <Compile Include="UI\UIList.cs" />
     <Compile Include="UI\UIStyleConsistency.cs" />
