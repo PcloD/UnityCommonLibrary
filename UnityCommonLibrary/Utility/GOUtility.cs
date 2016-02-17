@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.Utilities {
     public static class GameObjectUtility {
 
         public static T AddOrGetComponent<T>(this GameObject obj) where T : Component {

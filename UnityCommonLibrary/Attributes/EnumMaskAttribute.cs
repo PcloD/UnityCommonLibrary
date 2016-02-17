@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.Attributes {
     public class EnumMaskAttribute : PropertyAttribute {
 
-        public EnumMaskAttribute() {
-        }
+        public EnumMaskAttribute() { }
     }
 }

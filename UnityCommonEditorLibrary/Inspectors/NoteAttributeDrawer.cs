@@ -1,8 +1,8 @@
-﻿using UnityCommonLibrary;
+﻿using UnityCommonLibrary.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary.Inspectors {
     [CustomPropertyDrawer(typeof(NoteAttribute))]
     public class NoteAttributeDrawer : DecoratorDrawer {
         private NoteAttribute note;

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.UI {
     [ExecuteInEditMode]
     public class WorldCanvasSizer : MonoBehaviour {
         public Vector2 resolution;

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.Attributes {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     /// <summary>
     /// Makes this field not editable in the inspector, but visible.

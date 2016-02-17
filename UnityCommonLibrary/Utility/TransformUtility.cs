@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.Utilities {
     public static class TransformUtility {
 
         public static void SetPosition(this Transform transform, float? x = null, float? y = null, float? z = null) {

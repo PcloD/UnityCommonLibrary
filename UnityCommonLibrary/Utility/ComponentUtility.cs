@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.Utilities {
     public static class ComponentUtility {
 
         public static T Create<T>() where T : Component {

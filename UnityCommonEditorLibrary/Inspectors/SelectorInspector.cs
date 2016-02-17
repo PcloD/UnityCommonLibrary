@@ -1,10 +1,10 @@
-﻿using UnityCommonLibrary;
+﻿using UnityCommonLibrary.UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary.Inspectors {
     public static class SelectorInspector {
 
         [MenuItem("GameObject/UI/Selector", false)]
@@ -157,7 +157,6 @@ namespace UnityCommonEditorLibrary {
                 UnityEditor.GameObjectUtility.SetParentAndAlign(eventSystem, parent);
                 esys = eventSystem.AddComponent<EventSystem>();
                 eventSystem.AddComponent<StandaloneInputModule>();
-                eventSystem.AddComponent<TouchInputModule>();
 
                 Undo.RegisterCreatedObjectUndo(eventSystem, "Create " + eventSystem.name);
             }

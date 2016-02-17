@@ -2,10 +2,11 @@
 
 namespace UnityCommonLibrary {
     public class FakeParent : MonoBehaviour {
+        public Vector3 localPosition;
         public Transform fakeParent;
 
-        void Update() {
-            transform.position = fakeParent.transform.position + transform.position;
+        private void Update() {
+            transform.position = fakeParent.transform.position + localPosition;
         }
 
     }

@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary.Inspectors {
     [CustomEditor(typeof(Sequence), true)]
     public class SequenceInspector : Editor {
         private SerializedProperty executeOnStart;

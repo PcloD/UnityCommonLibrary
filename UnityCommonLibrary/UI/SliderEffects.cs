@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.UI {
     [RequireComponent(typeof(Slider))]
     [ExecuteInEditMode]
     public class SliderEffects : MonoBehaviour {

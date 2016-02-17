@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.Utilities {
 
     public static class CoroutineUtility {
         static MonoBehaviour dummyObj;

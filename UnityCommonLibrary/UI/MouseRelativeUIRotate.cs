@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.UI {
     public class MouseRelativeUIRotate : MonoBehaviour {
 
         [SerializeField]

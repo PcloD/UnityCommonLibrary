@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.UI {
     [ExecuteInEditMode]
     public class UIStyleConsistency : MonoBehaviour {
         [SerializeField, Header("Selectables")]

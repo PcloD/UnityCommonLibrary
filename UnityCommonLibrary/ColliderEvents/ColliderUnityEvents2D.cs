@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.Colliders {
     [RequireComponent(typeof(Collider2D))]
     public class ColliderUnityEvents2D : MonoBehaviour {
         [Serializable]

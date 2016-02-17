@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.Utilities {
     public static class TrigUtility {
 
         public static float NormalizeAngle(float x, float a, float b) {
@@ -20,13 +20,11 @@ namespace UnityCommonLibrary {
             x = NormalizeAngle(x);
 
             var aB = Mathf.Abs(Mathf.DeltaAngle(a, b));
-            var xA = Mathf.Abs(Mathf.DeltaAngle(x, a));
-            var xB = Mathf.Abs(Mathf.DeltaAngle(x, b));
-
             if(aB == 180f) {
                 return x <= 180f;
             }
-            return Mathf.Max(xA, xB) <= aB;
+            var xAB = Mathf.Abs(Mathf.DeltaAngle(x, a)) + Mathf.Abs(Mathf.DeltaAngle(x, b));
+            return xAB <= aB;
         }
 
         public static Vector2 DirectionFromAngle2D(float degrees) {

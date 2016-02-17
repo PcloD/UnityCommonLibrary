@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.Colliders {
     [RequireComponent(typeof(Collider))]
     public class ColliderEvents : MonoBehaviour {
         public delegate void OnCollisionEvent(ColliderEvents source, Collision collision);

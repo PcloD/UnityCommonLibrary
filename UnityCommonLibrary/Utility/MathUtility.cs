@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.Utilities {
     public static class MathUtility {
 
         /// <summary>

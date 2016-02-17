@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityCommonLibrary.Attributes;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace UnityCommonLibrary {

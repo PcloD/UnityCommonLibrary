@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.UI {
     /// <summary>
     /// https://bitbucket.org/Elforama/uicircle
     /// </summary>
@@ -9,11 +9,8 @@ namespace UnityCommonLibrary {
     public class UICircle : Graphic {
         [Range(0f, 1f)]
         public float fillPercent;
-
         public bool fill = true;
-
         public int thickness = 5;
-
         [Range(0, 50)]
         public int segments = 50;
 
@@ -23,8 +20,8 @@ namespace UnityCommonLibrary {
             }
         }
 
-        void Update() {
-            thickness = (int)Mathf.Clamp(this.thickness, 0, rectTransform.rect.width / 2);
+        private void Update() {
+            thickness = (int)Mathf.Clamp(thickness, 0, rectTransform.rect.width / 2);
         }
 
         protected UIVertex[] SetVBO(Vector2[] vertices, Vector2[] uvs) {
@@ -39,12 +36,11 @@ namespace UnityCommonLibrary {
             return vbo;
         }
 
-        protected override void OnPopulateMesh(Mesh toFill) {
+        protected override void OnPopulateMesh(VertexHelper vh) {
             var outer = -rectTransform.pivot.x * rectTransform.rect.width;
             var inner = -rectTransform.pivot.x * rectTransform.rect.width + this.thickness;
 
-            toFill.Clear();
-            var vbo = new VertexHelper(toFill);
+            vh.Clear();
             var vert = UIVertex.simpleVert;
             var prevX = Vector2.zero;
             var prevY = Vector2.zero;
@@ -80,10 +76,7 @@ namespace UnityCommonLibrary {
                 }
                 prevX = pos1;
                 prevY = pos2;
-                vbo.AddUIVertexQuad(SetVBO(new[] { pos0, pos1, pos2, pos3 }, new[] { uv0, uv1, uv2, uv3 }));
-            }
-            if(vbo.currentVertCount > 3) {
-                vbo.FillMesh(toFill);
+                vh.AddUIVertexQuad(SetVBO(new[] { pos0, pos1, pos2, pos3 }, new[] { uv0, uv1, uv2, uv3 }));
             }
         }
     }

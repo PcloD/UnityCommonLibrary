@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary.Inspectors {
     [CustomEditor(typeof(CameraBounds2D))]
     public class CameraBounds2DInspector : Editor {
 

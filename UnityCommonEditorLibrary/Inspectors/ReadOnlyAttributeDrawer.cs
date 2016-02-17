@@ -1,8 +1,8 @@
-﻿using UnityCommonLibrary;
+﻿using System.ComponentModel;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary.Inspectors {
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
     public class ReadOnlyAttributeDrawer : DecoratorDrawer {
 

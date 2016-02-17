@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using UnityCommonLibrary;
+using UnityCommonLibrary.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary.Inspectors {
     [CustomPropertyDrawer(typeof(EnumMaskAttribute))]
     public class EnumMaskAttributeDrawer : PropertyDrawer {
 

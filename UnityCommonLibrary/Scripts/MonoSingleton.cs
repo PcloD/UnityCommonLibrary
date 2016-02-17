@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityCommonLibrary.Utilities;
+using UnityEngine;
 
 namespace UnityCommonLibrary {
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T> {

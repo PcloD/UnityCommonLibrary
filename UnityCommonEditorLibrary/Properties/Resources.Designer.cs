@@ -59,31 +59,5 @@ namespace UnityCommonEditorLibrary.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to public static class Statics {{
-        ///    public enum Layer {{
-        ///        {0}
-        ///    }}
-        ///
-        ///    public enum Tag {{
-        ///        {1}
-        ///    }}
-        ///
-        ///    public enum Scene {{
-        ///        {2}
-        ///    }}
-        ///
-        ///    public static T Parse&lt;T&gt;(string name) {{
-        ///        return (T)System.Enum.Parse(typeof(T), name);
-        ///    }}
-        ///
-        ///}}.
-        /// </summary>
-        internal static string StaticGenerator {
-            get {
-                return ResourceManager.GetString("StaticGenerator", resourceCulture);
-            }
-        }
     }
 }

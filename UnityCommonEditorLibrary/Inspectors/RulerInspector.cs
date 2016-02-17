@@ -1,8 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
-
+namespace UnityCommonEditorLibrary.Inspectors {
     [CustomEditor(typeof(Ruler))]
     public class RulerInspector : Editor {
         [MenuItem("GameObject/Create Other/Ruler")]

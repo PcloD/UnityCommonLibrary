@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using UnityCommonLibrary;
+using UnityCommonLibrary.Attributes;
 using UnityEditor;
 using UnityEngine;
 

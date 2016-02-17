@@ -1,4 +1,4 @@
-﻿using UnityCommonLibrary;
+﻿using UnityCommonLibrary.Attributes;
 using UnityEngine;
 
 namespace UnityCommonEditorLibrary {

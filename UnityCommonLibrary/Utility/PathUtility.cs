@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary.Utilities {
     public static class PathUtility {
 
         public static string Combine(params string[] paths) {
