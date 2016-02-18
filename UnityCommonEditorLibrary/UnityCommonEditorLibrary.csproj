@@ -35,13 +35,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="UnityEditor">
-      <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -52,7 +52,7 @@
     <Compile Include="Editor\EditorGUIHelper.cs" />
     <Compile Include="Inspectors\EnumMaskAttributeDrawer.cs" />
     <Compile Include="Editor\HandlesUtility.cs" />
-    <Compile Include="Inspectors\FSMInspector.cs" />
+    <Compile Include="Inspectors\HPDAStateMachineInspector.cs" />
     <Compile Include="Inspectors\NoteAttributeDrawer.cs" />
     <Compile Include="Inspectors\ParallaxCameraInspector.cs" />
     <Compile Include="Inspectors\DisplayNameAttributeDrawer.cs" />
@@ -91,7 +91,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo F|xcopy $(TargetPath) "D:\GameDev\Unity5Plugins\Plugins\UCL\Editor\" /Y</PostBuildEvent>
+    <PostBuildEvent>echo F|xcopy $(TargetPath) "D:\GameDev\Unity5Plugins\Plugins\UCL\Editor\" /Y
+echo F|xcopy $(TargetDir)$(TargetName).pdb "D:\GameDev\Unity5Plugins\Plugins\UCL\Editor\" /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,3 +1,3 @@
 ﻿namespace UnityCommonLibrary.FSM {
-    public sealed class NullState : AbstractFSMState { }
+    public sealed class NullState : HPDAState { }
 }
