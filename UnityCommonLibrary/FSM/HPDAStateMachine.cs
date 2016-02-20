@@ -7,14 +7,17 @@ using System.Text;
 using UnityEngine;
 
 namespace UnityCommonLibrary.FSM {
-    [DisallowMultipleComponent]
     public sealed class HPDAStateMachine : MonoBehaviour {
         [SerializeField]
-        private HPDAState startState;
+        private string _id;
+        [SerializeField]
+        private List<HPDAState> states = new List<HPDAState>();
 
+        public string id { get { return _id; } }
+        public ReadOnlyCollection<HPDAState> readonlyStates { get; private set; }
         public Activity activity { get; private set; }
-        public ReadOnlyCollection<HPDAState> allStates { get; private set; }
         public HPDAState currentState { get; private set; }
+
         public int historyCount {
             get {
                 return history.Count;
@@ -26,8 +29,8 @@ namespace UnityCommonLibrary.FSM {
 
         #region Unity Methods
         private void Awake() {
-            allStates = new ReadOnlyCollection<HPDAState>(GetComponentsInChildren<HPDAState>());
-            foreach(var s in allStates) {
+            readonlyStates = new ReadOnlyCollection<HPDAState>(states);
+            foreach(var s in states) {
                 s.Register(this);
                 s.Initialize();
             }
@@ -35,7 +38,12 @@ namespace UnityCommonLibrary.FSM {
 
         private void Start() {
             currentState = gameObject.AddComponent<NullState>();
-            SwitchState(startState);
+            if(states.Count == 0) {
+                Debug.LogError("states.Count == 0!", this);
+            }
+            else {
+                SwitchState(states[0]);
+            }
         }
 
         private void Update() {
@@ -47,6 +55,10 @@ namespace UnityCommonLibrary.FSM {
             else {
                 currentState.UpdateState();
             }
+        }
+
+        private void Reset() {
+            _id = "StateMachine_" + Guid.NewGuid().ToString().Substring(0, 4);
         }
         #endregion
 
@@ -75,7 +87,7 @@ namespace UnityCommonLibrary.FSM {
         }
 
         private StateSwitch SwitchState<T>(StateSwitch.Type type) where T : HPDAState {
-            var state = allStates.SingleOrDefault(s => s.GetType() == typeof(T));
+            var state = states.SingleOrDefault(s => s.GetType() == typeof(T));
             return SwitchState(state, type);
         }
 

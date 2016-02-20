@@ -42,10 +42,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColliderEvents\ColliderEvents2D.cs" />
-    <Compile Include="ColliderEvents\ColliderUnityEvents2D.cs" />
-    <Compile Include="ColliderEvents\ColliderUnityEvents.cs" />
-    <Compile Include="ColliderEvents\ColliderEvents.cs" />
+    <Compile Include="Colliders\ColliderEvents2D.cs" />
+    <Compile Include="Colliders\ColliderUnityEvents2D.cs" />
+    <Compile Include="Colliders\ColliderUnityEvents.cs" />
+    <Compile Include="Colliders\ColliderEvents.cs" />
     <Compile Include="FSM\HPDAState.cs" />
     <Compile Include="FSM\HPDAStateMachine.cs" />
     <Compile Include="FSM\NullState.cs" />
@@ -55,35 +55,36 @@
     <Compile Include="Scripts\ArraySelector.cs" />
     <Compile Include="Scripts\AutoFitCollider2D.cs" />
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
-    <Compile Include="Utility\TrigUtility.cs" />
+    <Compile Include="Utilities\StringUtility.cs" />
+    <Compile Include="Utilities\TrigUtility.cs" />
     <Compile Include="Scripts\PixelPerfectCamera.cs" />
-    <Compile Include="Utility\ComponentUtility.cs" />
-    <Compile Include="Utility\BoundsUtility.cs" />
+    <Compile Include="Utilities\ComponentUtility.cs" />
+    <Compile Include="Utilities\BoundsUtility.cs" />
     <Compile Include="Scripts\CameraBounds2D.cs" />
-    <Compile Include="Utility\CameraUtility.cs" />
+    <Compile Include="Utilities\CameraUtility.cs" />
     <Compile Include="Scripts\ColliderStore.cs" />
     <Compile Include="Scripts\CopyToScreenRT.cs" />
-    <Compile Include="Utility\CoroutineUtility.cs" />
+    <Compile Include="Utilities\CoroutineUtility.cs" />
     <Compile Include="Attributes\EnumMaskAttribute.cs" />
     <Compile Include="Scripts\FakeParent.cs" />
     <Compile Include="Scripts\FloatRange.cs" />
     <Compile Include="Scripts\GameMode.cs" />
-    <Compile Include="Utility\GizmosUtility.cs" />
-    <Compile Include="Utility\GOUtility.cs" />
-    <Compile Include="Utility\GradientUtility.cs" />
+    <Compile Include="Utilities\GizmosUtility.cs" />
+    <Compile Include="Utilities\GOUtility.cs" />
+    <Compile Include="Utilities\GradientUtility.cs" />
     <Compile Include="Scripts\GravityModifier.cs" />
     <Compile Include="Attributes\NoteAttribute.cs" />
-    <Compile Include="Utility\PathUtility.cs" />
+    <Compile Include="Utilities\PathUtility.cs" />
     <Compile Include="Scripts\PrefabPool.cs" />
     <Compile Include="Scripts\InferSize.cs" />
     <Compile Include="Scripts\LabeledGraphic.cs" />
-    <Compile Include="Utility\CollectionUtility.cs" />
+    <Compile Include="Utilities\CollectionUtility.cs" />
     <Compile Include="Scripts\LogicalObject.cs" />
-    <Compile Include="Utility\MathUtility.cs" />
-    <Compile Include="Utility\Math2DUtility.cs" />
-    <Compile Include="Utility\RandomUtility.cs" />
+    <Compile Include="Utilities\MathUtility.cs" />
+    <Compile Include="Utilities\Math2DUtility.cs" />
+    <Compile Include="Utilities\RandomUtility.cs" />
     <Compile Include="Attributes\DisplayNameAttribute.cs" />
-    <Compile Include="Utility\RectUtility.cs" />
+    <Compile Include="Utilities\RectUtility.cs" />
     <Compile Include="Scripts\Sequence.cs" />
     <Compile Include="UI\MouseRelativeUIRotate.cs" />
     <Compile Include="Scripts\ParallaxCamera.cs" />
@@ -95,8 +96,8 @@
     <Compile Include="Scripts\SerializableDictionary.cs" />
     <Compile Include="UI\SliderEffects.cs" />
     <Compile Include="Scripts\SpriteMeasurer.cs" />
-    <Compile Include="Utility\TextAssetUtils.cs" />
-    <Compile Include="Utility\TransformUtility.cs" />
+    <Compile Include="Utilities\TextAssetUtils.cs" />
+    <Compile Include="Utilities\TransformUtility.cs" />
     <Compile Include="Scripts\MonoSingleton.cs" />
     <Compile Include="UI\UICircle.cs" />
     <Compile Include="UI\UIList.cs" />
@@ -107,7 +108,7 @@
     <Compile Include="Scripts\WorldBounds3D.cs" />
     <Compile Include="UI\Selector.cs" />
     <Compile Include="UI\WorldCanvasSizer.cs" />
-    <Compile Include="Utility\VectorUtility.cs" />
+    <Compile Include="Utilities\VectorUtility.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
