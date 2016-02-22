@@ -4,8 +4,6 @@ using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
 using UnityEditorInternal;
-using System.Linq;
-using System.Text;
 using UnityCommonLibrary.Utilities;
 
 namespace UnityCommonEditorLibrary.Inspectors {

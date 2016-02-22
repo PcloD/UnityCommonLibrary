@@ -25,21 +25,23 @@ namespace UnityCommonLibrary.Utilities {
 
         public static Gradient SetColors(this Gradient g, params Color[] colors) {
             var interval = 1f / (colors.Length - 1);
-            g.colorKeys = new GradientColorKey[colors.Length];
+            var keys = new GradientColorKey[colors.Length];
             for(int i = 0; i < colors.Length; i++) {
                 var t = Mathf.Clamp01(i * interval);
-                g.colorKeys[i] = new GradientColorKey(colors[i], t);
+                keys[i] = new GradientColorKey(colors[i], t);
             }
+            g.colorKeys = keys;
             return g;
         }
 
         public static Gradient SetAlphas(this Gradient g, params float[] alphas) {
             var interval = 1f / (alphas.Length - 1);
-            g.alphaKeys = new GradientAlphaKey[alphas.Length];
+            var keys = new GradientAlphaKey[alphas.Length];
             for(int i = 0; i < alphas.Length; i++) {
                 var t = Mathf.Clamp01(i * interval);
-                g.alphaKeys[i] = new GradientAlphaKey(alphas[i], t);
+                keys[i] = new GradientAlphaKey(alphas[i], t);
             }
+            g.alphaKeys = keys;
             return g;
         }
 
