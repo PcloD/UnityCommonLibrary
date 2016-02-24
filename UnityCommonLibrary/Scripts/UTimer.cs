@@ -1,7 +1,8 @@
 ﻿using System;
+using UnityCommonLibrary.Utilities;
 using UnityEngine;
 
-namespace UnityCommonLibrary.Timer {
+namespace UnityCommonLibrary.Time {
     public abstract class UTimeTool {
         public State state { get; protected set; }
         public TimeMode mode { get; protected set; }
@@ -22,7 +23,7 @@ namespace UnityCommonLibrary.Timer {
         #region Controls
         public virtual void Start() {
             if(state == State.Stopped) {
-                startTime = GetCurrentTime();
+                startTime = TimeUtility.GetCurrentTime(mode);
                 state = State.Running;
             }
         }
@@ -30,14 +31,14 @@ namespace UnityCommonLibrary.Timer {
         public virtual void Pause() {
             if(state == State.Running) {
                 state = State.Paused;
-                lastPauseTime = GetCurrentTime();
+                lastPauseTime = TimeUtility.GetCurrentTime(mode);
             }
         }
 
         public virtual void Resume() {
             if(state == State.Paused) {
                 state = State.Running;
-                totalPauseTime += GetCurrentTime() - lastPauseTime;
+                totalPauseTime += TimeUtility.GetCurrentTime(mode) - lastPauseTime;
             }
         }
 
@@ -68,21 +69,6 @@ namespace UnityCommonLibrary.Timer {
 
         protected abstract bool InternalTick();
 
-        protected float GetCurrentTime() {
-            switch(mode) {
-                case TimeMode.Time:
-                    return Time.time;
-                case TimeMode.UnscaledTime:
-                    return Time.unscaledTime;
-                case TimeMode.RealtimeSinceStartup:
-                    return Time.realtimeSinceStartup;
-                case TimeMode.FixedTime:
-                    return Time.fixedTime;
-                default:
-                    throw new Exception("Invalid TimeMode");
-            }
-        }
-
         public override string ToString() {
             return span.ToString();
         }
@@ -90,7 +76,7 @@ namespace UnityCommonLibrary.Timer {
 
     public sealed class UStopwatch : UTimeTool {
         protected override bool InternalTick() {
-            value = GetCurrentTime() - startTime;
+            value = TimeUtility.GetCurrentTime(mode) - startTime;
             value -= totalPauseTime;
             return false;
         }
@@ -107,7 +93,7 @@ namespace UnityCommonLibrary.Timer {
         #endregion
 
         protected override bool InternalTick() {
-            value = duration - (GetCurrentTime() - startTime);
+            value = duration - (TimeUtility.GetCurrentTime(mode) - startTime);
             value += totalPauseTime;
             return value <= 0f;
         }

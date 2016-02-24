@@ -7,8 +7,8 @@ namespace UnityCommonLibrary.Utilities {
         static MonoBehaviour dummyObj;
 
         public static IEnumerator WaitForSecondsUnscaled(float seconds) {
-            var start = Time.realtimeSinceStartup;
-            while(Time.realtimeSinceStartup - start < seconds) {
+            var start = UnityEngine.Time.realtimeSinceStartup;
+            while(UnityEngine.Time.realtimeSinceStartup - start < seconds) {
                 yield return null;
             }
         }

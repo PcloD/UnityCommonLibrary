@@ -53,8 +53,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\ArraySelector.cs" />
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
+    <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
     <Compile Include="Scripts\UTimer.cs" />
     <Compile Include="Utilities\StringUtility.cs" />
+    <Compile Include="Utilities\TextureUtility.cs" />
+    <Compile Include="Utilities\TimeUtility.cs" />
     <Compile Include="Utilities\TrigUtility.cs" />
     <Compile Include="Scripts\PixelPerfectCamera.cs" />
     <Compile Include="Utilities\ComponentUtility.cs" />

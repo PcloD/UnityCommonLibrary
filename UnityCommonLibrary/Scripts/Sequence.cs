@@ -244,8 +244,8 @@ namespace UnityCommonLibrary {
         /// <param name="time">How long to delay before continuing</param>
         /// <returns></returns>
         protected internal IEnumerator Delay(float time) {
-            var start = Time.unscaledTime;
-            while(Time.unscaledTime - start < time) {
+            var start = UnityEngine.Time.unscaledTime;
+            while(UnityEngine.Time.unscaledTime - start < time) {
                 yield return null;
             }
         }
