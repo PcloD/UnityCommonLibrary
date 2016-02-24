@@ -5,25 +5,25 @@ namespace UnityCommonEditorLibrary {
     public class CanvasGroupActivator : EditorWindow {
 
         [MenuItem("Window/Tools/Canvas Groups Activator")]
-        public static void InitWindow() {
+        private static void InitWindow() {
             GetWindow<CanvasGroupActivator>();
         }
 
-        CanvasGroup[] canvasGroups;
+        private CanvasGroup[] canvasGroups;
 
-        void OnEnable() {
+        private void OnEnable() {
             ObtainCanvasGroups();
         }
 
-        void OnFocus() {
+        private void OnFocus() {
             ObtainCanvasGroups();
         }
 
-        void ObtainCanvasGroups() {
+        private void ObtainCanvasGroups() {
             canvasGroups = GameObject.FindObjectsOfType<CanvasGroup>();
         }
 
-        void OnGUI() {
+        private void OnGUI() {
             if(canvasGroups == null) {
                 return;
             }
@@ -73,7 +73,7 @@ namespace UnityCommonEditorLibrary {
             }
         }
 
-        void ShowAllGroups() {
+        private void ShowAllGroups() {
             foreach(var cg in canvasGroups) {
                 if(cg != null) {
                     cg.alpha = 1.0f;
@@ -83,7 +83,7 @@ namespace UnityCommonEditorLibrary {
             }
         }
 
-        void HideAllGroups() {
+        private void HideAllGroups() {
             foreach(var cg in canvasGroups) {
                 if(cg != null) {
                     cg.alpha = 0.0f;
