@@ -3,15 +3,17 @@
 namespace UnityCommonLibrary.FSM {
     [RequireComponent(typeof(CanvasGroup))]
     public abstract class UIState : HPDAState {
-        protected CanvasGroup canvasGroup { get; private set; }
-
-        protected void Awake() {
-            canvasGroup = GetComponent<CanvasGroup>();
-            ResetState();
+        private CanvasGroup _canvasGroup;
+        protected CanvasGroup canvasGroup {
+            get {
+                if(_canvasGroup == null) {
+                    _canvasGroup = GetComponent<CanvasGroup>();
+                }
+                return _canvasGroup;
+            }
         }
 
-        public override void ResetState() {
-            canvasGroup.alpha = 0f;
+        public override void Initialize() {
             canvasGroup.blocksRaycasts = false;
         }
     }

@@ -15,7 +15,7 @@ namespace UnityCommonLibrary {
         [HideInInspector]
         private Sprite[] frames;
 
-        private UTimer timer = new UTimer();
+        private UTimer timer = new UTimer(UTimer.Mode.Timer);
         private SpriteRenderer spriteRenderer;
         private Image img;
         private int index;
@@ -23,15 +23,11 @@ namespace UnityCommonLibrary {
         private void Awake() {
             spriteRenderer = GetComponent<SpriteRenderer>();
             img = GetComponent<Image>();
+            timer.TimerElapsed += Timer_TimerElapsed;
             timer.Restart();
         }
 
-        private void Update() {
-            timer.duration = fps == 0f ? 0f : 1f / fps;
-            if(!timer.Tick()) {
-                return;
-            }
-
+        private void Timer_TimerElapsed() {
             if(!GotoIndex(index)) {
                 if(loop) {
                     index = 0;
@@ -40,6 +36,10 @@ namespace UnityCommonLibrary {
             }
             index++;
             timer.Restart();
+        }
+
+        private void Update() {
+            timer.interval = fps == 0f ? 0f : 1f / fps;
         }
 
         public void PlayOneShot() {

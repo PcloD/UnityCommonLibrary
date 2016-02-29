@@ -38,6 +38,7 @@ namespace UnityCommonLibrary.FSM {
 
         private void Start() {
             currentState = gameObject.AddComponent<NullState>();
+            currentState.hideFlags = HideFlags.HideAndDontSave;
             if(states.Count == 0) {
                 Debug.LogError("states.Count == 0!", this);
             }
@@ -105,7 +106,6 @@ namespace UnityCommonLibrary.FSM {
             if(exit != null) {
                 yield return StartCoroutine(exit);
             }
-            currentState.ResetState();
             if(!(currentState is NullState) && @switch.type == StateSwitch.Type.None) {
                 history.Push(currentState);
             }
