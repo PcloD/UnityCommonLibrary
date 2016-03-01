@@ -28,15 +28,12 @@ namespace UnityCommonLibrary.FSM {
         private Stack<HPDAState> history = new Stack<HPDAState>();
 
         #region Unity Methods
-        private void Awake() {
+        private void Start() {
             readonlyStates = new ReadOnlyCollection<HPDAState>(states);
             foreach(var s in states) {
                 s.Register(this);
-                s.Initialize();
             }
-        }
 
-        private void Start() {
             currentState = gameObject.AddComponent<NullState>();
             currentState.hideFlags = HideFlags.HideAndDontSave;
             if(states.Count == 0) {
@@ -109,15 +106,20 @@ namespace UnityCommonLibrary.FSM {
             if(!(currentState is NullState) && @switch.type == StateSwitch.Type.None) {
                 history.Push(currentState);
             }
+            currentState.enabled = false;
 
             // Enter next
             currentState = @switch.state;
+            if(@switch.onSwitch != null) {
+                @switch.onSwitch();
+            }
             activity = Activity.EnteringState;
             var enter = currentState.Enter();
             if(enter != null) {
                 yield return StartCoroutine(enter);
             }
             activity = Activity.InState;
+            currentState.enabled = true;
         }
         #endregion
 

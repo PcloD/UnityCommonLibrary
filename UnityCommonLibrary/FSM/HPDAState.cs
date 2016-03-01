@@ -18,8 +18,6 @@ namespace UnityCommonLibrary.FSM {
 
         public virtual IEnumerator Enter() { return null; }
         public virtual IEnumerator Exit() { return null; }
-
-        public virtual void Initialize() { }
         public virtual void UpdateState() { }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace UnityCommonLibrary.FSM {
     [RequireComponent(typeof(CanvasGroup))]
@@ -13,8 +14,20 @@ namespace UnityCommonLibrary.FSM {
             }
         }
 
-        public override void Initialize() {
+        protected virtual void Start() {
             canvasGroup.blocksRaycasts = false;
+            canvasGroup.alpha = 0f;
+            gameObject.SetActive(false);
+        }
+
+        public override IEnumerator Enter() {
+            gameObject.SetActive(true);
+            return base.Enter();
+        }
+
+        public override IEnumerator Exit() {
+            gameObject.SetActive(false);
+            return base.Enter();
         }
     }
 }
