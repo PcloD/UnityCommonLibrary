@@ -15,7 +15,7 @@ namespace UnityCommonEditorLibrary.Inspectors {
         public override void OnInspectorGUI() {
             DrawDefaultInspector();
             scroll = EditorGUILayout.BeginScrollView(scroll);
-            foreach(var t in manager.timersPublic) {
+            foreach(var t in UTimer.allReadonly) {
                 EditorGUILayout.LabelField(t.ToString());
             }
             EditorGUILayout.EndScrollView();

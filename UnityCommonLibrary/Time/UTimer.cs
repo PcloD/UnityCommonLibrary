@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityCommonLibrary.Utilities;
 
 namespace UnityCommonLibrary.Time {
     public sealed class UTimer {
+        private static List<UTimer> all = new List<UTimer>();
+        public static ReadOnlyCollection<UTimer> allReadonly = new ReadOnlyCollection<UTimer>(all);
+
         public delegate void OnTimerElapsed();
         public event OnTimerElapsed TimerElapsed;
 
@@ -30,19 +35,20 @@ namespace UnityCommonLibrary.Time {
         public UTimer(TimeMode timeMode) : this(Mode.Timer, timeMode) { }
 
         public UTimer(Mode mode, TimeMode timeMode) {
-            UTimerManager.get.Register(this);
+            all.Add(this);
             this.mode = mode;
             this.timeMode = timeMode;
             Reset();
         }
 
         ~UTimer() {
-            UTimerManager.get.Deregister(this);
+            all.Remove(this);
         }
 
         #region Controls
         public void Start() {
             if(state == State.Stopped) {
+                Reset();
                 startTime = TimeUtility.GetCurrentTime(timeMode);
                 state = State.Running;
             }
@@ -76,7 +82,7 @@ namespace UnityCommonLibrary.Time {
         }
 
         public void Restart() {
-            Reset();
+            state = State.Stopped;
             Start();
         }
         #endregion

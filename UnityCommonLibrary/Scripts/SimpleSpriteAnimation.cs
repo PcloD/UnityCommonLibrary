@@ -1,28 +1,34 @@
 ﻿using UnityCommonLibrary.Time;
-using UnityCommonLibrary.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UnityCommonLibrary {
     public class SimpleSpriteAnimation : MonoBehaviour {
+        public TimeMode timeMode;
         [SerializeField]
-        private TimeMode timeMode;
-        [SerializeField]
-        private float fps = 30f;
-        [SerializeField]
-        private bool loop;
-        [SerializeField]
-        [HideInInspector]
-        private Sprite[] frames;
+        private float _fps = 30f;
+        public bool loop;
+        public Sprite[] frames;
 
-        private UTimer timer = new UTimer(UTimer.Mode.Timer);
-        private SpriteRenderer spriteRenderer;
-        private Image img;
+        public float fps {
+            get {
+                return _fps;
+            }
+            set {
+                _fps = value;
+                timer.interval = fps == 0f ? 0f : 1f / fps;
+            }
+        }
+        public UTimer timer { get; private set; }
+        public SpriteRenderer spriteRenderer { get; private set; }
+        public Image img { get; private set; }
         private int index;
 
         private void Awake() {
             spriteRenderer = GetComponent<SpriteRenderer>();
             img = GetComponent<Image>();
+
+            timer = new UTimer();
             timer.TimerElapsed += Timer_TimerElapsed;
             timer.Restart();
         }
@@ -36,10 +42,6 @@ namespace UnityCommonLibrary {
             }
             index++;
             timer.Restart();
-        }
-
-        private void Update() {
-            timer.interval = fps == 0f ? 0f : 1f / fps;
         }
 
         public void PlayOneShot() {
