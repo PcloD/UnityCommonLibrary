@@ -16,7 +16,7 @@ namespace UnityCommonLibrary {
             }
             set {
                 _fps = value;
-                timer.interval = fps == 0f ? 0f : 1f / fps;
+                timer.duration = fps == 0f ? 0f : 1f / fps;
             }
         }
         public UTimer timer { get; private set; }

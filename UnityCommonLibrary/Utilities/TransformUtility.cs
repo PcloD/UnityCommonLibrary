@@ -3,16 +3,15 @@
 namespace UnityCommonLibrary.Utilities {
     public static class TransformUtility {
 
-        public static void SetPosition(this Transform transform, float? x = null, float? y = null, float? z = null) {
+        public static void SetPosition(this Transform transform, Space space, float? x = null, float? y = null, float? z = null) {
             var newV3 = transform.position;
             newV3.SetXYZ(x, y, z);
-            transform.position = newV3;
-        }
-
-        public static void SetLocalPosition(this Transform transform, float? x = null, float? y = null, float? z = null) {
-            var newV3 = transform.localPosition;
-            newV3.SetXYZ(x, y, z);
-            transform.localPosition = newV3;
+            if(space == Space.World) {
+                transform.position = newV3;
+            }
+            else {
+                transform.localPosition = newV3;
+            }
         }
 
         public static void SetLocalScale(this Transform transform, float? x = null, float? y = null, float? z = null) {
@@ -21,19 +20,18 @@ namespace UnityCommonLibrary.Utilities {
             transform.localScale = newV3;
         }
 
-        public static void SetEulerAngles(this Transform transform, float? x = null, float? y = null, float? z = null) {
+        public static void SetEulerAngles(this Transform transform, Space space, float? x = null, float? y = null, float? z = null) {
             var newV3 = transform.eulerAngles;
             newV3.SetXYZ(x, y, z);
-            transform.rotation = Quaternion.Euler(newV3);
+            if(space == Space.World) {
+                transform.rotation = Quaternion.Euler(newV3);
+            }
+            else {
+                transform.localRotation = Quaternion.Euler(newV3);
+            }
         }
 
-        public static void SetLocalEulerAngles(this Transform transform, float? x = null, float? y = null, float? z = null) {
-            var newV3 = transform.localEulerAngles;
-            newV3.SetXYZ(x, y, z);
-            transform.localRotation = Quaternion.Euler(newV3);
-        }
-
-        public static void SetXYZ(this Vector3 v3, float? x = null, float? y = null, float? z = null) {
+        private static void SetXYZ(this Vector3 v3, float? x = null, float? y = null, float? z = null) {
             if(x.HasValue) {
                 v3.x = x.Value;
             }
@@ -45,20 +43,38 @@ namespace UnityCommonLibrary.Utilities {
             }
         }
 
-        public static void SetWXYZ(this Quaternion q, float? w = null, float? x = null, float? y = null, float? z = null) {
-            if(w.HasValue) {
-                q.w = w.Value;
-            }
-            if(x.HasValue) {
-                q.x = x.Value;
-            }
-            if(y.HasValue) {
-                q.y = y.Value;
-            }
-            if(z.HasValue) {
-                q.z = z.Value;
-            }
+        public static void Reset(this Transform t) {
+            Reset(t, TransformElement.All, Space.World);
         }
 
+        public static void Reset(this Transform t, TransformElement elements) {
+            Reset(t, elements, Space.World);
+        }
+
+        public static void Reset(this Transform t, Space space) {
+            Reset(t, TransformElement.All, space);
+        }
+
+        public static void Reset(this Transform t, TransformElement elements, Space space) {
+            if((elements & TransformElement.Position) != 0) {
+                if(space == Space.World) {
+                    t.position = Vector3.zero;
+                }
+                else {
+                    t.localPosition = Vector3.zero;
+                }
+            }
+            if((elements & TransformElement.Rotation) != 0) {
+                if(space == Space.World) {
+                    t.rotation = Quaternion.identity;
+                }
+                else {
+                    t.localRotation = Quaternion.identity;
+                }
+            }
+            if((elements & TransformElement.Scale) != 0) {
+                t.localScale = Vector3.one;
+            }
+        }
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
     <Compile Include="Scripts\Invoker.cs" />
     <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
+    <Compile Include="Scripts\TransformElement.cs" />
     <Compile Include="Time\TimeMode.cs" />
     <Compile Include="Time\UTimerManager.cs" />
     <Compile Include="Time\UTimer.cs" />

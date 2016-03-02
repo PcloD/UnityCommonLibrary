@@ -11,9 +11,10 @@ namespace UnityCommonLibrary.Time {
         public delegate void OnTimerElapsed();
         public event OnTimerElapsed TimerElapsed;
 
-        public float interval;
+        public float duration;
         public TimeMode timeMode;
 
+        public bool hasElapsed { get; private set; }
         public Mode mode { get; private set; }
         public State state { get; private set; }
         public float startTime { get; private set; }
@@ -23,6 +24,11 @@ namespace UnityCommonLibrary.Time {
         public TimeSpan span {
             get {
                 return TimeSpan.FromSeconds(value);
+            }
+        }
+        public uint interval {
+            get {
+                return mode == Mode.Timer ? 0 : nextInterval - 1;
             }
         }
 
@@ -79,6 +85,7 @@ namespace UnityCommonLibrary.Time {
             startTime = 0f;
             totalPauseTime = 0f;
             nextInterval = 1;
+            hasElapsed = false;
         }
 
         public void Restart() {
@@ -94,14 +101,14 @@ namespace UnityCommonLibrary.Time {
 
             switch(mode) {
                 case Mode.Timer:
-                    value = (interval - (TimeUtility.GetCurrentTime(timeMode) - startTime)) - totalPauseTime;
+                    value = (duration - (TimeUtility.GetCurrentTime(timeMode) - startTime)) - totalPauseTime;
                     if(value <= 0f) {
                         FireElapsedEvent();
                     }
                     break;
                 case Mode.Stopwatch:
                     value = (TimeUtility.GetCurrentTime(timeMode) - startTime) - totalPauseTime;
-                    if(value >= interval * nextInterval) {
+                    if(value >= duration * nextInterval) {
                         nextInterval++;
                         FireElapsedEvent();
                     }
@@ -110,6 +117,7 @@ namespace UnityCommonLibrary.Time {
         }
 
         private void FireElapsedEvent() {
+            hasElapsed = true;
             if(TimerElapsed != null) {
                 TimerElapsed();
             }

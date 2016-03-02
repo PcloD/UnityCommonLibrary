@@ -14,7 +14,7 @@ namespace UnityCommonLibrary {
             }
             else {
                 var timer = new UTimer(mode);
-                timer.interval = time;
+                timer.duration = time;
                 timer.TimerElapsed += () => {
                     timer.Stop();
                     if(a != null) {
