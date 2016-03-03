@@ -99,10 +99,7 @@ namespace UnityCommonLibrary.FSM {
             // Exit current
             activity = Activity.ExitingState;
 
-            var exit = currentState.Exit();
-            if(exit != null) {
-                yield return StartCoroutine(exit);
-            }
+            yield return StartCoroutine(currentState.Exit());
             if(!(currentState is NullState) && @switch.type == StateSwitch.Type.None) {
                 history.Push(currentState);
             }
@@ -114,10 +111,7 @@ namespace UnityCommonLibrary.FSM {
                 @switch.onSwitch();
             }
             activity = Activity.EnteringState;
-            var enter = currentState.Enter();
-            if(enter != null) {
-                yield return StartCoroutine(enter);
-            }
+            yield return StartCoroutine(currentState.Enter());
             activity = Activity.InState;
             currentState.enabled = true;
         }

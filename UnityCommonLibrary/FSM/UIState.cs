@@ -22,12 +22,12 @@ namespace UnityCommonLibrary.FSM {
 
         public override IEnumerator Enter() {
             gameObject.SetActive(true);
-            return base.Enter();
+            yield break;
         }
 
         public override IEnumerator Exit() {
             gameObject.SetActive(false);
-            return base.Enter();
+            yield break;
         }
     }
 }
