@@ -38,7 +38,7 @@ namespace UnityCommonLibrary.UI {
 
         protected override void OnPopulateMesh(VertexHelper vh) {
             var outer = -rectTransform.pivot.x * rectTransform.rect.width;
-            var inner = -rectTransform.pivot.x * rectTransform.rect.width + this.thickness;
+            var inner = -rectTransform.pivot.x * rectTransform.rect.width + thickness;
 
             vh.Clear();
             var vert = UIVertex.simpleVert;

@@ -11,7 +11,7 @@ namespace UnityCommonLibrary.Attributes {
         /// </summary>
         /// <param name="name"></param>
         public DisplayNameAttribute(string name) {
-            this.label = new GUIContent(name);
+            label = new GUIContent(name);
         }
     }
 }

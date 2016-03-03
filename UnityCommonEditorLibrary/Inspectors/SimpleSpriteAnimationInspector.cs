@@ -1,5 +1,4 @@
-﻿using System;
-using UnityCommonLibrary;
+﻿using UnityCommonLibrary;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
