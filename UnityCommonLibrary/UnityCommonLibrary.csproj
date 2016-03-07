@@ -59,6 +59,7 @@
     <Compile Include="Time\TimeMode.cs" />
     <Compile Include="Time\UTimerManager.cs" />
     <Compile Include="Time\UTimer.cs" />
+    <Compile Include="Utilities\EventsUtility.cs" />
     <Compile Include="Utilities\StringUtility.cs" />
     <Compile Include="Utilities\TextureUtility.cs" />
     <Compile Include="Utilities\TimeUtility.cs" />
