@@ -90,8 +90,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo F|xcopy $(TargetPath) "D:\GameDev\Unity5Plugins\Plugins\UCL\Editor\" /Y
-echo F|xcopy $(TargetDir)$(TargetName).pdb "D:\GameDev\Unity5Plugins\Plugins\UCL\Editor\" /Y</PostBuildEvent>
+    <PostBuildEvent>python D:\PythonProjects\UnityPostBuildTask\UnityPostBuildTask\unity_postbuild.py -projectName $(SolutionName) -projectList $(SolutionDir)projects.txt -assembly $(TargetPath) --editor --includeSymbols</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
