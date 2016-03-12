@@ -1,0 +1,19 @@
+﻿using UnityEngine;
+
+namespace UnityCommonLibrary {
+	[ExecuteInEditMode]
+	public class LookAtCamera : MonoBehaviour {
+		[SerializeField]
+		private new Camera camera;
+		[SerializeField]
+		private bool invert;
+
+		private void Update() {
+			var cam = camera == null ? Camera.main : camera;
+			transform.LookAt(cam.transform);
+			if(invert) {
+				transform.forward *= -1f;
+			}
+		}
+	}
+}
