@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\AutoInstantiateAttribute.cs" />
+    <Compile Include="Attributes\RelativesOnlyAttribute.cs" />
     <Compile Include="Colliders\ColliderEvents2D.cs" />
     <Compile Include="Colliders\ColliderUnityEvents2D.cs" />
     <Compile Include="Colliders\ColliderUnityEvents.cs" />
