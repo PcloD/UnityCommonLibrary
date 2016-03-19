@@ -64,7 +64,7 @@
     <Compile Include="Utilities\TextureUtility.cs" />
     <Compile Include="Utilities\TimeUtility.cs" />
     <Compile Include="Utilities\TrigUtility.cs" />
-    <Compile Include="Scripts\PixelPerfectCamera.cs" />
+    <Compile Include="Scripts\PixelPerfectOrthoSize.cs" />
     <Compile Include="Utilities\ComponentUtility.cs" />
     <Compile Include="Utilities\BoundsUtility.cs" />
     <Compile Include="Scripts\CameraBounds2D.cs" />
