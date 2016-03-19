@@ -15,7 +15,7 @@ namespace UnityCommonEditorLibrary.Inspectors {
 
         private void OnEnable() {
             timeMode = serializedObject.FindProperty("timeMode");
-            fps = serializedObject.FindProperty("_fps");
+            fps = serializedObject.FindProperty("fps");
             loop = serializedObject.FindProperty("loop");
 
             framesList = new ReorderableList(serializedObject, serializedObject.FindProperty("frames"));

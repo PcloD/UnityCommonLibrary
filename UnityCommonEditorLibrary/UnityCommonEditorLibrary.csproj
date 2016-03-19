@@ -50,7 +50,7 @@
     <Compile Include="Editor\ComponentEditorUtility.cs" />
     <Compile Include="Editor\EditorCoroutine.cs" />
     <Compile Include="Inspectors\EnumMaskAttributeDrawer.cs" />
-    <Compile Include="Inspectors\UTimerManagerInspector.cs" />
+    <Compile Include="Inspectors\RelativesOnlyAttributeDrawer.cs" />
     <Compile Include="Inspectors\HPDAStateMachineInspector.cs" />
     <Compile Include="Inspectors\HPDAStateMachinePropertyDrawer.cs" />
     <Compile Include="Inspectors\NoteAttributeDrawer.cs" />

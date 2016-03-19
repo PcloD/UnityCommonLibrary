@@ -1,4 +1,7 @@
 ﻿namespace UnityCommonLibrary.Time {
+	/// <summary>
+	/// An enumeration for describing how time should be measured.
+	/// </summary>
     public enum TimeMode {
         Time,
         UnscaledTime,

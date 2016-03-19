@@ -4,287 +4,372 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityCommonLibrary {
-    public abstract class Sequence : MonoBehaviour {
-        static List<Sequence> sequences = new List<Sequence>();
+	/// <summary>
+	/// Represents a series of Coroutines for creating
+	/// defined sequences of events, like an in-game cutscene or 
+	/// tutorial.
+	/// </summary>
+	public abstract class Sequence : MonoBehaviour {
+		#region Events & Delegates
+		// Static events fired for every sequence
+		public delegate void OnAnySequenceEvent(Sequence s);
+		public static event OnAnySequenceEvent AnySequenceStarted;
+		public static event OnAnySequenceEvent AnySequencePaused;
+		public static event OnAnySequenceEvent AnySequenceResumed;
+		public static event OnAnySequenceEvent AnySequenceHalted;
+		public static event OnAnySequenceEvent AnySequenceComplete;
 
-        #region Events & Delegates
-        public delegate void OnAnyEventStarted(Sequence ucs);
-        public static event OnAnyEventStarted AnyEventStarted;
+		// Sequence instance specific events
+		public delegate void OnSequenceEvent();
+		public event OnSequenceEvent SequenceStarted;
+		public event OnSequenceEvent SequencePaused;
+		public event OnSequenceEvent SequenceResumed;
+		public event OnSequenceEvent SequenceHalted;
+		public event OnSequenceEvent SequenceComplete;
+		public event OnSequenceEvent RoutineStarted;
+		public event OnSequenceEvent RoutineComplete;
+		#endregion
 
-        public delegate void OnAnyEventPaused(Sequence ucs);
-        public static event OnAnyEventPaused AnyEventPaused;
+		#region Static Fields
+		/// <summary>
+		/// Every existing sequence, for running tasks on all sequences.
+		/// </summary>
+		private static readonly List<Sequence> sequences = new List<Sequence>();
+		/// <summary>
+		/// Should sequence status changes be logged?
+		/// </summary>
+		public static bool logSequenceEvents;
+		#endregion
 
-        public delegate void OnAnyEventResumed(Sequence ucs);
-        public static event OnAnyEventResumed AnyEventResumed;
+		#region Public Fields
+		/// <summary>
+		/// If true, call <see cref="Execute"/> when <see cref="Start"/> is called
+		/// </summary>
+		[HideInInspector]
+		public bool executeOnStart;
+		/// <summary>
+		/// Should the sequence loop when complete?
+		/// </summary>
+		[HideInInspector]
+		public bool loop;
+		/// <summary>
+		/// Should the sequence object be destroyed when complete?
+		/// </summary>
+		[HideInInspector]
+		public bool destroyOnComplete;
+		#endregion
 
-        public delegate void OnAnyEventHalted(Sequence ucs);
-        public static event OnAnyEventHalted AnyEventHalted;
+		#region Properties
+		/// <summary>
+		/// The current playback status of this sequence.
+		/// </summary>
+		public Status status { get; private set; }
+		public bool isRunningRoutine {
+			get {
+				return routineExecutor != null;
+			}
+		}
+		public int totalRoutineCount { get; private set; }
+		public int routinesLeft {
+			get {
+				return routines.Count;
+			}
+		}
+		#endregion
 
-        public delegate void OnAnyEventCompleted(Sequence ucs);
-        public static event OnAnyEventCompleted AnyEventCompleted;
+		#region Private Fields
+		private Queue<IEnumerator> routines = new Queue<IEnumerator>();
+		/// <summary>
+		/// The representation of our running sequence.
+		/// </summary>
+		private Coroutine sequenceExecutor;
+		/// <summary>
+		/// The representation of our running routine.
+		/// </summary>
+		private Coroutine routineExecutor;
+		#endregion
 
-        public delegate void OnEventStarted();
-        public event OnEventStarted EventStarted;
+		#region Unity Messages
+		protected virtual void Awake() {
+			sequences.Add(this);
+		}
 
-        public delegate void OnEventPaused();
-        public event OnEventPaused EventPaused;
+		protected virtual void Start() {
+			if(executeOnStart) {
+				Execute();
+			}
+		}
 
-        public delegate void OnEventResumed();
-        public event OnEventResumed EventResumed;
+		protected virtual void OnDestroy() {
+			sequences.Remove(this);
+		}
+		#endregion
 
-        public delegate void OnEventHalted();
-        public event OnEventHalted EventHalted;
+		#region Execution Tasks
+		/// <summary>
+		/// Executes every routine in this Sequence.
+		/// </summary>
+		private IEnumerator ExecuteSequence() {
+			while(true) {
+				// Exit if not running a task and there are none left
+				if(routinesLeft == 0 && !isRunningRoutine) {
+					break;
+				}
+				// Start next routine only if we're not paused
+				else if(status == Status.Active && !isRunningRoutine) {
+					// Fire callback for new routine
+					if(RoutineStarted != null) {
+						RoutineStarted();
+					}
+					if(logSequenceEvents) {
+						print(ToString());
+					}
+					var routine = routines.Dequeue();
+					routineExecutor = StartCoroutine(ExecuteRoutine(routine));
+				}
+				yield return null;
+			}
+			CompleteSequence();
+		}
 
-        public delegate void OnEventCompleted();
-        public event OnEventCompleted EventCompleted;
+		/// <summary>
+		/// A custom Coroutine executor to add callback functionality.
+		/// </summary>
+		/// <param name="routine">The coroutine to execute</param>
+		/// <returns></returns>
+		private IEnumerator ExecuteRoutine(IEnumerator routine) {
+			while(true) {
+				var hasInstruction = routine.MoveNext();
+				if(status == Status.Inactive || !hasInstruction) {
+					break;
+				}
+				yield return routine.Current;
+			}
+			routineExecutor = null;
+			if(RoutineComplete != null) {
+				RoutineComplete();
+			}
+		}
 
-        public delegate void OnTaskStarted();
-        public event OnTaskStarted TaskStarted;
+		/// <summary>
+		/// Collects all coroutines for execution.
+		/// </summary>
+		protected internal abstract IEnumerator[] Initialize();
+		#endregion
 
-        public delegate void OnTaskCompleted();
-        public event OnTaskCompleted TaskCompleted;
-        #endregion
+		#region Playback
+		/// <summary>
+		/// Resets and begins playback.
+		/// </summary>
+		public void Execute() {
+			if(status != Status.Inactive) {
+				return;
+			}
+			ResetSequence();
+			status = Status.Active;
+			if(SequenceStarted != null) {
+				SequenceStarted();
+			}
+			if(AnySequenceStarted != null) {
+				AnySequenceStarted(this);
+			}
+			StartCoroutine(ExecuteSequence());
+		}
 
-        [HideInInspector]
-        public bool executeOnStart, loop, destroyOnComplete;
+		/// <summary>
+		/// Pauses playback (only if currently playing)
+		/// </summary>
+		public void Pause() {
+			if(status != Status.Active) {
+				return;
+			}
 
-        public static bool logTaskEvents;
+			status = Status.Paused;
 
-        public EventStatus status { get; private set; }
-        public bool isRunningTask { get { return taskRoutine != null; } }
-        public int totalTaskCount { get; private set; }
-        public int tasksLeft { get { return tasks.Count; } }
+			if(SequencePaused != null) {
+				SequencePaused();
+			}
+			if(AnySequencePaused != null) {
+				AnySequencePaused(this);
+			}
+		}
 
-        Queue<IEnumerator> tasks = new Queue<IEnumerator>();
-        Coroutine sequenceRoutine;
-        Coroutine taskRoutine;
+		/// <summary>
+		/// Resumes from paused state.
+		/// </summary>
+		public void Resume() {
+			if(status != Status.Paused) {
+				return;
+			}
 
-        protected virtual void Awake() {
-            sequences.Add(this);
-        }
+			status = Status.Active;
 
-        protected virtual void Start() {
-            if(executeOnStart) {
-                Execute();
-            }
-        }
+			if(SequenceResumed != null) {
+				SequenceResumed();
+			}
+			if(AnySequenceResumed != null) {
+				AnySequenceResumed(this);
+			}
+		}
 
-        IEnumerator ExecuteSequence() {
-            while(true) {
-                if(tasksLeft == 0 && !isRunningTask) {
-                    break;
-                }
-                else if(status == EventStatus.Active && !isRunningTask) {
-                    if(TaskStarted != null) {
-                        TaskStarted();
-                    }
-                    if(logTaskEvents) {
-                        print(ToString());
-                    }
-                    var task = tasks.Dequeue();
-                    taskRoutine = StartCoroutine(ExecSequenceTask(task));
-                }
-                yield return null;
-            }
-            CompleteEvent();
-        }
+		/// <summary>
+		/// Stops and resets this sequence.
+		/// </summary>
+		/// <param name="obeyLoopFlag">Should the <see cref="loop"/> flag be ignored for this halt?</param>
+		public void Halt(bool obeyLoopFlag = false) {
+			if(status != Status.Active) {
+				return;
+			}
 
-        private IEnumerator ExecSequenceTask(IEnumerator task) {
-            while(true) {
-                var hasInstruction = task.MoveNext();
+			StopAllCoroutines();
+			ResetSequence();
 
-                if(status == EventStatus.Inactive || !hasInstruction) {
-                    break;
-                }
-                yield return task.Current;
-            }
-            taskRoutine = null;
-            if(TaskCompleted != null) {
-                TaskCompleted();
-            }
-        }
+			status = Status.Inactive;
 
-        protected virtual void OnDestroy() {
-            sequences.Remove(this);
-        }
+			if(SequenceHalted != null) {
+				SequenceHalted();
+			}
+			if(AnySequenceHalted != null) {
+				AnySequenceHalted(this);
+			}
+			if(loop && obeyLoopFlag) {
+				Execute();
+			}
+		}
 
-        private void ResetEvent() {
-            if(taskRoutine != null) {
-                StopCoroutine(taskRoutine);
-            }
-            if(sequenceRoutine != null) {
-                StopCoroutine(sequenceRoutine);
-            }
-            tasks = new Queue<IEnumerator>(Initialize());
-            totalTaskCount = tasks.Count;
-        }
+		/// <summary>
+		/// Stops any executors and reloads all routines into queue.
+		/// </summary>
+		private void ResetSequence() {
+			if(routineExecutor != null) {
+				StopCoroutine(routineExecutor);
+			}
+			if(sequenceExecutor != null) {
+				StopCoroutine(sequenceExecutor);
+			}
+			// Reload queue
+			routines = new Queue<IEnumerator>(Initialize());
+			totalRoutineCount = routines.Count;
+		}
 
-        private void CompleteEvent() {
-            ResetEvent();
+		/// <summary>
+		/// Runs tasks related to sequence completion, including looping and destroying if needed.
+		/// </summary>
+		private void CompleteSequence() {
+			ResetSequence();
 
-            status = EventStatus.Inactive;
+			status = Status.Inactive;
 
-            if(EventCompleted != null) {
-                EventCompleted();
-            }
-            if(AnyEventCompleted != null) {
-                AnyEventCompleted(this);
-            }
-            if(destroyOnComplete) {
-                Destroy(this);
-            }
-            else if(loop) {
-                Execute();
-            }
-        }
+			if(SequenceComplete != null) {
+				SequenceComplete();
+			}
+			if(AnySequenceComplete != null) {
+				AnySequenceComplete(this);
+			}
+			if(destroyOnComplete) {
+				Destroy(this);
+			}
+			else if(loop) {
+				Execute();
+			}
+		}
+		#endregion
 
-        #region Controls
-        public void Execute() {
-            if(status != EventStatus.Inactive) {
-                return;
-            }
-            ResetEvent();
-            status = EventStatus.Active;
-            if(EventStarted != null) {
-                EventStarted();
-            }
-            if(AnyEventStarted != null) {
-                AnyEventStarted(this);
-            }
-            StartCoroutine(ExecuteSequence());
-        }
+		// Playback methods extended to run on all existing sequences.
+		#region Utility/Batch Methods
+		public static void PauseAll() {
+			foreach(var s in sequences) {
+				s.Pause();
+			}
+		}
 
-        public void Pause() {
-            if(status != EventStatus.Active) {
-                return;
-            }
+		public static void ResumeAll() {
+			foreach(var s in sequences) {
+				s.Resume();
+			}
+		}
 
-            status = EventStatus.Paused;
+		public static void ExecuteAll() {
+			foreach(var s in sequences) {
+				s.Execute();
+			}
+		}
 
-            if(EventPaused != null) {
-                EventPaused();
-            }
-            if(AnyEventPaused != null) {
-                AnyEventPaused(this);
-            }
-        }
+		public static void HaltAll() {
+			foreach(var s in sequences) {
+				s.Halt();
+			}
+		}
 
-        public void Resume() {
-            if(status != EventStatus.Paused) {
-                return;
-            }
+		/// <summary>
+		/// Creates a new instance of the Sequence of type <typeparamref name="T"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of sequence to create.</typeparam>
+		/// <param name="destroyOnComplete">Sets the sequence's destroyOnComplete flag, defaults to true. Also destroys on halt if true.</param>
+		/// <returns>The new Sequence instance.</returns>
+		public static T Create<T>(bool destroyOnComplete = true) where T : Sequence {
+			var parent = new GameObject(typeof(T).Name);
+			var me = parent.AddComponent<T>();
+			me.destroyOnComplete = destroyOnComplete;
+			if(destroyOnComplete) {
+				me.SequenceHalted += () => {
+					Destroy(parent);
+				};
+			}
+			return me;
+		}
+		#endregion
 
-            status = EventStatus.Active;
+		#region Sequence Tasks
+		/// <summary>
+		/// Introduces a delay via <see cref="UnityEngine.Time.unscaledTime"/>
+		/// </summary>
+		/// <param name="time">How long to delay before continuing.</param>
+		protected internal IEnumerator Delay(float time) {
+			var start = UnityEngine.Time.unscaledTime;
+			while(UnityEngine.Time.unscaledTime - start < time) {
+				yield return null;
+			}
+		}
 
-            if(EventResumed != null) {
-                EventResumed();
-            }
-            if(AnyEventResumed != null) {
-                AnyEventResumed(this);
-            }
-        }
+		/// <summary>
+		/// Executes standard <see cref="WaitForSeconds"/>
+		/// </summary>
+		/// <param name="time">How long to delay before continuing.</param>
+		protected internal IEnumerator ScaledDelay(float time) {
+			yield return new WaitForSeconds(time);
+		}
 
-        public void Halt(bool obeyLoop = false) {
-            if(status != EventStatus.Active) {
-                return;
-            }
+		/// <summary>
+		/// Invokes a method without blocking. 
+		/// </summary>
+		/// <param name="a">The callback to invoke.</param>
+		protected internal IEnumerator MainThread(Action a) {
+			a.Invoke();
+			yield break;
+		}
 
-            StopAllCoroutines();
-            ResetEvent();
+		/// <summary>
+		/// Invokes a Coroutine without blocking. 
+		/// </summary>
+		/// <param name="a">The coroutine to start.</param>
+		protected internal IEnumerator NonBlock(IEnumerator ienum) {
+			StartCoroutine(ienum);
+			yield break;
+		}
+		#endregion
 
-            status = EventStatus.Inactive;
+		public override string ToString() {
+			return string.Format("{0} in task {1}", GetType().Name, totalRoutineCount - routinesLeft);
+		}
 
-            if(EventHalted != null) {
-                EventHalted();
-            }
-            if(AnyEventHalted != null) {
-                AnyEventHalted(this);
-            }
-            if(loop && obeyLoop) {
-                Execute();
-            }
-        }
-        #endregion
-
-        #region Utility/Batch Methods
-        public static void PauseAll() {
-            foreach(var s in sequences) {
-                s.Pause();
-            }
-        }
-
-        public static void ResumeAll() {
-            foreach(var s in sequences) {
-                s.Resume();
-            }
-        }
-
-        public static void ExecuteAll() {
-            foreach(var s in sequences) {
-                s.Execute();
-            }
-        }
-
-        public static void HaltAll() {
-            foreach(var s in sequences) {
-                s.Halt();
-            }
-        }
-        #endregion
-
-        /// <summary>
-        /// Passes all of the coroutines to the base class for execution.
-        /// </summary>
-        /// <returns></returns>
-        protected internal abstract IEnumerator[] Initialize();
-
-        /// <summary>
-        /// Provided for easy delays between events.
-        /// </summary>
-        /// <param name="time">How long to delay before continuing</param>
-        /// <returns></returns>
-        protected internal IEnumerator Delay(float time) {
-            var start = UnityEngine.Time.unscaledTime;
-            while(UnityEngine.Time.unscaledTime - start < time) {
-                yield return null;
-            }
-        }
-
-        protected internal IEnumerator ScaledDelay(float time) {
-            yield return new WaitForSeconds(time);
-        }
-
-        protected internal IEnumerator MainThread(Action a) {
-            a.Invoke();
-            yield return null;
-        }
-
-        protected internal IEnumerator NonBlock(IEnumerator ienum) {
-            StartCoroutine(ienum);
-            yield return null;
-        }
-
-        public static T Create<T>(bool destroyOnComplete = true) where T : Sequence {
-            var parent = new GameObject(typeof(T).Name);
-            var me = parent.AddComponent<T>();
-            me.destroyOnComplete = destroyOnComplete;
-            if(destroyOnComplete) {
-                me.EventHalted += () => {
-                    Destroy(parent);
-                };
-            }
-            return me;
-        }
-
-        public enum EventStatus {
-            Inactive,
-            Active,
-            Paused
-        }
-
-        public override string ToString() {
-            return string.Format("{0} in task {1}", GetType().Name, totalTaskCount - tasksLeft);
-        }
-
-    }
+		/// <summary>
+		/// Represents the current state of the sequence.
+		/// </summary>
+		public enum Status {
+			Inactive,
+			Active,
+			Paused
+		}
+	}
 }

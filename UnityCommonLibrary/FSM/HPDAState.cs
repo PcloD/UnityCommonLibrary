@@ -2,22 +2,48 @@
 using UnityEngine;
 
 namespace UnityCommonLibrary.FSM {
-    public abstract class HPDAState : MonoBehaviour {
-        protected HPDAStateMachine machine { get; private set; }
-        public bool isStateActive {
-            get {
-                return machine.IsInState(this);
-            }
-        }
+	/// <summary>
+	/// Represents a single state in a <see cref="HPDAStateMachine"/>
+	/// </summary>
+	public abstract class HPDAState : MonoBehaviour {
+		/// <summary>
+		/// The machine that manages this state.
+		/// </summary>
+		protected HPDAStateMachine machine { get; private set; }
 
-        public void Register(HPDAStateMachine machine) {
-            if(this.machine == null) {
-                this.machine = machine;
-            }
-        }
+		/// <summary>
+		/// Utility property for <see cref="HPDAStateMachine.IsInState(HPDAState)"/>
+		/// </summary>
+		public bool isStateActive {
+			get {
+				return machine.IsInState(this);
+			}
+		}
 
-        public virtual IEnumerator Enter() { yield break; }
-        public virtual IEnumerator Exit() { yield break; }
-        public virtual void UpdateState() { }
-    }
+		/// <summary>
+		/// Permits a one-time registration with a state machine.
+		/// </summary>
+		/// <param name="machine">The machine to call home.</param>
+		public void Register(HPDAStateMachine machine) {
+			if(this.machine == null) {
+				this.machine = machine;
+			}
+		}
+
+		/// <summary>
+		/// Coroutine used to enter this state.
+		/// By default performs a <code>yield break;</code>
+		/// </summary>
+		public virtual IEnumerator Enter() { yield break; }
+		/// <summary>
+		/// Coroutine used to exit this state.
+		/// By default performs a <code>yield break;</code>
+		/// </summary>
+		public virtual IEnumerator Exit() { yield break; }
+		/// <summary>
+		/// Called by the owning machine to control when
+		/// Updating occurs (when state is active).
+		/// </summary>
+		public virtual void UpdateState() { }
+	}
 }

@@ -1,4 +1,5 @@
-﻿using UnityCommonLibrary.Time;
+﻿using System;
+using UnityCommonLibrary.Time;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,31 +7,31 @@ namespace UnityCommonLibrary {
     public class SimpleSpriteAnimation : MonoBehaviour {
         public TimeMode timeMode;
         [SerializeField]
-        private float _fps = 30f;
+        private float fps = 30f;
         public bool loop;
         public Sprite[] frames;
 
-        public float fps {
+        public UTimer timer {
             get {
-                return _fps;
-            }
-            set {
-                _fps = value;
-                timer.duration = fps == 0f ? 0f : 1f / fps;
+                return _timer;
             }
         }
-        public UTimer timer { get; private set; }
         public SpriteRenderer spriteRenderer { get; private set; }
         public Image img { get; private set; }
+        private UTimer _timer = new UTimer();
         private int index;
 
         private void Awake() {
             spriteRenderer = GetComponent<SpriteRenderer>();
             img = GetComponent<Image>();
 
-            timer = new UTimer();
+            SetDurationFromFPS();
             timer.TimerElapsed += Timer_TimerElapsed;
             timer.Restart();
+        }
+
+        public void SetDurationFromFPS() {
+            timer.duration = fps == 0f ? 0f : 1f / fps;
         }
 
         private void Timer_TimerElapsed() {
@@ -40,6 +41,7 @@ namespace UnityCommonLibrary {
                 }
                 return;
             }
+            SetDurationFromFPS();
             index++;
             timer.Restart();
         }
