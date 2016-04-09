@@ -63,6 +63,8 @@
     <Compile Include="Input\InputWrapper.cs" />
     <Compile Include="Scripts\Invoker.cs" />
     <Compile Include="Scripts\LookAtCamera.cs" />
+    <Compile Include="Scripts\MakeWorldBounds.cs" />
+    <Compile Include="Scripts\PanTexture.cs" />
     <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
     <Compile Include="Scripts\TransformElement.cs" />
     <Compile Include="Time\TimeMode.cs" />
@@ -112,9 +114,6 @@
     <Compile Include="UI\UICircle.cs" />
     <Compile Include="UI\UIList.cs" />
     <Compile Include="UI\UIStyleConsistency.cs" />
-    <Compile Include="Scripts\WorldBounds.cs" />
-    <Compile Include="Scripts\WorldBounds2D.cs" />
-    <Compile Include="Scripts\WorldBounds3D.cs" />
     <Compile Include="UI\Selector.cs" />
     <Compile Include="UI\WorldCanvasSizer.cs" />
     <Compile Include="Utilities\VectorUtility.cs" />

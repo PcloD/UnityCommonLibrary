@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Editor\GameObjectEditorUtilities.cs" />
     <Compile Include="Inspectors\CameraBounds2DInspector.cs" />
     <Compile Include="Editor\CanvasGroupActivator.cs" />
     <Compile Include="Editor\ComponentEditorUtility.cs" />

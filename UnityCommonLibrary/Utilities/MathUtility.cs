@@ -58,5 +58,9 @@ namespace UnityCommonLibrary.Utilities {
             return (float)Math.Round(f * multiple, MidpointRounding.AwayFromZero) / multiple;
         }
 
+
+        public static float Map(float value, float oldMin, float oldMax, float newMin, float newMax) {
+            return (((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
+        }
     }
 }
