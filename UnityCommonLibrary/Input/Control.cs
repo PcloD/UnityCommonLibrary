@@ -1,4 +1,5 @@
-﻿namespace UnityCommonLibrary.Input {
+﻿namespace UnityCommonLibrary.Input
+{
     public abstract class Control {
         public string name { get; private set; }
 

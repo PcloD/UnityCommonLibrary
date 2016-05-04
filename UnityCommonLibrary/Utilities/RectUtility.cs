@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary.Utilities {
+namespace UnityCommonLibrary.Utilities
+{
     public static class RectUtility {
 
         public static Vector2 ClosestPointOnRect(this Rect rect, Vector2 point) {

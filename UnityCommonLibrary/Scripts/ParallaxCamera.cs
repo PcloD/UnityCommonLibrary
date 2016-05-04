@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     public class ParallaxCamera : MonoBehaviour {
         public bool moveParallax;
 

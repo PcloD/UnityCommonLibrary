@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UnityCommonLibrary.UI {
+namespace UnityCommonLibrary.UI
+{
     [ExecuteInEditMode]
     [RequireComponent(typeof(VerticalLayoutGroup))]
     public class UIList : MonoBehaviour {

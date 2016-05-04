@@ -68,8 +68,8 @@
     <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
     <Compile Include="Scripts\TransformElement.cs" />
     <Compile Include="Time\TimeMode.cs" />
+    <Compile Include="Time\TimeSlice.cs" />
     <Compile Include="Time\UTimer.cs" />
-    <Compile Include="Utilities\EventsUtility.cs" />
     <Compile Include="Utilities\RichTextUtility.cs" />
     <Compile Include="Utilities\StringUtility.cs" />
     <Compile Include="Utilities\TextureUtility.cs" />

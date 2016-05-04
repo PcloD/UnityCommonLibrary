@@ -2,7 +2,8 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary
+{
     [CustomEditor(typeof(UIStyleConsistency))]
     public class UIStyleConsistencyInspector : Editor {
 

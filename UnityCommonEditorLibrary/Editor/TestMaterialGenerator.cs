@@ -4,7 +4,8 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary
+{
     public class TestMaterialGenerator : ScriptableWizard {
         static TestMaterialGenerator wizard;
         static string saveFolder, projRelativeSaveFolder, filename = "TestMaterial";

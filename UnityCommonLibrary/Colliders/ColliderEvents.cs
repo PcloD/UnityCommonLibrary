@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary.Colliders {
-	/// <summary>
-	/// A behaviour for responding to collision and trigger events
-	/// outside of the GameObject that stores the Collider component.
-	/// </summary>
-	[RequireComponent(typeof(Collider))]
+namespace UnityCommonLibrary.Colliders
+{
+    /// <summary>
+    /// A behaviour for responding to collision and trigger events
+    /// outside of the GameObject that stores the Collider component.
+    /// </summary>
+    [RequireComponent(typeof(Collider))]
 	public class ColliderEvents : MonoBehaviour {
 		#region Delegates/Events
 		public delegate void OnCollisionEvent(ColliderEvents source, Collision collision);

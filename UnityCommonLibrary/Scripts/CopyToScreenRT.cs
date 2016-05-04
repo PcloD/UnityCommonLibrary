@@ -3,7 +3,8 @@ using UEGFX = UnityEngine.Graphics;
 
 // fixes the deferred lighting missing final copy&resolve, so the next camera gets the correctly final processed image in the temp screen RT as input
 // NOTE: The script must be the last in the image effect chain, so order it in the inspector!
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     [ExecuteInEditMode]
     public class CopyToScreenRT : MonoBehaviour {
         private RenderTexture activeRT; // hold the org. screen RT

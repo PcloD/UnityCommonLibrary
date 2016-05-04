@@ -5,7 +5,8 @@ using UnityCommonLibrary.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary
+{
     public class ScriptableAssetWizard : ScriptableWizard {
         int selectedTypeIndex = 0;
         int projectAssemblyIndex;

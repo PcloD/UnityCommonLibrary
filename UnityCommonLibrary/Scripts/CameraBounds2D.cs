@@ -1,7 +1,8 @@
 ﻿using UnityCommonLibrary.Utilities;
 using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     [ExecuteInEditMode]
     public class CameraBounds2D : MonoBehaviour {
         public BoxCollider2D bounds;

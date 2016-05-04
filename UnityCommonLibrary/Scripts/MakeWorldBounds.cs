@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     public class MakeWorldBounds : MonoBehaviour {
         [SerializeField]
         private float thickness = 0.3f;

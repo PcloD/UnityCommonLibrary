@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     [ExecuteInEditMode]
     public class ParallaxLayer : MonoBehaviour {
         new public ParallaxCamera camera;

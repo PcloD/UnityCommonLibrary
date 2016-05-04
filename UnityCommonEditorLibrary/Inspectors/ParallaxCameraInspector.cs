@@ -2,7 +2,8 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary.Inspectors {
+namespace UnityCommonEditorLibrary.Inspectors
+{
     [CustomEditor(typeof(ParallaxCamera))]
     public class ParallaxCameraInspector : Editor {
         private ParallaxCamera options;

@@ -1,7 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary
+{
     public static class GameObjectEditorUtilities {
         [MenuItem("GameObject/Create Unrelated Prefab Instance")]
         public static void CreateUnrelatedPrefabInstance() {

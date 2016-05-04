@@ -1,6 +1,7 @@
 ﻿using System;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     [Flags]
     public enum TransformElement {
         None = 0,

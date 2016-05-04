@@ -1,7 +1,8 @@
 ﻿using UnityCommonLibrary.Utilities;
 using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     public class VectorUtility {
 
         public static Vector3 Round(Vector3 vec) {

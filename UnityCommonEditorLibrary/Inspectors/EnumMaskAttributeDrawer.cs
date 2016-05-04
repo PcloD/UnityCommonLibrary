@@ -5,7 +5,8 @@ using UnityCommonLibrary.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary.Inspectors {
+namespace UnityCommonEditorLibrary.Inspectors
+{
     [CustomPropertyDrawer(typeof(EnumMaskAttribute))]
     public class EnumMaskAttributeDrawer : PropertyDrawer {
 

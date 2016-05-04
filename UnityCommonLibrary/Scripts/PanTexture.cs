@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     public class PanTexture : MonoBehaviour {
         [SerializeField]
         public Vector2 speed;

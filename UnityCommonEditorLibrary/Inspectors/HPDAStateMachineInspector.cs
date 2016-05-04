@@ -1,17 +1,18 @@
 ﻿using System;
 using UnityCommonLibrary.FSM;
+using UnityCommonLibrary.Utilities;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
-using UnityEngine;
 using UnityEditorInternal;
-using UnityCommonLibrary.Utilities;
+using UnityEngine;
 
-namespace UnityCommonEditorLibrary.Inspectors {
-	/// <summary>
-	/// Custom editor for <see cref="HPDAStateMachine"/>.
-	/// Uses reorderable list to make state management easier.
-	/// </summary>
-	[CustomEditor(typeof(HPDAStateMachine))]
+namespace UnityCommonEditorLibrary.Inspectors
+{
+    /// <summary>
+    /// Custom editor for <see cref="HPDAStateMachine"/>.
+    /// Uses reorderable list to make state management easier.
+    /// </summary>
+    [CustomEditor(typeof(HPDAStateMachine))]
 	public class HPDAStateMachineInspector : Editor {
 		#region Fields
 		/// <summary>

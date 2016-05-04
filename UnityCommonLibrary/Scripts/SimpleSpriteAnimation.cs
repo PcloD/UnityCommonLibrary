@@ -1,9 +1,9 @@
-﻿using System;
-using UnityCommonLibrary.Time;
+﻿using UnityCommonLibrary.Time;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     public class SimpleSpriteAnimation : MonoBehaviour {
         public TimeMode timeMode;
         [SerializeField]

@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UnityCommonLibrary.Utilities {
+namespace UnityCommonLibrary.Utilities
+{
     public static class TextAssetUtility {
         static readonly string[] newline = new string[] { Environment.NewLine };
 

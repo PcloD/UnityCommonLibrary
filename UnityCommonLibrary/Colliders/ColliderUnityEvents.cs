@@ -2,14 +2,15 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace UnityCommonLibrary.Colliders {
-	/// <summary>
-	/// A behaviour for responding to collision and trigger events
-	/// outside of the GameObject that stores the Collider component.
-	/// This flavor uses <see cref="UnityEvent{T0,T1}"/> to hook up
-	/// callbacks to events in the editor.
-	/// </summary>
-	[RequireComponent(typeof(Collider))]
+namespace UnityCommonLibrary.Colliders
+{
+    /// <summary>
+    /// A behaviour for responding to collision and trigger events
+    /// outside of the GameObject that stores the Collider component.
+    /// This flavor uses <see cref="UnityEvent{T0,T1}"/> to hook up
+    /// callbacks to events in the editor.
+    /// </summary>
+    [RequireComponent(typeof(Collider))]
 	public class ColliderUnityEvents : MonoBehaviour {
 		#region UnityEvents
 		public OnCollisionEvent collisionEnter;

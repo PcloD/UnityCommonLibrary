@@ -1,11 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UnityCommonLibrary.Attributes {
-	/// <summary>
-	/// Restricts what can be assigned to an Object field in Unity's inspector.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
+namespace UnityCommonLibrary.Attributes
+{
+    /// <summary>
+    /// Restricts what can be assigned to an Object field in Unity's inspector.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
 	public sealed class RelativesOnlyAttribute : PropertyAttribute {
 		public ValidRelatives validRelatives { get; private set; }
 

@@ -3,7 +3,8 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary.Inspectors {
+namespace UnityCommonEditorLibrary.Inspectors
+{
     [CustomEditor(typeof(SimpleSpriteAnimation))]
     public class SimpleSpriteAnimationInspector : Editor {
         private ReorderableList framesList;

@@ -1,4 +1,5 @@
-﻿namespace UnityCommonLibrary.Input {
+﻿namespace UnityCommonLibrary.Input
+{
     [System.Flags]
     public enum ControlState {
         None = 0,

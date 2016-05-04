@@ -4,8 +4,9 @@ using UnityCommonLibrary.Attributes;
 using UnityCommonLibrary.Utilities;
 using UnityEngine;
 
-namespace UnityCommonLibrary.Scripts {
-	public class AutoInstantiator {
+namespace UnityCommonLibrary.Scripts
+{
+    public class AutoInstantiator {
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Load() {

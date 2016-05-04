@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary.Utilities {
+namespace UnityCommonLibrary.Utilities
+{
     public static class GradientUtility {
 
         public static Gradient MakeRainbow(this Gradient g) {

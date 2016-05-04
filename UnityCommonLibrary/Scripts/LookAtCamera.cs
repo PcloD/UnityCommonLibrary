@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
-	[ExecuteInEditMode]
+namespace UnityCommonLibrary
+{
+    [ExecuteInEditMode]
 	public class LookAtCamera : MonoBehaviour {
 		[SerializeField]
 		private new Camera camera;

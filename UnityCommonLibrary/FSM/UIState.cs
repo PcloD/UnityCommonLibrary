@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace UnityCommonLibrary.FSM {
-	/// <summary>
-	/// A <see cref="HPDAState"/> that inheritly has a CanvasGroup.
-	/// Removes need for boilerplate code when creating states for a 
-	/// menu system that incorprates a <see cref="HPDAStateMachine"/>
-	/// </summary>
-	[RequireComponent(typeof(CanvasGroup))]
+namespace UnityCommonLibrary.FSM
+{
+    /// <summary>
+    /// A <see cref="HPDAState"/> that inheritly has a CanvasGroup.
+    /// Removes need for boilerplate code when creating states for a 
+    /// menu system that incorprates a <see cref="HPDAStateMachine"/>
+    /// </summary>
+    [RequireComponent(typeof(CanvasGroup))]
 	public abstract class UIState : HPDAState {
 		/// <summary>
 		/// CanvasGroup used for disabling visuals and interaction

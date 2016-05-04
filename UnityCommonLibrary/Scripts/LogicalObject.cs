@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     [ExecuteInEditMode]
     public class LogicalObject : MonoBehaviour {
 

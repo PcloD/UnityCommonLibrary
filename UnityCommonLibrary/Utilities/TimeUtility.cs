@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityCommonLibrary.Time;
 
-namespace UnityCommonLibrary.Utilities {
+namespace UnityCommonLibrary.Utilities
+{
     public static class TimeUtility {
 
         public static float GetCurrentTime(TimeMode mode) {

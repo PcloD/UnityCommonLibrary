@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityCommonLibrary.Utilities;
 
-namespace UnityCommonLibrary.Time {
-	/// <summary>
-	/// A timer that either operates in a standard timer or a stopwatch mode.
-	/// </summary>
-	public sealed class UTimer {
+namespace UnityCommonLibrary.Time
+{
+    /// <summary>
+    /// A timer that either operates in a standard timer or a stopwatch mode.
+    /// </summary>
+    public sealed class UTimer {
 		/// <summary>
 		/// All existing timers.
 		/// </summary>

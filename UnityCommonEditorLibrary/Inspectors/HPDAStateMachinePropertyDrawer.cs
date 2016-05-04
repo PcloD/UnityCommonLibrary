@@ -3,12 +3,13 @@ using UnityCommonLibrary.FSM;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary.Inspectors {
-	/// <summary>
-	/// A custom property drawer for when a Object field of type <see cref="HPDAStateMachine"/> is
-	/// exposed to the inspector.
-	/// </summary>
-	[CustomPropertyDrawer(typeof(HPDAStateMachine))]
+namespace UnityCommonEditorLibrary.Inspectors
+{
+    /// <summary>
+    /// A custom property drawer for when a Object field of type <see cref="HPDAStateMachine"/> is
+    /// exposed to the inspector.
+    /// </summary>
+    [CustomPropertyDrawer(typeof(HPDAStateMachine))]
 	public class HPDAStateMachinePropertyDrawer : PropertyDrawer {
 		/// <summary>
 		/// The GameObject we have selected to then select a <see cref="HPDAStateMachine"/>

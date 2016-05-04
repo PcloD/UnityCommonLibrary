@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary.Colliders {
-	/// <summary>
-	/// A behaviour for responding to collision and trigger events
-	/// outside of the GameObject that stores the Collider2D component.
-	/// </summary>
-	[RequireComponent(typeof(Collider2D))]
+namespace UnityCommonLibrary.Colliders
+{
+    /// <summary>
+    /// A behaviour for responding to collision and trigger events
+    /// outside of the GameObject that stores the Collider2D component.
+    /// </summary>
+    [RequireComponent(typeof(Collider2D))]
 	public class ColliderEvents2D : MonoBehaviour {
 		#region Delegates/Events
 		public delegate void OnCollisionEvent2D(ColliderEvents2D source, Collision2D collision);

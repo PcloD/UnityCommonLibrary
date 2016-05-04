@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UnityCommonLibrary {
-	/// <summary>
-	/// Represents a series of Coroutines for creating
-	/// defined sequences of events, like an in-game cutscene or 
-	/// tutorial.
-	/// </summary>
-	public abstract class Sequence : MonoBehaviour {
+namespace UnityCommonLibrary
+{
+    /// <summary>
+    /// Represents a series of Coroutines for creating
+    /// defined sequences of events, like an in-game cutscene or 
+    /// tutorial.
+    /// </summary>
+    public abstract class Sequence : MonoBehaviour {
 		#region Events & Delegates
 		// Static events fired for every sequence
 		public delegate void OnAnySequenceEvent(Sequence s);

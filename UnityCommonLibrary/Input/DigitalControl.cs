@@ -1,8 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UInput = UnityEngine.Input;
 
-namespace UnityCommonLibrary.Input {
+namespace UnityCommonLibrary.Input
+{
     public sealed class DigitalControl : Control {
         public KeyCode code = KeyCode.None;
         public ControlState state { get; private set; }

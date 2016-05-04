@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary.Utilities {
+namespace UnityCommonLibrary.Utilities
+{
     public static class CameraUtility {
 
         public static Bounds OrthographicBounds(this Camera camera) {

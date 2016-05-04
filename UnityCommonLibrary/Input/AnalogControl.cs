@@ -1,7 +1,7 @@
-﻿using System;
-using UInput = UnityEngine.Input;
+﻿using UInput = UnityEngine.Input;
 
-namespace UnityCommonLibrary.Input {
+namespace UnityCommonLibrary.Input
+{
     public sealed class AnalogControl : Control {
         public string axisName = string.Empty;
         public float value { get; private set; }

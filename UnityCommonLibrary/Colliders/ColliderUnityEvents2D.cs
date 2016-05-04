@@ -2,14 +2,15 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace UnityCommonLibrary.Colliders {
-	/// <summary>
-	/// A behaviour for responding to collision and trigger events
-	/// outside of the GameObject that stores the Collider2D component.
-	/// This flavor uses <see cref="UnityEvent{T0,T1}"/> to hook up
-	/// callbacks to events in the editor.
-	/// </summary>
-	[RequireComponent(typeof(Collider2D))]
+namespace UnityCommonLibrary.Colliders
+{
+    /// <summary>
+    /// A behaviour for responding to collision and trigger events
+    /// outside of the GameObject that stores the Collider2D component.
+    /// This flavor uses <see cref="UnityEvent{T0,T1}"/> to hook up
+    /// callbacks to events in the editor.
+    /// </summary>
+    [RequireComponent(typeof(Collider2D))]
 	public class ColliderUnityEvents2D : MonoBehaviour {
 		#region UnityEvents
 		public OnCollisionEvent2D collisionEnter2D;

@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     [ExecuteInEditMode]
     [RequireComponent(typeof(LayoutElement))]
     public class InferSize : MonoBehaviour {

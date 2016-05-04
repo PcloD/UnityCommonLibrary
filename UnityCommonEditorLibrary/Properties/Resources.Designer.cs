@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UnityCommonEditorLibrary.Properties {
-    using System;
-    
-    
+namespace UnityCommonEditorLibrary.Properties
+{
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

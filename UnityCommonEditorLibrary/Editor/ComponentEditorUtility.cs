@@ -2,7 +2,8 @@
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary
+{
     public class ComponentEditorUtility {
 
         [MenuItem("CONTEXT/Component/Move To Top")]

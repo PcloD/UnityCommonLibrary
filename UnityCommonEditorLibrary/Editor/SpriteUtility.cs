@@ -1,7 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary
+{
     public class SpriteUtility : MonoBehaviour {
 
         [MenuItem("CONTEXT/Rigidbody2D/Ground Sprite")]

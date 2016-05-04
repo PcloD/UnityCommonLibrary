@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary.Attributes {
+namespace UnityCommonLibrary.Attributes
+{
     [System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = true)]
     public class NoteAttribute : PropertyAttribute {
         public readonly string text;

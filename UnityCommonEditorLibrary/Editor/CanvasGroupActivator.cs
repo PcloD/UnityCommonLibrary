@@ -1,7 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary {
+namespace UnityCommonEditorLibrary
+{
     public class CanvasGroupActivator : EditorWindow {
 
         [MenuItem("Window/Tools/Canvas Groups Activator")]

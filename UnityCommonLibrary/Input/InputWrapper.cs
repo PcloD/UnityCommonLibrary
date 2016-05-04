@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace UnityCommonLibrary.Input {
-	public class InputWrapper : MonoSingleton<InputWrapper> {
+namespace UnityCommonLibrary.Input
+{
+    public class InputWrapper : MonoSingleton<InputWrapper> {
 		private static readonly AnalogControl NULL_ANALOG = new AnalogControl("NULL_ANALOG");
 		private static readonly DigitalControl NULL_DIGITAL = new DigitalControl("NULL_DIGITAL");
 

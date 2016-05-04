@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UnityCommonLibrary.Attributes {
+namespace UnityCommonLibrary.Attributes
+{
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class DisplayNameAttribute : PropertyAttribute {
         public GUIContent label { get; private set; }

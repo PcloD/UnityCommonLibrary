@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
 
     public abstract class AbstractPool<T> {
         readonly Stack pool = new Stack();

@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityCommonLibrary.Time;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     public static class Invoker {
 
         public static void Invoke(Action a, float time) {

@@ -2,12 +2,13 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary.Inspectors {
-	/// <summary>
-	/// The custom drawer for the RelativesOnlyAttribute.
-	/// Also enforces rules set by the attribute.
-	/// </summary>
-	[CustomPropertyDrawer(typeof(RelativesOnlyAttribute))]
+namespace UnityCommonEditorLibrary.Inspectors
+{
+    /// <summary>
+    /// The custom drawer for the RelativesOnlyAttribute.
+    /// Also enforces rules set by the attribute.
+    /// </summary>
+    [CustomPropertyDrawer(typeof(RelativesOnlyAttribute))]
 	public class RelativesOnlyAttributeDrawer : PropertyDrawer {
 		/// <summary>
 		/// The error message shown when the rules set are violated.

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     [DisallowMultipleComponent]
     public class DontDestroyOnLoad : MonoBehaviour {
         private void Awake() {

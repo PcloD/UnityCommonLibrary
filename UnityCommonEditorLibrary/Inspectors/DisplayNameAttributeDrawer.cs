@@ -2,7 +2,8 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityCommonEditorLibrary.Inspectors {
+namespace UnityCommonEditorLibrary.Inspectors
+{
     [CustomPropertyDrawer(typeof(DisplayNameAttribute))]
     public class DisplayNameAttributeDrawer : PropertyDrawer {
 

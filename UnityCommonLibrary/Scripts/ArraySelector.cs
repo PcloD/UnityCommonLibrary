@@ -3,7 +3,8 @@ using System.Linq;
 using UnityCommonLibrary.Utilities;
 using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     public class ArraySelector<T>  {
         T[] array;
         int lastSelected;

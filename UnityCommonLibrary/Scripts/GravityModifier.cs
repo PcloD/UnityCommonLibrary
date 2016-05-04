@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     [RequireComponent(typeof(Rigidbody))]
     public class GravityModifier : MonoBehaviour {
 

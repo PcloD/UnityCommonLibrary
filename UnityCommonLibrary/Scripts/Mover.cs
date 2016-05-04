@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     public class Mover : MonoBehaviour {
         [SerializeField]
         private Vector3 movement = Vector3.one;

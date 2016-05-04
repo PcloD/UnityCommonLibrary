@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UnityCommonLibrary.UI {
+namespace UnityCommonLibrary.UI
+{
     public class Selector : Selectable, IPointerClickHandler {
         public bool wrapAround;
         public Text label;

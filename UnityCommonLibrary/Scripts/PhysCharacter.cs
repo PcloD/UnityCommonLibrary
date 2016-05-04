@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     [RequireComponent(typeof(Animator))]
     public class PhysCharacter : MonoBehaviour {
 

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using URandom = UnityEngine.Random;
 
-namespace UnityCommonLibrary.Utilities {
+namespace UnityCommonLibrary.Utilities
+{
     public static class CollectionUtility {
 
         public static void Shuffle<T>(this IList<T> list) {

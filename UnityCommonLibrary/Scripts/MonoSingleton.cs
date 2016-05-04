@@ -1,7 +1,8 @@
 ﻿using UnityCommonLibrary.Utilities;
 using UnityEngine;
 
-namespace UnityCommonLibrary {
+namespace UnityCommonLibrary
+{
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T> {
         private static T _get;
 
