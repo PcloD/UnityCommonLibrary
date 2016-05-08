@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using UnityCommonLibrary.Time;
 using UnityEngine;
 
 namespace UnityCommonLibrary.FSM
@@ -79,6 +78,7 @@ namespace UnityCommonLibrary.FSM
         /// Stores the history of switches to allow reversal.
         /// </summary>
         private Stack<HPDAState> history = new Stack<HPDAState>();
+        private object anyTransitionLock;
         #endregion
 
         public static Dictionary<string, HPDAStateMachine>.KeyCollection allStateIDs {
@@ -127,15 +127,34 @@ namespace UnityCommonLibrary.FSM
         }
         private void Update()
         {
+            if (activity != Status.InState)
+            {
+                return;
+            }
             // Switch to next state if not switching
-            if (activity == Status.InState && switchQueue.Count > 0)
+            if (switchQueue.Count > 0)
             {
                 var nextSwitch = switchQueue.Dequeue();
                 // Not really necessary, but just in case
                 StopAllCoroutines();
                 StartCoroutine(SwitchStateRoutine(nextSwitch));
             }
-            else {
+            else
+            {
+                foreach (var s in states)
+                {
+                    if (currentState == s)
+                    {
+                        continue;
+                    }
+                    if ((anyTransitionLock == null && s.canTransitionFromAny) || currentState.CanTransitionTo(s.GetType()))
+                    {
+                        if (SwitchState(s) != null)
+                        {
+                            return;
+                        }
+                    }
+                }
                 currentState.UpdateState();
             }
         }
@@ -160,18 +179,6 @@ namespace UnityCommonLibrary.FSM
             Rewind();
         }
         /// <summary>
-        /// Switches to the provided state.
-        /// </summary>
-        /// <remarks>
-        /// This method exists because only nonreturning methods
-        /// are allowed to be assigned to UnityEvents as callbacks
-        /// in the Inspector
-        /// </remarks>
-        public void UEventSwitchState(HPDAState state)
-        {
-            SwitchState(state);
-        }
-        /// <summary>
         /// Rewinds to the previous state in history, if one exists.
         /// </summary>
         /// <returns>A StateSwitch object for further configuration, or null if history is empty.</returns>
@@ -191,29 +198,9 @@ namespace UnityCommonLibrary.FSM
         /// </summary>
         /// <param name="state">The instance to switch to.</param>
         /// <returns>A StateSwitch object for further configuration.</returns>
-        public StateSwitch SwitchState(HPDAState state)
+        private StateSwitch SwitchState(HPDAState state)
         {
             return SwitchState(state, StateSwitch.Type.Switch);
-        }
-        /// <summary>
-        /// Switches to state of type <typeparamref name="T"/>
-        /// </summary>
-        /// <typeparam name="T">The class type of the state to switch to.</typeparam>
-        /// <returns>A StateSwitch object for further configuration.</returns>
-        public StateSwitch SwitchState<T>() where T : HPDAState
-        {
-            return SwitchState<T>(StateSwitch.Type.Switch);
-        }
-        /// <summary>
-        /// Switches to state of type <typeparamref name="T"/>
-        /// </summary>
-        /// <typeparam name="T">The class type of the state to switch to.</typeparam>
-        /// <param name="type">The kind of switch that will be performed.</param>
-        /// <returns>A StateSwitch object for further configuration.</returns>
-        private StateSwitch SwitchState<T>(StateSwitch.Type type) where T : HPDAState
-        {
-            var state = states.SingleOrDefault(s => s.GetType() == typeof(T));
-            return SwitchState(state, type);
         }
         /// <summary>
         /// Switches to the provided state instance.
@@ -223,11 +210,6 @@ namespace UnityCommonLibrary.FSM
         /// <returns>A StateSwitch object for further configuration.</returns>
         private StateSwitch SwitchState(HPDAState state, StateSwitch.Type type)
         {
-            if (!state.canEnterState)
-            {
-                state.lastEnterFailure = TimeSlice.Create();
-                return null;
-            }
             var stateSwitch = new StateSwitch(state, type);
             switchQueue.Enqueue(stateSwitch);
             return stateSwitch;
@@ -271,7 +253,6 @@ namespace UnityCommonLibrary.FSM
             activity = Status.InState;
             // We always want to set the state to be enabled.
             currentState.enabled = true;
-            currentState.stateEnterTime = TimeSlice.Create();
         }
         #endregion
 
@@ -303,6 +284,21 @@ namespace UnityCommonLibrary.FSM
             return result;
         }
         #endregion
+
+        public void DisableAnyTransition(object @lock)
+        {
+            if (anyTransitionLock == null)
+            {
+                anyTransitionLock = @lock;
+            }
+        }
+        public void EnableAnyTransition(object @lock)
+        {
+            if (anyTransitionLock == @lock)
+            {
+                anyTransitionLock = null;
+            }
+        }
 
         /// <summary>
         /// Creates a formatted string of detailed information

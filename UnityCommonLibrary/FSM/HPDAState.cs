@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using UnityCommonLibrary.Time;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace UnityCommonLibrary.FSM
@@ -13,22 +13,18 @@ namespace UnityCommonLibrary.FSM
         /// The machine that manages this state.
         /// </summary>
         public HPDAStateMachine machine { get; private set; }
-
-        public TimeSlice stateEnterTime { get; internal set; }
-        public TimeSlice lastEnterFailure { get; internal set; }
-
-        public virtual bool canEnterState {
-            get {
-                return true;
-            }
-        }
-
         /// <summary>
         /// Utility property for <see cref="HPDAStateMachine.IsInState(HPDAState)"/>
         /// </summary>
-        public bool isStateActive {
+        public bool isCurrentState {
             get {
                 return machine.IsInState(this);
+            }
+        }
+
+        public virtual bool canTransitionFromAny {
+            get {
+                return false;
             }
         }
 
@@ -43,7 +39,6 @@ namespace UnityCommonLibrary.FSM
                 this.machine = machine;
             }
         }
-
         /// <summary>
         /// Coroutine used to enter this state.
         /// By default performs a <code>yield break;</code>
@@ -59,5 +54,6 @@ namespace UnityCommonLibrary.FSM
         /// Updating occurs (when state is active).
         /// </summary>
         public virtual void UpdateState() { }
+        public virtual bool CanTransitionTo(Type stateType) { return false; }
     }
 }
