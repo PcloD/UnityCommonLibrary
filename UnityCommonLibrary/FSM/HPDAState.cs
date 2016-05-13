@@ -22,7 +22,7 @@ namespace UnityCommonLibrary.FSM
             }
         }
 
-        public virtual bool canTransitionFromAny {
+        public virtual bool canTransitionToFromAny {
             get {
                 return false;
             }

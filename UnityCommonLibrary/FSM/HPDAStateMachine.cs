@@ -125,7 +125,7 @@ namespace UnityCommonLibrary.FSM
                 SwitchState(previousState);
             }
         }
-        private void Update()
+        public void UpdateMachine()
         {
             if (activity != Status.InState)
             {
@@ -147,7 +147,7 @@ namespace UnityCommonLibrary.FSM
                     {
                         continue;
                     }
-                    if ((anyTransitionLock == null && s.canTransitionFromAny) || currentState.CanTransitionTo(s.GetType()))
+                    if ((anyTransitionLock == null && s.canTransitionToFromAny) || currentState.CanTransitionTo(s.GetType()))
                     {
                         if (SwitchState(s) != null)
                         {
