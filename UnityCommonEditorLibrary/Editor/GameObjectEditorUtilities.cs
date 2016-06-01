@@ -3,15 +3,19 @@ using UnityEngine;
 
 namespace UnityCommonEditorLibrary
 {
-    public static class GameObjectEditorUtilities {
-        [MenuItem("GameObject/Create Unrelated Prefab Instance")]
-        public static void CreateUnrelatedPrefabInstance() {
+    public static class GameObjectEditorUtilities
+    {
+        [MenuItem("GameObject/Create Unlinked Instance")]
+        public static void CreateUnlinkedInstance()
+        {
             Object.Instantiate(Selection.activeGameObject);
         }
 
-        [MenuItem("GameObject/Create Unrelated Prefab Instance", validate = true)]
-        public static bool ValidateCreateUnrelatedPrefabInstance() {
-            if(Selection.activeGameObject == null) {
+        [MenuItem("GameObject/Create Unlinked Instance", validate = true)]
+        public static bool ValidateCreateUnlinkedInstance()
+        {
+            if (Selection.activeGameObject == null)
+            {
                 return false;
             }
             var type = PrefabUtility.GetPrefabType(Selection.activeGameObject);
