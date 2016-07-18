@@ -3,7 +3,8 @@
 namespace UnityCommonLibrary
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class GravityModifier : MonoBehaviour {
+    public class GravityModifier : MonoBehaviour
+    {
 
         [SerializeField]
         float multiplier = 0f;
@@ -11,13 +12,15 @@ namespace UnityCommonLibrary
         ConstantForce force;
         Rigidbody rb;
 
-        void Awake() {
+        void Awake()
+        {
             force = gameObject.AddComponent<ConstantForce>();
             rb = GetComponent<Rigidbody>();
         }
 
         // Update is called once per frame
-        void Update() {
+        void Update()
+        {
             force.force = (-Physics.gravity * rb.mass) * multiplier;
         }
     }

@@ -6,7 +6,8 @@ using UnityEngine;
 namespace UnityCommonEditorLibrary.Inspectors
 {
     [CustomEditor(typeof(SimpleSpriteAnimation))]
-    public class SimpleSpriteAnimationInspector : Editor {
+    public class SimpleSpriteAnimationInspector : Editor
+    {
         private ReorderableList framesList;
         private SerializedProperty loop;
         private SerializedProperty timeMode;
@@ -14,7 +15,8 @@ namespace UnityCommonEditorLibrary.Inspectors
 
         private bool useSimpleUI;
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
             timeMode = serializedObject.FindProperty("timeMode");
             fps = serializedObject.FindProperty("fps");
             loop = serializedObject.FindProperty("loop");
@@ -22,24 +24,28 @@ namespace UnityCommonEditorLibrary.Inspectors
             framesList = new ReorderableList(serializedObject, serializedObject.FindProperty("frames"));
             framesList.drawElementCallback += DrawFrameElement;
             framesList.onAddCallback += AddNewElement;
-            framesList.drawHeaderCallback += (rect) => {
+            framesList.drawHeaderCallback += (rect) =>
+            {
                 EditorGUI.LabelField(rect, "Animation Frames");
             };
         }
 
-        private void AddNewElement(ReorderableList list) {
+        private void AddNewElement(ReorderableList list)
+        {
             ReorderableList.defaultBehaviours.DoAddButton(list);
             var last = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
             last.objectReferenceValue = null;
         }
 
-        private void DrawFrameElement(Rect rect, int index, bool isActive, bool isFocused) {
+        private void DrawFrameElement(Rect rect, int index, bool isActive, bool isFocused)
+        {
             var value = framesList.serializedProperty.GetArrayElementAtIndex(index);
             var sprite = value.objectReferenceValue as Sprite;
             EditorGUI.ObjectField(rect, value, GUIContent.none);
         }
 
-        public override void OnInspectorGUI() {
+        public override void OnInspectorGUI()
+        {
             serializedObject.Update();
             EditorGUI.BeginChangeCheck();
 
@@ -48,14 +54,17 @@ namespace UnityCommonEditorLibrary.Inspectors
             EditorGUILayout.PropertyField(loop);
             EditorGUILayout.Separator();
             useSimpleUI = EditorGUILayout.ToggleLeft("Use Simple UI", useSimpleUI);
-            if(useSimpleUI) {
+            if (useSimpleUI)
+            {
                 EditorGUILayout.PropertyField(framesList.serializedProperty, true);
             }
-            else {
+            else
+            {
                 framesList.DoLayoutList();
             }
 
-            if(EditorGUI.EndChangeCheck()) {
+            if (EditorGUI.EndChangeCheck())
+            {
                 serializedObject.ApplyModifiedProperties();
             }
         }

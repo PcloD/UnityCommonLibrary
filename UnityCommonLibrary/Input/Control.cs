@@ -1,9 +1,11 @@
 ﻿namespace UnityCommonLibrary.Input
 {
-    public abstract class Control {
+    public abstract class Control
+    {
         public string name { get; private set; }
 
-        public Control(string name) {
+        public Control(string name)
+        {
             this.name = name;
         }
 

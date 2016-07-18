@@ -9,7 +9,8 @@ namespace UnityCommonLibrary.UI
 {
     [ExecuteInEditMode]
     [RequireComponent(typeof(VerticalLayoutGroup))]
-    public class UIList : MonoBehaviour {
+    public class UIList : MonoBehaviour
+    {
 
         public delegate void OnSelectionChanged(ListItem oldItem, ListItem newItem);
 
@@ -56,19 +57,25 @@ namespace UnityCommonLibrary.UI
 
         public event OnRefreshComplete RefreshComplete;
 
-        public void ClearList() {
+        public void ClearList()
+        {
             clearing = true;
             elements.Clear();
             StartCoroutine(_RefreshList());
         }
 
-        void Update() {
-            if(elements.Count != cells.Count) {
+        void Update()
+        {
+            if (elements.Count != cells.Count)
+            {
                 StartCoroutine(_RefreshList());
             }
-            if(!refreshing) {
-                for(int i = 0; i < elements.Count; i++) {
-                    if(elements.Count != cells.Count) {
+            if (!refreshing)
+            {
+                for (int i = 0; i < elements.Count; i++)
+                {
+                    if (elements.Count != cells.Count)
+                    {
                         //safety check for refreshing
                         break;
                     }
@@ -86,41 +93,51 @@ namespace UnityCommonLibrary.UI
             }
         }
 
-        IEnumerator _RefreshList() {
-            if(!refreshing) {
+        IEnumerator _RefreshList()
+        {
+            if (!refreshing)
+            {
                 refreshing = true;
 
-                while(elements.Count > cells.Count) {
+                while (elements.Count > cells.Count)
+                {
                     cells.Add(CreateListItem());
                     yield return null;
                 }
-                while(elements.Count < cells.Count) {
+                while (elements.Count < cells.Count)
+                {
                     DestroyLastListItem();
                     yield return null;
                 }
             }
-            if(RefreshComplete != null) {
+            if (RefreshComplete != null)
+            {
                 RefreshComplete();
             }
-            if(clearing && ClearComplete != null) {
+            if (clearing && ClearComplete != null)
+            {
                 ClearComplete();
             }
             clearing = false;
             refreshing = false;
         }
 
-        void DestroyLastListItem() {
+        void DestroyLastListItem()
+        {
             var last = cells[cells.Count - 1];
             cells.RemoveAt(cells.Count - 1);
-            if(Application.isPlaying) {
+            if (Application.isPlaying)
+            {
                 Destroy(last.gameObj);
             }
-            else {
+            else
+            {
                 DestroyImmediate(last.gameObj);
             }
         }
 
-        ListItem CreateListItem() {
+        ListItem CreateListItem()
+        {
             var newChild = new GameObject("ListItem");
             var newText = new GameObject("ListItemText");
 
@@ -143,21 +160,25 @@ namespace UnityCommonLibrary.UI
             button.targetGraphic = text;
             inferrer.targetGraphic = text;
             var listItem = new ListItem(newChild, text, textRect, background, button);
-            button.onClick.AddListener(() => {
+            button.onClick.AddListener(() =>
+            {
                 FireSelectionChanged(listItem);
             });
             return listItem;
         }
 
-        void FireSelectionChanged(ListItem newItem) {
+        void FireSelectionChanged(ListItem newItem)
+        {
             var oldItem = selected;
             selected = newItem;
-            if(SelectionChanged != null) {
+            if (SelectionChanged != null)
+            {
                 SelectionChanged(oldItem, newItem);
             }
         }
 
-        void ResetTransform(Transform t) {
+        void ResetTransform(Transform t)
+        {
             t.localPosition = Vector3.zero;
             t.localRotation = Quaternion.identity;
             t.localScale = Vector3.one;
@@ -165,14 +186,16 @@ namespace UnityCommonLibrary.UI
     }
 
     [Serializable]
-    public class ListItem {
+    public class ListItem
+    {
         public GameObject gameObj;
         public Text text;
         public RectTransform rt;
         public Image background;
         public Button button;
 
-        public ListItem(GameObject gameObj, Text text, RectTransform rt, Image background, Button button) {
+        public ListItem(GameObject gameObj, Text text, RectTransform rt, Image background, Button button)
+        {
             this.gameObj = gameObj;
             this.text = text;
             this.rt = rt;

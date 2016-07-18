@@ -5,13 +5,15 @@ using UnityEditor.AnimatedValues;
 namespace UnityCommonEditorLibrary.Inspectors
 {
     [CustomEditor(typeof(Sequence), true)]
-    public class SequenceInspector : Editor {
+    public class SequenceInspector : Editor
+    {
         private SerializedProperty executeOnStart;
         private SerializedProperty loop;
         private SerializedProperty destroyOnComplete;
         private AnimBool isFoldout;
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
             executeOnStart = serializedObject.FindProperty("executeOnStart");
             loop = serializedObject.FindProperty("loop");
             destroyOnComplete = serializedObject.FindProperty("destroyOnComplete");
@@ -20,13 +22,15 @@ namespace UnityCommonEditorLibrary.Inspectors
             isFoldout.valueChanged.AddListener(Repaint);
         }
 
-        public override void OnInspectorGUI() {
+        public override void OnInspectorGUI()
+        {
             serializedObject.Update();
             DrawDefaultInspector();
 
             EditorGUI.indentLevel = 1;
             isFoldout.target = EditorGUILayout.Foldout(isFoldout.target, "Sequence Configuration");
-            if(EditorGUILayout.BeginFadeGroup(isFoldout.faded)) {
+            if (EditorGUILayout.BeginFadeGroup(isFoldout.faded))
+            {
                 EditorGUI.indentLevel++;
                 executeOnStart.boolValue = EditorGUILayout.ToggleLeft(executeOnStart.displayName, executeOnStart.boolValue);
                 destroyOnComplete.boolValue = EditorGUILayout.ToggleLeft(destroyOnComplete.displayName, destroyOnComplete.boolValue);

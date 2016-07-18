@@ -2,7 +2,8 @@
 
 namespace UnityCommonLibrary.Attributes
 {
-    public class EnumMaskAttribute : PropertyAttribute {
+    public class EnumMaskAttribute : PropertyAttribute
+    {
 
         public EnumMaskAttribute() { }
     }

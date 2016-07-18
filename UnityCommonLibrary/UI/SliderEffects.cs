@@ -6,7 +6,8 @@ namespace UnityCommonLibrary.UI
 {
     [RequireComponent(typeof(Slider))]
     [ExecuteInEditMode]
-    public class SliderEffects : MonoBehaviour {
+    public class SliderEffects : MonoBehaviour
+    {
 
         [SerializeField]
         Text text;
@@ -20,22 +21,29 @@ namespace UnityCommonLibrary.UI
         Image fillImg;
         Slider slider;
 
-        void Update() {
-            if(slider == null) {
+        void Update()
+        {
+            if (slider == null)
+            {
                 slider = GetComponent<Slider>();
             }
-            if(fillImg == null) {
+            if (fillImg == null)
+            {
                 fillImg = slider.fillRect.GetComponent<Image>();
             }
             fillImg.color = fill.Evaluate(slider.normalizedValue);
-            if(text != null) {
-                try {
+            if (text != null)
+            {
+                try
+                {
                     text.text = string.Format(formatStr, slider.value);
                 }
-                catch(FormatException) {
+                catch (FormatException)
+                {
                     text.text = "INVALID FORMAT: FormatException";
                 }
-                catch(IndexOutOfRangeException) {
+                catch (IndexOutOfRangeException)
+                {
                     text.text = "INVALID FORMAT: IndexOutOfRange";
                 }
             }

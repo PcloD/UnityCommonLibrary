@@ -35,10 +35,12 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files\Unity 5.3.5p4\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+      <HintPath>C:\Program Files\Unity 5.3.5p4\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -48,10 +50,10 @@
     <Compile Include="Colliders\ColliderUnityEvents2D.cs" />
     <Compile Include="Colliders\ColliderUnityEvents.cs" />
     <Compile Include="Colliders\ColliderEvents.cs" />
-    <Compile Include="FSM\HPDAState.cs" />
+    <Compile Include="FSM\BasicState.cs" />
+    <Compile Include="FSM\AbstractHPDAState.cs" />
     <Compile Include="FSM\HPDAStateMachine.cs" />
-    <Compile Include="FSM\NullState.cs" />
-    <Compile Include="FSM\UIState.cs" />
+    <Compile Include="FSM\StateSwitch.cs" />
     <Compile Include="Input\AnalogControl.cs" />
     <Compile Include="Input\Control.cs" />
     <Compile Include="Input\ControlState.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Scripts\AutoInstantiator.cs" />
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
     <Compile Include="Input\InputWrapper.cs" />
+    <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
     <Compile Include="Scripts\Invoker.cs" />
     <Compile Include="Scripts\LookAtCamera.cs" />
     <Compile Include="Scripts\MakeWorldBounds.cs" />
@@ -80,7 +83,6 @@
     <Compile Include="Utilities\BoundsUtility.cs" />
     <Compile Include="Scripts\CameraBounds2D.cs" />
     <Compile Include="Utilities\CameraUtility.cs" />
-    <Compile Include="Scripts\CopyToScreenRT.cs" />
     <Compile Include="Utilities\CoroutineUtility.cs" />
     <Compile Include="Attributes\EnumMaskAttribute.cs" />
     <Compile Include="Scripts\FakeParent.cs" />
@@ -121,7 +123,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>python D:\PythonProjects\UnityPostBuildTask\UnityPostBuildTask\unity_postbuild.py -projectName $(SolutionName) -projectList $(SolutionDir)projects.txt -assembly $(TargetPath) --includeSymbols</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

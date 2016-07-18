@@ -3,16 +3,19 @@
 namespace UnityCommonLibrary
 {
     [ExecuteInEditMode]
-    public class LogicalObject : MonoBehaviour {
+    public class LogicalObject : MonoBehaviour
+    {
 
-        private void Update() {
+        private void Update()
+        {
             transform.hideFlags = HideFlags.HideInInspector;
             transform.position = Vector3.zero;
             transform.rotation = Quaternion.identity;
             transform.localScale = Vector3.one;
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             transform.hideFlags = HideFlags.None;
         }
 

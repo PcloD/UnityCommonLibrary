@@ -2,10 +2,12 @@
 
 namespace UnityCommonLibrary.Utilities
 {
-    public static class GizmosUtility {
+    public static class GizmosUtility
+    {
         static Color storedColor;
 
-        public static void DrawBounds(Bounds b) {
+        public static void DrawBounds(Bounds b)
+        {
             Gizmos.DrawWireCube(b.center, b.size);
         }
 
@@ -14,7 +16,8 @@ namespace UnityCommonLibrary.Utilities
         /// Used in conjunction with <see cref="RestoreColor"/>
         /// </summary>
         /// <param name="color"></param>
-        public static void StoreColor(Color color) {
+        public static void StoreColor(Color color)
+        {
             storedColor = Gizmos.color;
             Gizmos.color = color;
         }
@@ -22,7 +25,8 @@ namespace UnityCommonLibrary.Utilities
         /// <summary>
         /// Restores the stored Gizmos color from <see cref="StoreColor(Color)"/>
         /// </summary>
-        public static void RestoreColor() {
+        public static void RestoreColor()
+        {
             Gizmos.color = storedColor;
         }
 

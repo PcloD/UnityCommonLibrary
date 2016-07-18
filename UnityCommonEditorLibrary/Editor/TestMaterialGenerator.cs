@@ -6,7 +6,8 @@ using UnityEngine;
 
 namespace UnityCommonEditorLibrary
 {
-    public class TestMaterialGenerator : ScriptableWizard {
+    public class TestMaterialGenerator : ScriptableWizard
+    {
         static TestMaterialGenerator wizard;
         static string saveFolder, projRelativeSaveFolder, filename = "TestMaterial";
         static bool isFoldout = true;
@@ -18,26 +19,32 @@ namespace UnityCommonEditorLibrary
         Texture2D texture;
 
         [MenuItem("Assets/Create/Test Materials")]
-        static void CreateWizard() {
+        static void CreateWizard()
+        {
             wizard = DisplayWizard<TestMaterialGenerator>("Create Test Material", "Create");
-            if(scales.Count == 0) {
+            if (scales.Count == 0)
+            {
                 scales.Add(Vector2.one);
                 scales.Add(Vector2.one * 2f);
                 scales.Add(Vector2.one * 5f);
             }
-            if(saveFolder == null) {
+            if (saveFolder == null)
+            {
                 saveFolder = Application.dataPath;
             }
         }
 
-        void OnWizardCreate() {
+        void OnWizardCreate()
+        {
             CreateTexture();
             CreateMaterials();
         }
 
-        void CreateMaterials() {
+        void CreateMaterials()
+        {
             var distinct = scales.Distinct();
-            foreach(var s in distinct) {
+            foreach (var s in distinct)
+            {
                 var newMat = new Material(Shader.Find("Standard"));
                 newMat.mainTexture = texture;
                 newMat.mainTextureScale = s;
@@ -45,7 +52,8 @@ namespace UnityCommonEditorLibrary
             }
         }
 
-        protected override bool DrawWizardGUI() {
+        protected override bool DrawWizardGUI()
+        {
             EditorGUILayout.Space();
 
             EditorGUI.BeginChangeCheck();
@@ -57,54 +65,69 @@ namespace UnityCommonEditorLibrary
             return EditorGUI.EndChangeCheck();
         }
 
-        void DrawScales() {
+        void DrawScales()
+        {
             isFoldout = EditorGUILayout.Foldout(isFoldout, "Scales");
-            if(isFoldout) {
+            if (isFoldout)
+            {
                 EditorGUI.indentLevel = 1;
                 var newSize = EditorGUILayout.IntField("Size", scales.Count);
-                if(newSize != scales.Count) {
+                if (newSize != scales.Count)
+                {
                     ResizeList(scales, newSize);
                 }
-                for(var i = 0; i < scales.Count; i++) {
+                for (var i = 0; i < scales.Count; i++)
+                {
                     scales[i] = EditorGUILayout.Vector2Field("Element " + i, scales[i]);
                 }
                 EditorGUI.indentLevel = 0;
             }
         }
 
-        void ResizeList<T>(List<T> list, int count) {
+        void ResizeList<T>(List<T> list, int count)
+        {
             count = Mathf.Clamp(count, 0, int.MaxValue);
-            while(list.Count > count) {
+            while (list.Count > count)
+            {
                 list.RemoveAt(list.Count - 1);
             }
-            while(list.Count < count) {
-                if(list.Count > 0) {
+            while (list.Count < count)
+            {
+                if (list.Count > 0)
+                {
                     list.Add(list[list.Count - 1]);
                 }
-                else {
+                else
+                {
                     list.Add(default(T));
                 }
             }
         }
 
-        void DrawColorFields() {
+        void DrawColorFields()
+        {
             primary = EditorGUILayout.ColorField("Primary", primary);
             secondary = EditorGUILayout.ColorField("Secondary", secondary);
         }
 
-        void UpdateValidity() {
-            if(projRelativeSaveFolder == null || projRelativeSaveFolder.Length == 0) {
+        void UpdateValidity()
+        {
+            if (projRelativeSaveFolder == null || projRelativeSaveFolder.Length == 0)
+            {
                 errorString = "Must be saved in project.";
                 isValid = false;
             }
-            else {
+            else
+            {
                 errorString = "";
                 isValid = true;
             }
         }
 
-        private static void DrawFileInfo() {
-            if(GUILayout.Button("Browse")) {
+        private static void DrawFileInfo()
+        {
+            if (GUILayout.Button("Browse"))
+            {
                 var newSaveFolder = EditorUtility.SaveFolderPanel("", projRelativeSaveFolder, "");
                 saveFolder = newSaveFolder == null || newSaveFolder.Length == 0 ? saveFolder : newSaveFolder;
                 GUI.changed = true;
@@ -118,7 +141,8 @@ namespace UnityCommonEditorLibrary
             filename = EditorGUILayout.TextField("Filename", filename);
         }
 
-        private void CreateTexture() {
+        private void CreateTexture()
+        {
             var texPath = string.Format("{0}/{1}.png", saveFolder, filename);
 
             // Clamp alpha

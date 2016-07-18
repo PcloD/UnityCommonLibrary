@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using UnityCommonLibrary.Time;
+using UnityCommonLibrary.Utilities;
 using UnityEngine;
 
 namespace UnityCommonLibrary.FSM
@@ -15,60 +17,15 @@ namespace UnityCommonLibrary.FSM
     ///	concurrent in that multiple state machines are permitted
     ///	on the same GameObject and are uniquely indentifiable.
     /// </summary>
-    public sealed class HPDAStateMachine : MonoBehaviour
+    public sealed class HPDAStateMachine
     {
-        #region Inspector Exposed Fields
-        /// <summary>
-        /// A unique ID to differentiate between multiple
-        /// HPDAStateMachine instances on the same GameObject.
-        /// </summary>
-        [SerializeField]
-        private string _id;
-        /// <summary>
-        /// If true, states won't be disabled when they exit.
-        /// </summary>
-        [SerializeField]
-        private bool statesAlwaysEnabled;
-        /// <summary>
-        /// The states that can be transitioned to in this machine.
-        /// </summary>
-        [SerializeField]
-        private List<HPDAState> states = new List<HPDAState>();
-        #endregion
+        private static readonly Dictionary<string, HPDAStateMachine> allMachines = new Dictionary<string, HPDAStateMachine>();
 
-        #region Properties
-        /// <summary>
-        /// A unique ID to differentiate between multiple
-        /// HPDAStateMachine instances on the same GameObject.
-        /// </summary>
-        public string id { get { return _id; } }
-        /// <summary>
-        /// Endpoint for public readonly access to machine states.
-        /// </summary>
-        public ReadOnlyCollection<HPDAState> readonlyStates { get; private set; }
-        /// <summary>
-        /// Represents what the machine is currently doing.
-        /// </summary>
+        public ReadOnlyCollection<AbstractHPDAState> readonlyStates { get; private set; }
         public Status activity { get; private set; }
-        /// <summary>
-        /// The active state of the machine.
-        /// </summary>
-        public HPDAState currentState { get; private set; }
-        public HPDAState previousState { get; private set; }
-
-        /// <summary>
-        /// Exposes the number of states in the PDA history stack.
-        /// </summary>
-        public int historyCount {
-            get {
-                return history.Count;
-            }
-        }
-
-        #endregion
-
-        #region Private Fields
-        private static readonly Dictionary<string, HPDAStateMachine> all = new Dictionary<string, HPDAStateMachine>();
+        public AbstractHPDAState currentState { get; private set; }
+        public AbstractHPDAState previousState { get; private set; }
+        private List<AbstractHPDAState> states = new List<AbstractHPDAState>();
         /// <summary>
         /// Queue of requested switches.
         /// </summary>
@@ -77,93 +34,76 @@ namespace UnityCommonLibrary.FSM
         /// Represents the pushdown automata of the machine.
         /// Stores the history of switches to allow reversal.
         /// </summary>
-        private Stack<HPDAState> history = new Stack<HPDAState>();
-        private object anyTransitionLock;
-        #endregion
+        private Stack<AbstractHPDAState> history = new Stack<AbstractHPDAState>();
+        private Coroutine switchRoutine;
+        private Coroutine enterRoutine;
+        private Coroutine exitRoutine;
 
-        public static Dictionary<string, HPDAStateMachine>.KeyCollection allStateIDs {
-            get {
-                return all.Keys;
-            }
-        }
-        public static Dictionary<string, HPDAStateMachine>.ValueCollection allStates {
-            get {
-                return all.Values;
-            }
-        }
-
-        #region Unity Messages
-        private void Awake()
+        public string id { get; private set; }
+        /// <summary>
+        /// Exposes the number of states in the PDA history stack.
+        /// </summary>
+        public int historyCount
         {
-            if (all.ContainsKey(id))
+            get
             {
-                Debug.LogErrorFormat(this, "HPDAStateMachine registry already contains machine with id '{0}'", id);
-                return;
-            }
-            all[id] = this;
-        }
-        private void Start()
-        {
-            readonlyStates = new ReadOnlyCollection<HPDAState>(states);
-            // Register each state with this machine
-            foreach (var s in states)
-            {
-                s.Register(this);
-            }
-
-            // NullObject pattern, register NullState to begin with
-            // Not actually in state list
-            currentState = gameObject.AddComponent<NullState>();
-            currentState.hideFlags = HideFlags.HideAndDontSave;
-
-            if (states.Count == 0)
-            {
-                Debug.LogError("states.Count == 0!", this);
-            }
-            else {
-                previousState = states[0];
-                SwitchState(previousState);
+                return history.Count;
             }
         }
-        public void UpdateMachine()
+
+        public HPDAStateMachine(string id = null)
         {
-            if (activity != Status.InState)
+            states = new List<AbstractHPDAState>();
+            this.id = string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id;
+            allMachines[this.id] = this;
+            readonlyStates = new ReadOnlyCollection<AbstractHPDAState>(states);
+        }
+        public HPDAStateMachine AddState(AbstractHPDAState state)
+        {
+            switch (activity)
             {
-                return;
+                case Status.Stopped:
+                    states.Add(state);
+                    break;
             }
-            // Switch to next state if not switching
-            if (switchQueue.Count > 0)
+            return this;
+        }
+        public void EngageMachine()
+        {
+            switch (activity)
             {
-                var nextSwitch = switchQueue.Dequeue();
-                // Not really necessary, but just in case
-                StopAllCoroutines();
-                StartCoroutine(SwitchStateRoutine(nextSwitch));
-            }
-            else
-            {
-                foreach (var s in states)
-                {
-                    if (currentState == s)
+                case Status.Stopped:
+                    if (states.Count == 0)
                     {
-                        continue;
+                        throw new Exception(string.Format("{0} states.Count == 0", id));
                     }
-                    if ((anyTransitionLock == null && s.canTransitionToFromAny) || currentState.CanTransitionTo(s.GetType()))
+                    else
                     {
-                        if (SwitchState(s) != null)
-                        {
-                            return;
-                        }
+                        activity = Status.InState;
+                        SwitchState(states[0]);
                     }
-                }
-                currentState.UpdateState();
+                    break;
             }
         }
-        private void Reset()
+        public void Tick()
         {
-            // Generate new random ID
-            _id = "StateMachine_" + Guid.NewGuid().ToString().Substring(0, 4);
+            switch (activity)
+            {
+                case Status.InState:
+                    // Switch to next state if not switching
+                    if (switchQueue.Count > 0)
+                    {
+                        var nextSwitch = switchQueue.Dequeue();
+                        StopCoroutines(switchRoutine, enterRoutine, exitRoutine);
+                        switchRoutine = CoroutineUtility.StartCoroutine(SwitchStateRoutine(nextSwitch));
+                    }
+                    else
+                    {
+                        currentState.Tick();
+                    }
+                    break;
+            }
         }
-        #endregion
 
         #region State Switching
         /// <summary>
@@ -198,7 +138,7 @@ namespace UnityCommonLibrary.FSM
         /// </summary>
         /// <param name="state">The instance to switch to.</param>
         /// <returns>A StateSwitch object for further configuration.</returns>
-        private StateSwitch SwitchState(HPDAState state)
+        public StateSwitch SwitchState(AbstractHPDAState state)
         {
             return SwitchState(state, StateSwitch.Type.Switch);
         }
@@ -208,7 +148,7 @@ namespace UnityCommonLibrary.FSM
         /// <param name="state">The state instance.</param>
         /// <param name="type">The kind of switch that will be performed.</param>
         /// <returns>A StateSwitch object for further configuration.</returns>
-        private StateSwitch SwitchState(HPDAState state, StateSwitch.Type type)
+        public StateSwitch SwitchState(AbstractHPDAState state, StateSwitch.Type type)
         {
             var stateSwitch = new StateSwitch(state, type);
             switchQueue.Enqueue(stateSwitch);
@@ -220,39 +160,45 @@ namespace UnityCommonLibrary.FSM
         /// <param name="switch">The StateSwitch instance to process.</param>
         private IEnumerator SwitchStateRoutine(StateSwitch @switch)
         {
-            // Exit current
-            activity = Status.ExitingState;
-            // Wait for exiting state to finish exiting.
-            yield return StartCoroutine(currentState.Exit());
-            // Only push the exiting state to history if not rewinding
-            // and if the state is not the initial NullState
-            if (!(currentState is NullState) && @switch.type == StateSwitch.Type.Switch)
+            if (currentState != null)
             {
-                previousState = currentState;
-                history.Push(currentState);
-            }
-            // We don't want to mess with state enabled status unless
-            // this flag is false.
-            if (!statesAlwaysEnabled)
-            {
-                currentState.enabled = false;
+                // Exit current
+                activity = Status.ExitingState;
+                // Wait for exiting state to finish exiting.
+                exitRoutine = CoroutineUtility.StartCoroutine(currentState.Exit());
+                yield return exitRoutine;
+                exitRoutine = null;
+                // Only push the exiting state to history if not rewinding
+                if (@switch.type == StateSwitch.Type.Switch)
+                {
+                    previousState = currentState;
+                    history.Push(currentState);
+                }
             }
 
             // Enter next
             currentState = @switch.state;
-
             // Fire callback for onSwitch
             // TODO: Potentially add a new callback for pre/post switch callbacks
-            if (@switch.onSwitch != null)
-            {
-                @switch.onSwitch();
-            }
+            @switch.FireOnSwitch();
             activity = Status.EnteringState;
             // Wait for entering state to finish entering.
-            yield return StartCoroutine(currentState.Enter());
+            enterRoutine = CoroutineUtility.StartCoroutine(currentState.Enter());
+            yield return enterRoutine;
+            enterRoutine = null;
+            currentState.timeEntered = TimeSlice.Create();
             activity = Status.InState;
-            // We always want to set the state to be enabled.
-            currentState.enabled = true;
+            switchRoutine = null;
+        }
+        private void StopCoroutines(params Coroutine[] routines)
+        {
+            for (int i = 0; i < routines.Length; i++)
+            {
+                if (routines[i] != null)
+                {
+                    CoroutineUtility.StopCoroutine(routines[i]);
+                }
+            }
         }
         #endregion
 
@@ -262,7 +208,7 @@ namespace UnityCommonLibrary.FSM
         /// </summary>
         /// <typeparam name="T">The state class type to check.</typeparam>
         /// <returns>True if we are in this state, false otherwise.</returns>
-        public bool IsInState<T>() where T : HPDAState
+        public bool IsInState<T>() where T : AbstractHPDAState
         {
             return currentState.GetType() == typeof(T);
         }
@@ -273,32 +219,18 @@ namespace UnityCommonLibrary.FSM
         /// </summary>
         /// <param name="state">The state instance to check.</param>
         /// <returns>True if we are in this state, false otherwise.</returns>
-        public bool IsInState(HPDAState state)
+        public bool IsInState(AbstractHPDAState state)
         {
             return currentState == state;
         }
-        public static HPDAStateMachine GetByID(string id)
+        public static void EngageAllMachines()
         {
-            HPDAStateMachine result = null;
-            all.TryGetValue(id, out result);
-            return result;
+            foreach (var kvp in allMachines)
+            {
+                kvp.Value.EngageMachine();
+            }
         }
         #endregion
-
-        public void DisableAnyTransition(object @lock)
-        {
-            if (anyTransitionLock == null)
-            {
-                anyTransitionLock = @lock;
-            }
-        }
-        public void EnableAnyTransition(object @lock)
-        {
-            if (anyTransitionLock == @lock)
-            {
-                anyTransitionLock = null;
-            }
-        }
 
         /// <summary>
         /// Creates a formatted string of detailed information
@@ -312,7 +244,7 @@ namespace UnityCommonLibrary.FSM
             sb.AppendLine(activity.ToString());
             sb.AppendLine("CurrentState:");
             sb.Append('\t');
-            sb.AppendLine(currentState.GetType().Name);
+            sb.AppendLine(currentState.id);
             if (history.Count > 0)
             {
                 sb.AppendLine("History (Last 10):");
@@ -330,40 +262,10 @@ namespace UnityCommonLibrary.FSM
         /// </summary>
         public enum Status
         {
+            Stopped,
             InState,
             ExitingState,
             EnteringState
-        }
-    }
-
-    /// <summary>
-    /// Implementing the command design pattern,
-    /// stores information about a requested switch.
-    /// </summary>
-    /// <remarks>
-    /// TODO: Determine how we can use this class to pass information
-    /// from one state to another on switch. Maybe look at using generics.
-    /// </remarks>
-    public class StateSwitch
-    {
-        public Action onSwitch;
-
-        public readonly HPDAState state;
-        public readonly Type type;
-
-        public StateSwitch(HPDAState state, Type type)
-        {
-            this.state = state;
-            this.type = type;
-        }
-
-        /// <summary>
-        /// The type of switch to perform.
-        /// </summary>
-        public enum Type
-        {
-            Switch,
-            Rewind
         }
     }
 }

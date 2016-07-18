@@ -5,13 +5,16 @@ using UnityEngine;
 namespace UnityCommonEditorLibrary.Inspectors
 {
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
-    public class ReadOnlyAttributeDrawer : DecoratorDrawer {
+    public class ReadOnlyAttributeDrawer : DecoratorDrawer
+    {
 
-        public override float GetHeight() {
+        public override float GetHeight()
+        {
             return 0f;
         }
 
-        public override void OnGUI(Rect position) {
+        public override void OnGUI(Rect position)
+        {
             GUI.enabled = false;
         }
 

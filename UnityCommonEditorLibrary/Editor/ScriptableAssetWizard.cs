@@ -7,7 +7,8 @@ using UnityEngine;
 
 namespace UnityCommonEditorLibrary
 {
-    public class ScriptableAssetWizard : ScriptableWizard {
+    public class ScriptableAssetWizard : ScriptableWizard
+    {
         int selectedTypeIndex = 0;
         int projectAssemblyIndex;
 
@@ -18,7 +19,8 @@ namespace UnityCommonEditorLibrary
         string[] typeNames;
 
         [MenuItem("Tools/Create Scriptable Asset...")]
-        public static void CreateWizard() {
+        public static void CreateWizard()
+        {
             var wizard = DisplayWizard<ScriptableAssetWizard>("Scriptable Asset Wizard");
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
             wizard.startPath = (path != null) ? path : "Assets";
@@ -27,17 +29,20 @@ namespace UnityCommonEditorLibrary
         }
 
         [MenuItem("Assets/Create/Scriptable Asset...", priority = -999)]
-        public static void CreateWizardAlt() {
+        public static void CreateWizardAlt()
+        {
             CreateWizard();
         }
 
-        private static Assembly GetProjectAssembly() {
+        private static Assembly GetProjectAssembly()
+        {
             return AppDomain.CurrentDomain
                             .GetAssemblies()
                             .First(a => a.FullName.StartsWith("Assembly-CSharp,"));
         }
 
-        private static bool IsCorrectType(Type t) {
+        private static bool IsCorrectType(Type t)
+        {
             return !t.IsAbstract &&
                     t.IsSubclassOf(typeof(ScriptableObject)) &&
                    !t.IsSubclassOf(typeof(Editor)) &&
@@ -45,7 +50,8 @@ namespace UnityCommonEditorLibrary
                    t.GetCustomAttributes(false).Any(a => a is ScriptableAssetWizardAttribute);
         }
 
-        private void GenerateChoices() {
+        private void GenerateChoices()
+        {
             types = assembly.GetTypes().Where(t => IsCorrectType(t)).ToArray();
             types = types.Concat(AppDomain.CurrentDomain
                              .GetAssemblies()
@@ -53,18 +59,21 @@ namespace UnityCommonEditorLibrary
             typeNames = types.Select(t => t.Name).ToArray();
         }
 
-        void OnWizardCreate() {
+        void OnWizardCreate()
+        {
             var type = types[selectedTypeIndex];
 
             var path = EditorUtility.SaveFilePanel("Save location", startPath, "New " + type.Name, "asset");
 
-            if(string.IsNullOrEmpty(path)) {
+            if (string.IsNullOrEmpty(path))
+            {
                 return;
             }
 
             //Get project relative path and ensure path is within project
             var projectRelative = FileUtil.GetProjectRelativePath(path);
-            if(string.IsNullOrEmpty(projectRelative)) {
+            if (string.IsNullOrEmpty(projectRelative))
+            {
                 EditorUtility.DisplayDialog("Error", "Please select somewhere within your assets folder.", "OK");
                 return;
             }
@@ -78,11 +87,13 @@ namespace UnityCommonEditorLibrary
             Selection.activeObject = scriptableObject;
         }
 
-        protected override bool DrawWizardGUI() {
+        protected override bool DrawWizardGUI()
+        {
             var changed = false;
             var newIndex = -1;
 
-            if(changed) {
+            if (changed)
+            {
                 GenerateChoices();
             }
 

@@ -3,7 +3,8 @@
 namespace UnityCommonLibrary
 {
     [ExecuteInEditMode]
-    public class ParallaxLayer : MonoBehaviour {
+    public class ParallaxLayer : MonoBehaviour
+    {
         new public ParallaxCamera camera;
 
         [SerializeField]
@@ -15,27 +16,34 @@ namespace UnityCommonLibrary
         Vector3 prevCamPosition;
         bool prevMoveParallax;
 
-        void OnEnable() {
-            if(camera == null) {
+        void OnEnable()
+        {
+            if (camera == null)
+            {
                 camera = FindObjectOfType<ParallaxCamera>();
             }
-            if(camera != null) {
+            if (camera != null)
+            {
                 prevCamPosition = camera.transform.position;
             }
         }
 
-        void Update() {
-            if(camera == null) {
+        void Update()
+        {
+            if (camera == null)
+            {
                 return;
             }
 
-            if(camera.moveParallax && !prevMoveParallax) {
+            if (camera.moveParallax && !prevMoveParallax)
+            {
                 prevCamPosition = camera.transform.position;
             }
 
             prevMoveParallax = camera.moveParallax;
 
-            if(!Application.isPlaying && !camera.moveParallax) {
+            if (!Application.isPlaying && !camera.moveParallax)
+            {
                 return;
             }
 

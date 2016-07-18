@@ -7,61 +7,75 @@ namespace UnityCommonLibrary.Colliders
     /// outside of the GameObject that stores the Collider component.
     /// </summary>
     [RequireComponent(typeof(Collider))]
-	public class ColliderEvents : MonoBehaviour {
-		#region Delegates/Events
-		public delegate void OnCollisionEvent(ColliderEvents source, Collision collision);
-		public delegate void OnTriggerEvent(ColliderEvents source, Collider other);
+    public class ColliderEvents : MonoBehaviour
+    {
+        #region Delegates/Events
+        public delegate void OnCollisionEvent(ColliderEvents source, Collision collision);
+        public delegate void OnTriggerEvent(ColliderEvents source, Collider other);
 
-		public event OnCollisionEvent CollisionEnter;
-		public event OnCollisionEvent CollisionExit;
-		public event OnCollisionEvent CollisionStay;
-		public event OnTriggerEvent TriggerEnter;
-		public event OnTriggerEvent TriggerExit;
-		public event OnTriggerEvent TriggerStay;
-		#endregion
+        public event OnCollisionEvent CollisionEnter;
+        public event OnCollisionEvent CollisionExit;
+        public event OnCollisionEvent CollisionStay;
+        public event OnTriggerEvent TriggerEnter;
+        public event OnTriggerEvent TriggerExit;
+        public event OnTriggerEvent TriggerStay;
+        #endregion
 
-		public Collider eventCollider { get; private set; }
+        public Collider eventCollider { get; private set; }
 
-		#region Unity Messages
-		private void Awake() {
-			eventCollider = GetComponent<Collider>();
-		}
+        #region Unity Messages
+        private void Awake()
+        {
+            eventCollider = GetComponent<Collider>();
+        }
 
-		private void OnCollisionEnter(Collision collision) {
-			if(CollisionEnter != null) {
-				CollisionEnter(this, collision);
-			}
-		}
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (CollisionEnter != null)
+            {
+                CollisionEnter(this, collision);
+            }
+        }
 
-		private void OnCollisionExit(Collision collision) {
-			if(CollisionExit != null) {
-				CollisionExit(this, collision);
-			}
-		}
+        private void OnCollisionExit(Collision collision)
+        {
+            if (CollisionExit != null)
+            {
+                CollisionExit(this, collision);
+            }
+        }
 
-		private void OnCollisionStay(Collision collision) {
-			if(CollisionStay != null) {
-				CollisionStay(this, collision);
-			}
-		}
+        private void OnCollisionStay(Collision collision)
+        {
+            if (CollisionStay != null)
+            {
+                CollisionStay(this, collision);
+            }
+        }
 
-		private void OnTriggerEnter(Collider other) {
-			if(TriggerEnter != null) {
-				TriggerEnter(this, other);
-			}
-		}
+        private void OnTriggerEnter(Collider other)
+        {
+            if (TriggerEnter != null)
+            {
+                TriggerEnter(this, other);
+            }
+        }
 
-		private void OnTriggerExit(Collider other) {
-			if(TriggerExit != null) {
-				TriggerExit(this, other);
-			}
-		}
+        private void OnTriggerExit(Collider other)
+        {
+            if (TriggerExit != null)
+            {
+                TriggerExit(this, other);
+            }
+        }
 
-		private void OnTriggerStay(Collider other) {
-			if(TriggerStay != null) {
-				TriggerStay(this, other);
-			}
-		}
-		#endregion
-	}
+        private void OnTriggerStay(Collider other)
+        {
+            if (TriggerStay != null)
+            {
+                TriggerStay(this, other);
+            }
+        }
+        #endregion
+    }
 }

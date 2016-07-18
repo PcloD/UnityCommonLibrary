@@ -3,10 +3,13 @@ using UnityCommonLibrary.Time;
 
 namespace UnityCommonLibrary.Utilities
 {
-    public static class TimeUtility {
+    public static class TimeUtility
+    {
 
-        public static float GetCurrentTime(TimeMode mode) {
-            switch(mode) {
+        public static float GetCurrentTime(TimeMode mode)
+        {
+            switch (mode)
+            {
                 case TimeMode.Time:
                     return UnityEngine.Time.time;
                 case TimeMode.UnscaledTime:

@@ -2,11 +2,13 @@
 
 namespace UnityCommonLibrary
 {
-    public class MakeWorldBounds : MonoBehaviour {
+    public class MakeWorldBounds : MonoBehaviour
+    {
         [SerializeField]
         private float thickness = 0.3f;
 
-        private void Awake() {
+        private void Awake()
+        {
             // Create frictionless physmaterial for walls
             var material = new PhysicMaterial("Frictionless");
             material.staticFriction = 0f;
@@ -16,7 +18,8 @@ namespace UnityCommonLibrary
             material.bounciness = 0f;
 
             var surfaces = new BoxCollider[6];
-            for(var i = 0; i < 6; i++) {
+            for (var i = 0; i < 6; i++)
+            {
                 var obj = new GameObject();
                 obj.transform.SetParent(transform, false);
                 var collider = obj.AddComponent<BoxCollider>();
@@ -56,8 +59,10 @@ namespace UnityCommonLibrary
             surfaces[5].name = "Wall X+";
         }
 
-        public void OnDrawGizmosSelected() {
-            if(!Application.isPlaying) {
+        public void OnDrawGizmosSelected()
+        {
+            if (!Application.isPlaying)
+            {
                 Gizmos.DrawWireCube(transform.position, transform.localScale);
             }
         }

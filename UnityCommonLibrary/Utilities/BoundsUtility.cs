@@ -2,7 +2,8 @@
 
 namespace UnityCommonLibrary.Utilities
 {
-    public static class BoundsUtility {
+    public static class BoundsUtility
+    {
 
         /// <summary>
         /// Returns true if this bounds.size >= target.size in all axes.
@@ -10,7 +11,8 @@ namespace UnityCommonLibrary.Utilities
         /// <param name="bounds"></param>
         /// <param name="target"></param>
         /// <returns></returns>
-        public static bool CouldContain(this Bounds bounds, Bounds target) {
+        public static bool CouldContain(this Bounds bounds, Bounds target)
+        {
             var bSize = bounds.size;
             var tSize = target.size;
 
@@ -19,8 +21,10 @@ namespace UnityCommonLibrary.Utilities
                    bSize.z >= tSize.z;
         }
 
-        public static Vector3 RandomPointInside(this Bounds bounds) {
-            return new Vector3() {
+        public static Vector3 RandomPointInside(this Bounds bounds)
+        {
+            return new Vector3()
+            {
                 x = Random.Range(bounds.min.x, bounds.max.x),
                 y = Random.Range(bounds.min.y, bounds.max.y),
                 z = Random.Range(bounds.min.z, bounds.max.z)

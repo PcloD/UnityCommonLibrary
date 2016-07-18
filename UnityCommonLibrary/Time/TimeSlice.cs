@@ -2,9 +2,10 @@
 {
     public struct TimeSlice
     {
-        public float time;
-        public float unscaledTime;
-        public float realtimeSinceStartup;
+        public float time { get; private set; }
+        public float unscaledTime { get; private set; }
+        public float realtimeSinceStartup { get; private set; }
+        public int frameCount { get; private set; }
 
         public static TimeSlice Create()
         {
@@ -12,7 +13,8 @@
             {
                 time = UnityEngine.Time.time,
                 unscaledTime = UnityEngine.Time.unscaledTime,
-                realtimeSinceStartup = UnityEngine.Time.realtimeSinceStartup
+                realtimeSinceStartup = UnityEngine.Time.realtimeSinceStartup,
+                frameCount = UnityEngine.Time.frameCount
             };
         }
     }

@@ -2,18 +2,21 @@
 
 namespace UnityCommonLibrary
 {
-    public class ParallaxCamera : MonoBehaviour {
+    public class ParallaxCamera : MonoBehaviour
+    {
         public bool moveParallax;
 
         [SerializeField]
         [HideInInspector]
         private Vector3 storedPosition;
 
-        public void SavePosition() {
+        public void SavePosition()
+        {
             storedPosition = transform.position;
         }
 
-        public void RestorePosition() {
+        public void RestorePosition()
+        {
             transform.position = storedPosition;
         }
     }

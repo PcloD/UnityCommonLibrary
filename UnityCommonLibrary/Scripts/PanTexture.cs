@@ -2,7 +2,8 @@
 
 namespace UnityCommonLibrary
 {
-    public class PanTexture : MonoBehaviour {
+    public class PanTexture : MonoBehaviour
+    {
         [SerializeField]
         public Vector2 speed;
 
@@ -10,12 +11,14 @@ namespace UnityCommonLibrary
         private Material material;
         private Vector2 offset;
 
-        private void Awake() {
+        private void Awake()
+        {
             renderer = GetComponent<Renderer>();
             material = renderer.material;
         }
 
-        private void Update() {
+        private void Update()
+        {
             offset += speed * UnityEngine.Time.deltaTime;
             offset.x %= 1f;
             offset.y %= 1f;

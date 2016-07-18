@@ -5,35 +5,24 @@ using UnityEngine;
 namespace UnityCommonEditorLibrary.Inspectors
 {
     [CustomEditor(typeof(CameraBounds2D))]
-    public class CameraBounds2DInspector : Editor {
+    public class CameraBounds2DInspector : Editor
+    {
+        private const string NOCAM_ERR = "There is no camera assigned!";
+        private const string BOUNDSMISMATCH_ERR = "Camera's frustum CANNOT fit into current bounds, camera's position WILL NOT be altered!";
+        private const string UNBOUNDED_ERR = "Set to unbounded in all directions, camera's position WILL NOT be altered!";
+        private const string NOCOLLIDER_ERR = "No collider provided, camera's position WILL NOT be altered!";
 
-        SerializedProperty camera,
-                           bounds,
-                           boundedXMin,
-                           boundedXMax,
-                           boundedYMin,
-                           boundedYMax;
+        private SerializedProperty camera;
+        private SerializedProperty bounds;
+        private SerializedProperty boundedXMin;
+        private SerializedProperty boundedXMax;
+        private SerializedProperty boundedYMin;
+        private SerializedProperty boundedYMax;
+        private CameraBounds2D obj;
+        private bool isBoundsNull;
 
-        CameraBounds2D obj;
-
-        const string NOCAM_ERR = "There is no camera assigned!";
-        const string BOUNDSMISMATCH_ERR = "Camera's frustum CANNOT fit into current bounds, camera's position WILL NOT be altered!";
-        const string UNBOUNDED_ERR = "Set to unbounded in all directions, camera's position WILL NOT be altered!";
-        const string NOCOLLIDER_ERR = "No collider provided, camera's position WILL NOT be altered!";
-
-        bool isBoundsNull;
-
-        void OnEnable() {
-            obj = (CameraBounds2D)target;
-            camera = serializedObject.FindProperty("camera");
-            bounds = serializedObject.FindProperty("bounds");
-            boundedXMin = serializedObject.FindProperty("boundedXMin");
-            boundedXMax = serializedObject.FindProperty("boundedXMax");
-            boundedYMin = serializedObject.FindProperty("boundedYMin");
-            boundedYMax = serializedObject.FindProperty("boundedYMax");
-        }
-
-        public override void OnInspectorGUI() {
+        public override void OnInspectorGUI()
+        {
             serializedObject.Update();
 
             EditorGUILayout.Space();
@@ -51,20 +40,25 @@ namespace UnityCommonEditorLibrary.Inspectors
 
             isBoundsNull = Equals(camera.objectReferenceValue, null);
             //Show Errors
-            if(isBoundsNull) {
+            if (isBoundsNull)
+            {
                 GUI.color = Color.red;
                 EditorGUILayout.LabelField(NOCAM_ERR, EditorStyles.helpBox);
             }
-            else {
-                if(Equals(bounds.objectReferenceValue, null)) {
+            else
+            {
+                if (Equals(bounds.objectReferenceValue, null))
+                {
                     GUI.color = Color.red;
                     EditorGUILayout.LabelField(NOCOLLIDER_ERR, EditorStyles.helpBox);
                 }
-                if(!obj.canFit) {
+                if (!obj.canFit)
+                {
                     GUI.color = Color.red;
                     EditorGUILayout.LabelField(BOUNDSMISMATCH_ERR, EditorStyles.helpBox);
                 }
-                if(!boundedXMin.boolValue && !boundedXMax.boolValue && !boundedYMin.boolValue && !boundedYMax.boolValue) {
+                if (!boundedXMin.boolValue && !boundedXMax.boolValue && !boundedYMin.boolValue && !boundedYMax.boolValue)
+                {
                     GUI.color = Color.red;
                     EditorGUILayout.LabelField(UNBOUNDED_ERR, EditorStyles.helpBox);
                 }
@@ -73,5 +67,15 @@ namespace UnityCommonEditorLibrary.Inspectors
             serializedObject.ApplyModifiedProperties();
         }
 
+        private void OnEnable()
+        {
+            obj = (CameraBounds2D)target;
+            camera = serializedObject.FindProperty("camera");
+            bounds = serializedObject.FindProperty("bounds");
+            boundedXMin = serializedObject.FindProperty("boundedXMin");
+            boundedXMax = serializedObject.FindProperty("boundedXMax");
+            boundedYMin = serializedObject.FindProperty("boundedYMin");
+            boundedYMax = serializedObject.FindProperty("boundedYMax");
+        }
     }
 }

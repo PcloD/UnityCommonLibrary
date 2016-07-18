@@ -2,7 +2,8 @@
 
 namespace UnityCommonLibrary
 {
-    public class Mover : MonoBehaviour {
+    public class Mover : MonoBehaviour
+    {
         [SerializeField]
         private Vector3 movement = Vector3.one;
         [SerializeField]
@@ -12,7 +13,8 @@ namespace UnityCommonLibrary
         [SerializeField]
         private Space rotationSpace;
 
-        private void Update() {
+        private void Update()
+        {
             transform.Translate(movement, movementSpace);
             transform.Rotate(rotation, rotationSpace);
         }

@@ -1,40 +1,70 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityCommonLibrary.Utilities
 {
 
-    public static class CoroutineUtility {
-        static MonoBehaviour dummyObj;
-
-        public static IEnumerator WaitForSecondsUnscaled(float seconds) {
-            var start = UnityEngine.Time.realtimeSinceStartup;
-            while(UnityEngine.Time.realtimeSinceStartup - start < seconds) {
-                yield return null;
+    public static class CoroutineUtility
+    {
+        private static EmptyMonoBehaviour _surrogate;
+        private static EmptyMonoBehaviour surrogate
+        {
+            get
+            {
+                EnsureSurrogate();
+                return _surrogate;
             }
         }
+        private static Dictionary<string, Coroutine> keyedRoutines = new Dictionary<string, Coroutine>();
 
-        public static Coroutine StartCoroutine(IEnumerator routine) {
-            if(dummyObj == null) {
-                var obj = new GameObject("CoroutineUtilityDummyObj");
-                dummyObj = obj.AddComponent<MonoBehaviour>();
-                Object.DontDestroyOnLoad(dummyObj);
+        public static Coroutine StartCoroutine(IEnumerator routine)
+        {
+            return surrogate.StartCoroutine(routine);
+        }
+        public static Coroutine StartCoroutine(string key, IEnumerator routine)
+        {
+            var coroutine = surrogate.StartCoroutine(routine);
+            keyedRoutines.Add(key, coroutine);
+            return coroutine;
+        }
+        public static void StopAllCoroutines()
+        {
+            surrogate.StopAllCoroutines();
+            keyedRoutines.Clear();
+        }
+        public static void StopKeyedCoroutines()
+        {
+            foreach (var coroutine in keyedRoutines.Values)
+            {
+                StopCoroutine(coroutine);
             }
-            return dummyObj.StartCoroutine(routine);
+            keyedRoutines.Clear();
         }
-
-        public static void StopAllCoroutines() {
-            dummyObj.StopAllCoroutines();
+        public static void StopCoroutine(IEnumerator routine)
+        {
+            surrogate.StopCoroutine(routine);
         }
-
-        public static void StopCoroutine(IEnumerator routine) {
-            dummyObj.StopCoroutine(routine);
+        public static void StopCoroutine(Coroutine routine)
+        {
+            surrogate.StopCoroutine(routine);
         }
-
-        public static void StopCoroutine(Coroutine routine) {
-            dummyObj.StopCoroutine(routine);
+        public static void StopCoroutine(string key)
+        {
+            Coroutine routine;
+            if (keyedRoutines.TryGetValue(key, out routine))
+            {
+                surrogate.StopCoroutine(routine);
+            }
         }
-
+        private static void EnsureSurrogate()
+        {
+            if (!_surrogate)
+            {
+                _surrogate = ComponentUtility.Create<EmptyMonoBehaviour>("CoroutineUtilitySurrogate");
+                _surrogate.hideFlags = HideFlags.NotEditable;
+                Object.DontDestroyOnLoad(_surrogate);
+            }
+        }
     }
-
 }

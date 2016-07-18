@@ -6,7 +6,8 @@ namespace UnityCommonLibrary
 {
     [ExecuteInEditMode]
     [RequireComponent(typeof(LayoutElement))]
-    public class InferSize : MonoBehaviour {
+    public class InferSize : MonoBehaviour
+    {
         public Graphic targetGraphic;
 
         [Header("Rect Size")]
@@ -36,26 +37,33 @@ namespace UnityCommonLibrary
         private LayoutElement layout;
         private RectTransform rt;
 
-        private void Awake() {
+        private void Awake()
+        {
             rt = GetComponent<RectTransform>();
             layout = GetComponent<LayoutElement>();
         }
 
-        private void Update() {
-            if(targetGraphic != null) {
-                if(useRectSize) {
+        private void Update()
+        {
+            if (targetGraphic != null)
+            {
+                if (useRectSize)
+                {
                     rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetGraphic.rectTransform.rect.width + rectSizeOffset.x);
                     rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, targetGraphic.rectTransform.rect.height + rectSizeOffset.y);
                 }
-                if(useMinSize) {
+                if (useMinSize)
+                {
                     layout.minWidth = LayoutUtility.GetMinWidth(targetGraphic.rectTransform) + minSizeOffset.x;
                     layout.minHeight = LayoutUtility.GetMinHeight(targetGraphic.rectTransform) + minSizeOffset.y;
                 }
-                if(usePreferredSize) {
+                if (usePreferredSize)
+                {
                     layout.preferredWidth = LayoutUtility.GetPreferredWidth(targetGraphic.rectTransform) + preferredSizeOffset.x;
                     layout.preferredHeight = LayoutUtility.GetPreferredHeight(targetGraphic.rectTransform) + preferredSizeOffset.y;
                 }
-                if(useFlexibleSize) {
+                if (useFlexibleSize)
+                {
                     layout.flexibleWidth = LayoutUtility.GetFlexibleWidth(targetGraphic.rectTransform) + flexibleSizeOffset.x;
                     layout.flexibleHeight = LayoutUtility.GetFlexibleHeight(targetGraphic.rectTransform) + flexibleSizeOffset.y;
                 }
