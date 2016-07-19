@@ -17,7 +17,7 @@
             }
             return true;
         }
-        public static bool ContainsCaseInsensitive(this string str, string other)
+        public static bool ContainsIgnoreCase(this string str, string other)
         {
             return str.IndexOf(other, System.StringComparison.OrdinalIgnoreCase) >= 0;
         }

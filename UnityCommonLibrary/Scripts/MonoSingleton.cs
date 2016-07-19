@@ -7,10 +7,8 @@ namespace UnityCommonLibrary
     {
         private static T _get;
 
-        public static T get
-        {
-            get
-            {
+        public static T get {
+            get {
                 if (_get == null)
                 {
                     EnsureExists();
@@ -30,7 +28,7 @@ namespace UnityCommonLibrary
             {
                 _get = all[0];
             }
-
+            DontDestroyOnLoad(_get);
             if (all.Length > 1)
             {
                 Debug.LogError(string.Format("FindObjectsOfType<{0}>().Length == {1}", typeof(T).Name, all.Length));
@@ -43,10 +41,8 @@ namespace UnityCommonLibrary
         public static bool usesActivator;
 
         private static T _get;
-        public static T get
-        {
-            get
-            {
+        public static T get {
+            get {
                 if (_get == null)
                 {
                     _get = usesActivator ? System.Activator.CreateInstance<T>() : new T();

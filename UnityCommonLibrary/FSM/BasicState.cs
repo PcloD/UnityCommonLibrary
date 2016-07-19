@@ -4,41 +4,58 @@ namespace UnityCommonLibrary.FSM
 {
     public sealed class BasicState : AbstractHPDAState
     {
-        public delegate void OnStateAction();
+        public delegate void OnStateEvent(AbstractHPDAState state);
+        public delegate void OnStateTick();
 
-        public readonly OnStateAction onEnter;
-        public readonly OnStateAction onExit;
-        public readonly OnStateAction onTick;
+        private OnStateEvent onEnter;
+        private OnStateEvent onExit;
+        private OnStateTick onTick;
 
-        public BasicState(string id = null, OnStateAction onEnter = null, OnStateAction onExit = null, OnStateAction onTick = null) : base(id)
+        public BasicState(string id = null) : base(id) { }
+
+        public BasicState AddOnEnter(OnStateEvent onEnter)
         {
-            this.onEnter = onEnter;
-            this.onExit = onExit;
-            this.onTick = onTick;
+            this.onEnter += onEnter;
+            return this;
+        }
+        public BasicState AddOnExit(OnStateEvent onExit)
+        {
+            this.onExit += onExit;
+            return this;
+        }
+        public BasicState AddOnTick(OnStateTick onTick)
+        {
+            this.onTick += onTick;
+            return this;
         }
 
-        public override IEnumerator Enter()
+        public sealed override IEnumerator Enter(AbstractHPDAState currentState)
         {
             if (onEnter != null)
             {
-                onEnter();
+                onEnter(currentState);
             }
             yield break;
         }
-        public override IEnumerator Exit()
+        public sealed override IEnumerator Exit(AbstractHPDAState nextState)
         {
             if (onExit != null)
             {
-                onExit();
+                onExit(nextState);
             }
             yield break;
         }
-        public override void Tick()
+        public sealed override void Tick()
         {
             if (onTick != null)
             {
                 onTick();
             }
+        }
+
+        public sealed override string ToString()
+        {
+            return id;
         }
     }
 }

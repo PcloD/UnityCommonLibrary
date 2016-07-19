@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
 using UnityCommonLibrary.Time;
 using UnityCommonLibrary.Utilities;
@@ -19,13 +17,10 @@ namespace UnityCommonLibrary.FSM
     /// </summary>
     public sealed class HPDAStateMachine
     {
-        private static readonly Dictionary<string, HPDAStateMachine> allMachines = new Dictionary<string, HPDAStateMachine>();
+        private static readonly Dictionary<int, HPDAStateMachine> allMachines = new Dictionary<int, HPDAStateMachine>();
 
-        public ReadOnlyCollection<AbstractHPDAState> readonlyStates { get; private set; }
-        public Status activity { get; private set; }
-        public AbstractHPDAState currentState { get; private set; }
-        public AbstractHPDAState previousState { get; private set; }
-        private List<AbstractHPDAState> states = new List<AbstractHPDAState>();
+        public bool log;
+        private Dictionary<int, AbstractHPDAState> states = new Dictionary<int, AbstractHPDAState>();
         /// <summary>
         /// Queue of requested switches.
         /// </summary>
@@ -39,38 +34,41 @@ namespace UnityCommonLibrary.FSM
         private Coroutine enterRoutine;
         private Coroutine exitRoutine;
 
+        public Status status { get; private set; }
+        public AbstractHPDAState currentState { get; private set; }
+        public AbstractHPDAState previousState { get; private set; }
         public string id { get; private set; }
         /// <summary>
         /// Exposes the number of states in the PDA history stack.
         /// </summary>
-        public int historyCount
-        {
-            get
-            {
+        public int historyCount {
+            get {
                 return history.Count;
             }
         }
 
         public HPDAStateMachine(string id = null)
         {
-            states = new List<AbstractHPDAState>();
             this.id = string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id;
-            allMachines[this.id] = this;
-            readonlyStates = new ReadOnlyCollection<AbstractHPDAState>(states);
+            allMachines[Animator.StringToHash(this.id)] = this;
         }
         public HPDAStateMachine AddState(AbstractHPDAState state)
         {
-            switch (activity)
+            switch (status)
             {
                 case Status.Stopped:
-                    states.Add(state);
+                    if (states.Count == 0)
+                    {
+                        previousState = state;
+                    }
+                    states.Add(state.GetHashCode(), state);
                     break;
             }
             return this;
         }
         public void EngageMachine()
         {
-            switch (activity)
+            switch (status)
             {
                 case Status.Stopped:
                     if (states.Count == 0)
@@ -79,15 +77,17 @@ namespace UnityCommonLibrary.FSM
                     }
                     else
                     {
-                        activity = Status.InState;
-                        SwitchState(states[0]);
+                        status = Status.InState;
+                        var state = previousState;
+                        previousState = currentState = null;
+                        SwitchState(state.GetHashCode());
                     }
                     break;
             }
         }
         public void Tick()
         {
-            switch (activity)
+            switch (status)
             {
                 case Status.InState:
                     // Switch to next state if not switching
@@ -138,9 +138,33 @@ namespace UnityCommonLibrary.FSM
         /// </summary>
         /// <param name="state">The instance to switch to.</param>
         /// <returns>A StateSwitch object for further configuration.</returns>
-        public StateSwitch SwitchState(AbstractHPDAState state)
+        public StateSwitch SwitchState(string id)
         {
-            return SwitchState(state, StateSwitch.Type.Switch);
+            return SwitchState(id, StateSwitch.Type.Switch);
+        }
+        /// <summary>
+        /// Switches to the provided state instance.
+        /// Mostly used by <see cref="UEventSwitchState"/>.
+        /// state instances aren't normally used.
+        /// For most switches in code, use <see cref="SwitchState{T}"/>.
+        /// </summary>
+        /// <param name="state">The instance to switch to.</param>
+        /// <returns>A StateSwitch object for further configuration.</returns>
+        public StateSwitch SwitchState(string id, StateSwitch.Type type)
+        {
+            return SwitchState(Animator.StringToHash(id), type);
+        }
+        /// <summary>
+        /// Switches to the provided state instance.
+        /// Mostly used by <see cref="UEventSwitchState"/>.
+        /// state instances aren't normally used.
+        /// For most switches in code, use <see cref="SwitchState{T}"/>.
+        /// </summary>
+        /// <param name="state">The instance to switch to.</param>
+        /// <returns>A StateSwitch object for further configuration.</returns>
+        public StateSwitch SwitchState(int hash)
+        {
+            return SwitchState(hash, StateSwitch.Type.Switch);
         }
         /// <summary>
         /// Switches to the provided state instance.
@@ -148,7 +172,17 @@ namespace UnityCommonLibrary.FSM
         /// <param name="state">The state instance.</param>
         /// <param name="type">The kind of switch that will be performed.</param>
         /// <returns>A StateSwitch object for further configuration.</returns>
-        public StateSwitch SwitchState(AbstractHPDAState state, StateSwitch.Type type)
+        public StateSwitch SwitchState(int hash, StateSwitch.Type type)
+        {
+            return SwitchState(states[hash], type);
+        }
+        /// <summary>
+        /// Switches to the provided state instance.
+        /// </summary>
+        /// <param name="state">The state instance.</param>
+        /// <param name="type">The kind of switch that will be performed.</param>
+        /// <returns>A StateSwitch object for further configuration.</returns>
+        private StateSwitch SwitchState(AbstractHPDAState state, StateSwitch.Type type)
         {
             var stateSwitch = new StateSwitch(state, type);
             switchQueue.Enqueue(stateSwitch);
@@ -160,12 +194,14 @@ namespace UnityCommonLibrary.FSM
         /// <param name="switch">The StateSwitch instance to process.</param>
         private IEnumerator SwitchStateRoutine(StateSwitch @switch)
         {
+            Log("Begin SwitchState type '{0}'", @switch.type);
             if (currentState != null)
             {
+                Log("Exiting state '{0}'", currentState.id);
                 // Exit current
-                activity = Status.ExitingState;
+                status = Status.ExitingState;
                 // Wait for exiting state to finish exiting.
-                exitRoutine = CoroutineUtility.StartCoroutine(currentState.Exit());
+                exitRoutine = CoroutineUtility.StartCoroutine(currentState.Exit(@switch.state));
                 yield return exitRoutine;
                 exitRoutine = null;
                 // Only push the exiting state to history if not rewinding
@@ -181,13 +217,14 @@ namespace UnityCommonLibrary.FSM
             // Fire callback for onSwitch
             // TODO: Potentially add a new callback for pre/post switch callbacks
             @switch.FireOnSwitch();
-            activity = Status.EnteringState;
+            Log("Entering state '{0}'", currentState.id);
+            status = Status.EnteringState;
             // Wait for entering state to finish entering.
-            enterRoutine = CoroutineUtility.StartCoroutine(currentState.Enter());
+            enterRoutine = CoroutineUtility.StartCoroutine(currentState.Enter(previousState));
             yield return enterRoutine;
             enterRoutine = null;
             currentState.timeEntered = TimeSlice.Create();
-            activity = Status.InState;
+            status = Status.InState;
             switchRoutine = null;
         }
         private void StopCoroutines(params Coroutine[] routines)
@@ -200,18 +237,21 @@ namespace UnityCommonLibrary.FSM
                 }
             }
         }
+        private void Log(string format, params object[] args)
+        {
+            if (log)
+            {
+                Debug.LogFormat("[{0}] {1}", id, string.Format(format, args));
+            }
+        }
         #endregion
 
         #region Utility Methods
-        /// <summary>
-        /// Checks if the current state type equals a state class type.
-        /// </summary>
-        /// <typeparam name="T">The state class type to check.</typeparam>
-        /// <returns>True if we are in this state, false otherwise.</returns>
-        public bool IsInState<T>() where T : AbstractHPDAState
+        public bool IsInState(int hash)
         {
-            return currentState.GetType() == typeof(T);
+            return currentState != null && currentState.GetHashCode() == hash;
         }
+
         /// <summary>
         /// Checks if the current state equals a state instance.
         /// Typically only used by Unity messages implemented in state classes as IsInState(this).
@@ -236,25 +276,14 @@ namespace UnityCommonLibrary.FSM
         /// Creates a formatted string of detailed information
         /// about the current status of this machine.
         /// </summary>
+        private readonly StringBuilder toStringBuilder = new StringBuilder();
         public override string ToString()
         {
-            var sb = new StringBuilder();
-            sb.AppendLine("Status:");
-            sb.Append('\t');
-            sb.AppendLine(activity.ToString());
-            sb.AppendLine("CurrentState:");
-            sb.Append('\t');
-            sb.AppendLine(currentState.id);
-            if (history.Count > 0)
-            {
-                sb.AppendLine("History (Last 10):");
-                foreach (var s in history.Take(10))
-                {
-                    sb.Append('\t');
-                    sb.AppendLine(s.GetType().Name);
-                }
-            }
-            return sb.ToString().Trim();
+            toStringBuilder.Length = 0;
+            toStringBuilder.AppendLine(string.Format("ID: {0}", id));
+            toStringBuilder.AppendLine(string.Format("Status: {0}", status));
+            toStringBuilder.AppendLine(string.Format("CurrentState: {0}", currentState.id));
+            return toStringBuilder.ToString().Trim();
         }
 
         /// <summary>
