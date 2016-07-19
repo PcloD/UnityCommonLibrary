@@ -5,12 +5,10 @@ namespace UnityCommonLibrary
 {
     public static class Invoker
     {
-
         public static void Invoke(Action a, float time)
         {
             Invoke(a, TimeMode.Time, time);
         }
-
         public static void Invoke(Action a, TimeMode mode, float time)
         {
             if (time == 0f)
@@ -33,6 +31,5 @@ namespace UnityCommonLibrary
                 timer.Start();
             }
         }
-
     }
 }

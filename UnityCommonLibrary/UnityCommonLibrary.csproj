@@ -35,10 +35,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files\Unity 5.3.5p4\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+      <HintPath>C:\Program Files\Unity 5.3.5p4\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -93,7 +93,7 @@
     <Compile Include="Scripts\PrefabPool.cs" />
     <Compile Include="UI\InferSize.cs" />
     <Compile Include="Utilities\CollectionUtility.cs" />
-    <Compile Include="Scripts\LogicalObject.cs" />
+    <Compile Include="Scripts\TransformLocker.cs" />
     <Compile Include="Utilities\MathUtility.cs" />
     <Compile Include="Utilities\Math2DUtility.cs" />
     <Compile Include="Utilities\RandomUtility.cs" />

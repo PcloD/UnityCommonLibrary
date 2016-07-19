@@ -8,6 +8,12 @@
         Time,
         UnscaledTime,
         RealtimeSinceStartup,
-        FixedTime
+        FixedTime,
+        DeltaTime,
+        UnscaledDeltaTime,
+        SmoothDeltaTime,
+        FixedDeltaTime,
+        TimeSinceLevelLoad,
+        One,
     }
 }

@@ -18,6 +18,18 @@ namespace UnityCommonLibrary.Utilities
                     return UnityEngine.Time.realtimeSinceStartup;
                 case TimeMode.FixedTime:
                     return UnityEngine.Time.fixedTime;
+                case TimeMode.DeltaTime:
+                    return UnityEngine.Time.deltaTime;
+                case TimeMode.UnscaledDeltaTime:
+                    return UnityEngine.Time.unscaledDeltaTime;
+                case TimeMode.SmoothDeltaTime:
+                    return UnityEngine.Time.smoothDeltaTime;
+                case TimeMode.FixedDeltaTime:
+                    return UnityEngine.Time.fixedDeltaTime;
+                case TimeMode.TimeSinceLevelLoad:
+                    return UnityEngine.Time.timeSinceLevelLoad;
+                case TimeMode.One:
+                    return 1f;
                 default:
                     throw new Exception("Invalid TimeMode");
             }

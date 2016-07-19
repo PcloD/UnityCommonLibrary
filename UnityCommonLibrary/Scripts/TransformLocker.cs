@@ -3,9 +3,8 @@
 namespace UnityCommonLibrary
 {
     [ExecuteInEditMode]
-    public class LogicalObject : MonoBehaviour
+    public class TransformLocker : MonoBehaviour
     {
-
         private void Update()
         {
             transform.hideFlags = HideFlags.HideInInspector;
@@ -13,11 +12,9 @@ namespace UnityCommonLibrary
             transform.rotation = Quaternion.identity;
             transform.localScale = Vector3.one;
         }
-
         private void OnDestroy()
         {
             transform.hideFlags = HideFlags.None;
         }
-
     }
 }

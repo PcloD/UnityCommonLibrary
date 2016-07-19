@@ -118,7 +118,7 @@ namespace UnityCommonLibrary
         {
             if (poolParent == null)
             {
-                poolParent = new GameObject("PrefabPool", typeof(LogicalObject));
+                poolParent = new GameObject("PrefabPool", typeof(TransformLocker));
             }
             obj.transform.parent = poolParent.transform;
         }

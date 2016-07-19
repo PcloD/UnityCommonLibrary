@@ -3,7 +3,7 @@ using UnityEditor;
 
 public class EditorCoroutine
 {
-    readonly IEnumerator routine;
+    private readonly IEnumerator routine;
 
     public static EditorCoroutine Start(IEnumerator routine)
     {
@@ -16,23 +16,19 @@ public class EditorCoroutine
     {
         this.routine = routine;
     }
-
     private void Start()
     {
         EditorApplication.update += Update;
     }
-
     public void Stop()
     {
         EditorApplication.update -= Update;
     }
-
-    void Update()
+    private void Update()
     {
         if (!routine.MoveNext())
         {
             Stop();
         }
     }
-
 }

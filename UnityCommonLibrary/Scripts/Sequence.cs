@@ -100,7 +100,6 @@ namespace UnityCommonLibrary
         {
             sequences.Add(this);
         }
-
         protected virtual void Start()
         {
             if (executeOnStart)
@@ -108,7 +107,6 @@ namespace UnityCommonLibrary
                 Execute();
             }
         }
-
         protected virtual void OnDestroy()
         {
             sequences.Remove(this);
@@ -147,7 +145,6 @@ namespace UnityCommonLibrary
             }
             CompleteSequence();
         }
-
         /// <summary>
         /// A custom Coroutine executor to add callback functionality.
         /// </summary>
@@ -170,7 +167,6 @@ namespace UnityCommonLibrary
                 RoutineComplete();
             }
         }
-
         /// <summary>
         /// Collects all coroutines for execution.
         /// </summary>
@@ -199,7 +195,6 @@ namespace UnityCommonLibrary
             }
             StartCoroutine(ExecuteSequence());
         }
-
         /// <summary>
         /// Pauses playback (only if currently playing)
         /// </summary>
@@ -221,7 +216,6 @@ namespace UnityCommonLibrary
                 AnySequencePaused(this);
             }
         }
-
         /// <summary>
         /// Resumes from paused state.
         /// </summary>
@@ -243,7 +237,6 @@ namespace UnityCommonLibrary
                 AnySequenceResumed(this);
             }
         }
-
         /// <summary>
         /// Stops and resets this sequence.
         /// </summary>
@@ -273,7 +266,6 @@ namespace UnityCommonLibrary
                 Execute();
             }
         }
-
         /// <summary>
         /// Stops any executors and reloads all routines into queue.
         /// </summary>
@@ -291,7 +283,6 @@ namespace UnityCommonLibrary
             routines = new Queue<IEnumerator>(Initialize());
             totalRoutineCount = routines.Count;
         }
-
         /// <summary>
         /// Runs tasks related to sequence completion, including looping and destroying if needed.
         /// </summary>
@@ -328,7 +319,6 @@ namespace UnityCommonLibrary
                 s.Pause();
             }
         }
-
         public static void ResumeAll()
         {
             foreach (var s in sequences)
@@ -336,7 +326,6 @@ namespace UnityCommonLibrary
                 s.Resume();
             }
         }
-
         public static void ExecuteAll()
         {
             foreach (var s in sequences)
@@ -344,7 +333,6 @@ namespace UnityCommonLibrary
                 s.Execute();
             }
         }
-
         public static void HaltAll()
         {
             foreach (var s in sequences)
@@ -352,7 +340,6 @@ namespace UnityCommonLibrary
                 s.Halt();
             }
         }
-
         /// <summary>
         /// Creates a new instance of the Sequence of type <typeparamref name="T"/>.
         /// </summary>
@@ -388,7 +375,6 @@ namespace UnityCommonLibrary
                 yield return null;
             }
         }
-
         /// <summary>
         /// Executes standard <see cref="WaitForSeconds"/>
         /// </summary>
@@ -397,7 +383,6 @@ namespace UnityCommonLibrary
         {
             yield return new WaitForSeconds(time);
         }
-
         /// <summary>
         /// Invokes a method without blocking. 
         /// </summary>
@@ -407,7 +392,6 @@ namespace UnityCommonLibrary
             a.Invoke();
             yield break;
         }
-
         /// <summary>
         /// Invokes a Coroutine without blocking. 
         /// </summary>

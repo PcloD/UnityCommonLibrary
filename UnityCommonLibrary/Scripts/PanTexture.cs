@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿using UnityCommonLibrary.Utilities;
+using UnityEngine;
 
 namespace UnityCommonLibrary
 {
     public class PanTexture : MonoBehaviour
     {
-        [SerializeField]
         public Vector2 speed;
+        public Time.TimeMode timeMode;
+
 
         private new Renderer renderer;
         private Material material;
@@ -19,7 +21,7 @@ namespace UnityCommonLibrary
 
         private void Update()
         {
-            offset += speed * UnityEngine.Time.deltaTime;
+            offset += speed * TimeUtility.GetCurrentTime(timeMode);
             offset.x %= 1f;
             offset.y %= 1f;
             material.SetTextureOffset("_MainTex", offset);
