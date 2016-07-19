@@ -11,6 +11,8 @@ namespace UnityCommonLibrary.FSM
     {
         private readonly int hashcode;
 
+        public bool useAsyncEnter;
+        public bool useAsyncExit;
         public string id { get; private set; }
         public TimeSlice timeEntered { get; internal set; }
 
@@ -20,9 +22,11 @@ namespace UnityCommonLibrary.FSM
             hashcode = Animator.StringToHash(this.id);
         }
 
-        public abstract IEnumerator Enter(AbstractHPDAState previousState);
-        public abstract IEnumerator Exit(AbstractHPDAState nextState);
-        public abstract void Tick();
+        public virtual IEnumerator EnterAsync(AbstractHPDAState previousState) { yield break; }
+        public virtual IEnumerator ExitAsync(AbstractHPDAState nextState) { yield break; }
+        public virtual void Enter(AbstractHPDAState previousState) { }
+        public virtual void Exit(AbstractHPDAState nextState) { }
+        public virtual void Tick() { }
 
         public sealed override int GetHashCode()
         {
@@ -40,7 +44,7 @@ namespace UnityCommonLibrary.FSM
             {
                 return false;
             }
-            return other.id == id;
+            return other.hashcode == hashcode;
         }
     }
 }

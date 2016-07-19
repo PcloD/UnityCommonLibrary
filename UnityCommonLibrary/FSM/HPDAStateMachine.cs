@@ -41,8 +41,10 @@ namespace UnityCommonLibrary.FSM
         /// <summary>
         /// Exposes the number of states in the PDA history stack.
         /// </summary>
-        public int historyCount {
-            get {
+        public int historyCount
+        {
+            get
+            {
                 return history.Count;
             }
         }
@@ -200,10 +202,17 @@ namespace UnityCommonLibrary.FSM
                 Log("Exiting state '{0}'", currentState.id);
                 // Exit current
                 status = Status.ExitingState;
-                // Wait for exiting state to finish exiting.
-                exitRoutine = CoroutineUtility.StartCoroutine(currentState.Exit(@switch.state));
-                yield return exitRoutine;
-                exitRoutine = null;
+                if (currentState.useAsyncExit)
+                {
+                    // Wait for exiting state to finish exiting.
+                    exitRoutine = CoroutineUtility.StartCoroutine(currentState.ExitAsync(@switch.state));
+                    yield return exitRoutine;
+                    exitRoutine = null;
+                }
+                else
+                {
+                    currentState.Exit(@switch.state);
+                }
                 // Only push the exiting state to history if not rewinding
                 if (@switch.type == StateSwitch.Type.Switch)
                 {
@@ -219,10 +228,17 @@ namespace UnityCommonLibrary.FSM
             @switch.FireOnSwitch();
             Log("Entering state '{0}'", currentState.id);
             status = Status.EnteringState;
-            // Wait for entering state to finish entering.
-            enterRoutine = CoroutineUtility.StartCoroutine(currentState.Enter(previousState));
-            yield return enterRoutine;
-            enterRoutine = null;
+            if (currentState.useAsyncEnter)
+            {
+                // Wait for entering state to finish entering.
+                enterRoutine = CoroutineUtility.StartCoroutine(currentState.EnterAsync(previousState));
+                yield return enterRoutine;
+                enterRoutine = null;
+            }
+            else
+            {
+                currentState.Enter(previousState);
+            }
             currentState.timeEntered = TimeSlice.Create();
             status = Status.InState;
             switchRoutine = null;

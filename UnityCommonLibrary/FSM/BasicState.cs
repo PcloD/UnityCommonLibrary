@@ -1,18 +1,32 @@
 ﻿using System.Collections;
+using UnityCommonLibrary.Utilities;
 
 namespace UnityCommonLibrary.FSM
 {
     public sealed class BasicState : AbstractHPDAState
     {
+        public delegate IEnumerator OnStateAsyncEvent(AbstractHPDAState state);
         public delegate void OnStateEvent(AbstractHPDAState state);
         public delegate void OnStateTick();
 
+        private OnStateAsyncEvent onEnterAsync;
+        private OnStateAsyncEvent onExitAsync;
         private OnStateEvent onEnter;
         private OnStateEvent onExit;
         private OnStateTick onTick;
 
         public BasicState(string id = null) : base(id) { }
 
+        public BasicState AddOnEnterAsync(OnStateAsyncEvent onEnterAsync)
+        {
+            this.onEnterAsync += onEnterAsync;
+            return this;
+        }
+        public BasicState AddOnExitAsync(OnStateAsyncEvent onExitAsync)
+        {
+            this.onExitAsync += onExitAsync;
+            return this;
+        }
         public BasicState AddOnEnter(OnStateEvent onEnter)
         {
             this.onEnter += onEnter;
@@ -29,21 +43,33 @@ namespace UnityCommonLibrary.FSM
             return this;
         }
 
-        public sealed override IEnumerator Enter(AbstractHPDAState currentState)
+        public sealed override IEnumerator EnterAsync(AbstractHPDAState currentState)
+        {
+            if (onEnterAsync != null)
+            {
+                yield return CoroutineUtility.StartCoroutine(onEnterAsync(currentState));
+            }
+        }
+        public sealed override IEnumerator ExitAsync(AbstractHPDAState nextState)
+        {
+            if (onExitAsync != null)
+            {
+                yield return CoroutineUtility.StartCoroutine(onExitAsync(nextState));
+            }
+        }
+        public sealed override void Enter(AbstractHPDAState previousState)
         {
             if (onEnter != null)
             {
-                onEnter(currentState);
+                onEnter(previousState);
             }
-            yield break;
         }
-        public sealed override IEnumerator Exit(AbstractHPDAState nextState)
+        public sealed override void Exit(AbstractHPDAState nextState)
         {
             if (onExit != null)
             {
                 onExit(nextState);
             }
-            yield break;
         }
         public sealed override void Tick()
         {
