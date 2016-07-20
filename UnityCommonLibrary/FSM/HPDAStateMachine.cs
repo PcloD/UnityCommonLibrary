@@ -36,7 +36,7 @@ namespace UnityCommonLibrary.FSM
         private Coroutine switchRoutine;
         private Coroutine enterRoutine;
         private Coroutine exitRoutine;
-        private AbstractHPDAState currentState;
+        private AbstractHPDAState currentState = new NullState();
         private AbstractHPDAState previousState;
 
         public string currentStateID {
@@ -250,7 +250,7 @@ namespace UnityCommonLibrary.FSM
             switchRoutine = null;
             if (onStateSwitched != null)
             {
-                onStateSwitched(previousState == null ? null : previousState.id, currentState.id);
+                onStateSwitched(previousState == null ? string.Empty : previousState.id, currentState.id);
             }
         }
         private void StopCoroutines(params Coroutine[] routines)
