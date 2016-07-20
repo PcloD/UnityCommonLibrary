@@ -35,13 +35,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="UnityEditor">
-      <HintPath>C:\Program Files\Unity 5.3.5p4\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files\Unity 5.3.5p4\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:\Program Files\Unity 5.3.5p4\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

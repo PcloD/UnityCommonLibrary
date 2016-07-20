@@ -16,10 +16,12 @@ namespace UnityCommonLibrary.FSM
         public string id { get; private set; }
         public TimeSlice timeEntered { get; internal set; }
 
-        public AbstractHPDAState(string id = null)
+        public AbstractHPDAState(string id = null, bool useAsyncEnter = false, bool useAsyncExit = false)
         {
             this.id = string.IsNullOrEmpty(id) ? System.Guid.NewGuid().ToString() : id;
             hashcode = Animator.StringToHash(this.id);
+            this.useAsyncEnter = useAsyncEnter;
+            this.useAsyncExit = useAsyncExit;
         }
 
         public virtual IEnumerator EnterAsync(AbstractHPDAState previousState) { yield break; }

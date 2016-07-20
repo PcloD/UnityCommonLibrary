@@ -19,6 +19,9 @@ namespace UnityCommonLibrary.FSM
     {
         private static readonly Dictionary<int, HPDAStateMachine> allMachines = new Dictionary<int, HPDAStateMachine>();
 
+        public delegate void OnStateSwitch(string previousState, string nextState);
+        public event OnStateSwitch onStateSwitched;
+
         public bool log;
         private Dictionary<int, AbstractHPDAState> states = new Dictionary<int, AbstractHPDAState>();
         /// <summary>
@@ -33,18 +36,21 @@ namespace UnityCommonLibrary.FSM
         private Coroutine switchRoutine;
         private Coroutine enterRoutine;
         private Coroutine exitRoutine;
+        private AbstractHPDAState currentState;
+        private AbstractHPDAState previousState;
 
+        public string currentStateID {
+            get {
+                return currentState.id;
+            }
+        }
         public Status status { get; private set; }
-        public AbstractHPDAState currentState { get; private set; }
-        public AbstractHPDAState previousState { get; private set; }
         public string id { get; private set; }
         /// <summary>
         /// Exposes the number of states in the PDA history stack.
         /// </summary>
-        public int historyCount
-        {
-            get
-            {
+        public int historyCount {
+            get {
                 return history.Count;
             }
         }
@@ -242,6 +248,10 @@ namespace UnityCommonLibrary.FSM
             currentState.timeEntered = TimeSlice.Create();
             status = Status.InState;
             switchRoutine = null;
+            if (onStateSwitched != null)
+            {
+                onStateSwitched(previousState == null ? null : previousState.id, currentState.id);
+            }
         }
         private void StopCoroutines(params Coroutine[] routines)
         {
@@ -263,6 +273,10 @@ namespace UnityCommonLibrary.FSM
         #endregion
 
         #region Utility Methods
+        public bool IsInState(string id)
+        {
+            return IsInState(Animator.StringToHash(id));
+        }
         public bool IsInState(int hash)
         {
             return currentState != null && currentState.GetHashCode() == hash;

@@ -15,7 +15,9 @@ namespace UnityCommonLibrary.FSM
         private OnStateEvent onExit;
         private OnStateTick onTick;
 
-        public BasicState(string id = null) : base(id) { }
+        public BasicState(string id = null, bool useAsyncEnter = false, bool useAsyncExit = false)
+            : base(id, useAsyncEnter, useAsyncExit)
+        { }
 
         public BasicState AddOnEnterAsync(OnStateAsyncEvent onEnterAsync)
         {
