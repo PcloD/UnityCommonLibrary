@@ -66,6 +66,7 @@
     <Compile Include="Scripts\Invoker.cs" />
     <Compile Include="Scripts\LookAtCamera.cs" />
     <Compile Include="Scripts\MakeWorldBounds.cs" />
+    <Compile Include="Scripts\MaterialOverrider.cs" />
     <Compile Include="Scripts\PanTexture.cs" />
     <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
     <Compile Include="Scripts\TransformElement.cs" />
