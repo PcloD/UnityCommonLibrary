@@ -4,7 +4,7 @@ using UnityCommonLibrary.Attributes;
 using UnityCommonLibrary.Utilities;
 using UnityEngine;
 
-namespace UnityCommonLibrary.Scripts
+namespace UnityCommonLibrary
 {
     public class AutoInstantiator
     {
