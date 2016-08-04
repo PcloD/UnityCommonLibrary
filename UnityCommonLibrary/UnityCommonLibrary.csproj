@@ -64,8 +64,10 @@
     <Compile Include="Input\InputWrapper.cs" />
     <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
     <Compile Include="Scripts\Invoker.cs" />
+    <Compile Include="Scripts\IUpdateable.cs" />
     <Compile Include="Scripts\LookAtCamera.cs" />
     <Compile Include="Scripts\MakeWorldBounds.cs" />
+    <Compile Include="Scripts\ManagedUpdater.cs" />
     <Compile Include="Scripts\MaterialOverrider.cs" />
     <Compile Include="Scripts\PanTexture.cs" />
     <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
