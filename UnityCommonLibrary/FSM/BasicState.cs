@@ -5,8 +5,8 @@ namespace UnityCommonLibrary.FSM
 {
     public sealed class BasicState : AbstractHPDAState
     {
-        public delegate IEnumerator OnStateAsyncEvent(AbstractHPDAState state);
-        public delegate void OnStateEvent(AbstractHPDAState state);
+        public delegate IEnumerator OnStateAsyncEvent(AbstractHPDAState otherState);
+        public delegate void OnStateEvent(AbstractHPDAState otherState);
         public delegate void OnStateTick();
 
         private OnStateAsyncEvent onEnterAsync;
