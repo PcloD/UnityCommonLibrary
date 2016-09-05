@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Editor\UCLEditorUtility.cs" />
     <Compile Include="Editor\GameObjectEditorUtilities.cs" />
     <Compile Include="Inspectors\CameraBounds2DInspector.cs" />
     <Compile Include="Editor\CanvasGroupActivator.cs" />
@@ -57,7 +58,6 @@
     <Compile Include="Inspectors\DisplayNameAttributeDrawer.cs" />
     <Compile Include="Inspectors\ReadOnlyAttributeDrawer.cs" />
     <Compile Include="Inspectors\SequenceInspector.cs" />
-    <Compile Include="Editor\ScriptableAssetWizard.cs" />
     <Compile Include="Inspectors\SelectorInspector.cs" />
     <Compile Include="Editor\SpriteUtility.cs" />
     <Compile Include="Editor\TestMaterialGenerator.cs" />

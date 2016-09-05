@@ -5,11 +5,16 @@ namespace UnityCommonLibrary
 {
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
+        private static bool isShuttingDown;
         private static T _get;
 
         public static T get {
             get {
-                if (_get == null)
+                if (isShuttingDown)
+                {
+                    return null;
+                }
+                if (!_get)
                 {
                     EnsureExists();
                 }
@@ -33,6 +38,11 @@ namespace UnityCommonLibrary
             {
                 Debug.LogError(string.Format("FindObjectsOfType<{0}>().Length == {1}", typeof(T).Name, all.Length));
             }
+        }
+
+        protected virtual void OnApplicationQuit()
+        {
+            isShuttingDown = true;
         }
     }
 

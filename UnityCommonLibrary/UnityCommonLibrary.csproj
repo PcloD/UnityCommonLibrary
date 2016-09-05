@@ -64,6 +64,7 @@
     <Compile Include="Input\InputWrapper.cs" />
     <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
     <Compile Include="Scripts\Invoker.cs" />
+    <Compile Include="Scripts\Jobs.cs" />
     <Compile Include="Scripts\LookAtCamera.cs" />
     <Compile Include="Scripts\MakeWorldBounds.cs" />
     <Compile Include="Scripts\MaterialOverrider.cs" />
