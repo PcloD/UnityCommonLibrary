@@ -34,11 +34,15 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\Unity5Projects\DownInTheValley\Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -64,10 +68,16 @@
     <Compile Include="Input\InputWrapper.cs" />
     <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
     <Compile Include="Scripts\Invoker.cs" />
+<<<<<<< HEAD
     <Compile Include="Scripts\Jobs.cs" />
+=======
+    <Compile Include="Scripts\IUpdateable.cs" />
+>>>>>>> bb0ed9e07eed561b2b308492f0c86ea3bbded0a1
     <Compile Include="Scripts\LookAtCamera.cs" />
     <Compile Include="Scripts\MakeWorldBounds.cs" />
+    <Compile Include="Scripts\ManagedUpdater.cs" />
     <Compile Include="Scripts\MaterialOverrider.cs" />
+    <Compile Include="Scripts\ObservedValue.cs" />
     <Compile Include="Scripts\PanTexture.cs" />
     <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
     <Compile Include="Scripts\TransformElement.cs" />
