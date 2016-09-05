@@ -68,11 +68,8 @@
     <Compile Include="Input\InputWrapper.cs" />
     <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
     <Compile Include="Scripts\Invoker.cs" />
-<<<<<<< HEAD
     <Compile Include="Scripts\Jobs.cs" />
-=======
     <Compile Include="Scripts\IUpdateable.cs" />
->>>>>>> bb0ed9e07eed561b2b308492f0c86ea3bbded0a1
     <Compile Include="Scripts\LookAtCamera.cs" />
     <Compile Include="Scripts\MakeWorldBounds.cs" />
     <Compile Include="Scripts\ManagedUpdater.cs" />

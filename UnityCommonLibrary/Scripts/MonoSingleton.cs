@@ -16,13 +16,19 @@ namespace UnityCommonLibrary
                 }
                 if (!_get)
                 {
-                    EnsureExists();
+                    GetOrCreate();
                 }
                 return _get;
             }
         }
-
-        private static void EnsureExists()
+        public static void EnsureExists()
+        {
+            if (!_get)
+            {
+                GetOrCreate();
+            }
+        }
+        private static void GetOrCreate()
         {
             var all = FindObjectsOfType<T>();
             if (all.Length == 0)
