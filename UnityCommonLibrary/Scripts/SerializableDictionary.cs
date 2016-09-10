@@ -4,74 +4,35 @@ using UnityEngine;
 
 namespace UnityCommonLibrary
 {
-    /// <summary>
-    /// Not really a dictionary.
-    /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
     [Serializable]
-    public class OrderedSerializedDictionary<TKey, TValue>
+    public abstract class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
         [SerializeField]
         private List<TKey> keys = new List<TKey>();
         [SerializeField]
         private List<TValue> values = new List<TValue>();
 
-        public int length
+        public void OnBeforeSerialize()
         {
-            get
+            keys.Clear();
+            values.Clear();
+            foreach (KeyValuePair<TKey, TValue> pair in this)
             {
-                return keys.Count;
+                keys.Add(pair.Key);
+                values.Add(pair.Value);
             }
         }
-
-        public bool ContainsKey(TKey key)
+        public void OnAfterDeserialize()
         {
-            return keys.Contains(key);
-        }
-
-        public bool ContainsValue(TValue value)
-        {
-            return values.Contains(value);
-        }
-
-        public KeyValuePair<TKey, TValue> this[int index]
-        {
-            get { return new KeyValuePair<TKey, TValue>(keys[index], values[index]); }
-        }
-
-        public TValue this[TKey key]
-        {
-            get { return values[keys.IndexOf(key)]; }
-        }
-
-        public void Add(TKey key, TValue value)
-        {
-            keys.Add(key);
-            values.Add(value);
-        }
-
-        public void Set(TKey key, TValue value)
-        {
-            Set(keys.IndexOf(key), value);
-        }
-
-        public void Set(int index, TValue value)
-        {
-            values[index] = value;
-        }
-
-        public void Remove(TKey key)
-        {
-            var index = keys.IndexOf(key);
-            RemoveAt(index);
-        }
-
-        public void RemoveAt(int index)
-        {
-            keys.RemoveAt(index);
-            values.RemoveAt(index);
+            Clear();
+            if (keys.Count != values.Count)
+            {
+                throw new Exception(string.Format("there are {0} keys and {1} values after deserialization. Make sure that both key and value types are serializable."));
+            }
+            for (int i = 0; i < keys.Count; i++)
+            {
+                Add(keys[i], values[i]);
+            }
         }
     }
-
 }
