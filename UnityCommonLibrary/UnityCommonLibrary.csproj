@@ -81,6 +81,7 @@
     <Compile Include="Time\TimeMode.cs" />
     <Compile Include="Time\TimeSlice.cs" />
     <Compile Include="Time\UTimer.cs" />
+    <Compile Include="Utilities\DebugUtility.cs" />
     <Compile Include="Utilities\RichTextUtility.cs" />
     <Compile Include="Utilities\StringUtility.cs" />
     <Compile Include="Utilities\TextureUtility.cs" />

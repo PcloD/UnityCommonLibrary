@@ -5,7 +5,6 @@ namespace UnityCommonLibrary.Utilities
 {
     public static class GameObjectUtility
     {
-
         public static T AddOrGetComponent<T>(this GameObject obj) where T : Component
         {
             T component = obj.GetComponent<T>();
