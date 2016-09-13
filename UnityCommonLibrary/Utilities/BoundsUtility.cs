@@ -4,7 +4,6 @@ namespace UnityCommonLibrary.Utilities
 {
     public static class BoundsUtility
     {
-
         /// <summary>
         /// Returns true if this bounds.size >= target.size in all axes.
         /// </summary>
@@ -30,6 +29,5 @@ namespace UnityCommonLibrary.Utilities
                 z = Random.Range(bounds.min.z, bounds.max.z)
             };
         }
-
     }
 }

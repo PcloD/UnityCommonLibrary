@@ -3,10 +3,9 @@ using UnityEngine;
 
 namespace UnityCommonLibrary
 {
-
     public abstract class AbstractPool<T>
     {
-        readonly Stack pool = new Stack();
+        private readonly Stack pool = new Stack();
 
         public int countActive { get; protected set; }
         public int countInactive { get { return pool.Count; } }
@@ -140,5 +139,4 @@ namespace UnityCommonLibrary
             obj.SendMessage("OnDestroy", SendMessageOptions.DontRequireReceiver);
         }
     }
-
 }

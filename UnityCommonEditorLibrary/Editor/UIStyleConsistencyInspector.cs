@@ -7,7 +7,6 @@ namespace UnityCommonEditorLibrary
     [CustomEditor(typeof(UIStyleConsistency))]
     public class UIStyleConsistencyInspector : Editor
     {
-
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -17,6 +16,5 @@ namespace UnityCommonEditorLibrary
                 (target as UIStyleConsistency).FullUpdate();
             }
         }
-
     }
 }

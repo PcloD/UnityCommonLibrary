@@ -11,7 +11,6 @@ namespace UnityCommonLibrary.UI
     [RequireComponent(typeof(VerticalLayoutGroup))]
     public class UIList : MonoBehaviour
     {
-
         public delegate void OnSelectionChanged(ListItem oldItem, ListItem newItem);
 
         public delegate void OnRefreshComplete();
@@ -19,37 +18,37 @@ namespace UnityCommonLibrary.UI
         public delegate void OnClearComplete();
 
         [SerializeField, Header("Text Settings")]
-        int fontSize;
+        private int fontSize;
 
         [SerializeField]
-        FontStyle fontStyle;
+        private FontStyle fontStyle;
 
         [SerializeField]
-        Font font;
+        private Font font;
 
         [SerializeField]
-        bool supportRichText = false;
+        private bool supportRichText = false;
 
         [SerializeField]
-        float top, left, right, bottom;
+        private float top, left, right, bottom;
 
         [SerializeField, Header("Background Settings")]
-        Color backgroundColor;
+        private Color backgroundColor;
 
         [SerializeField]
-        Color alternateColor;
+        private Color alternateColor;
 
         [SerializeField]
-        bool alternateColors;
+        private bool alternateColors;
 
         [Header("Items")]
         public List<string> elements = new List<string>();
 
         public ListItem selected { get; private set; }
 
-        List<ListItem> cells = new List<ListItem>();
-        bool refreshing;
-        bool clearing;
+        private List<ListItem> cells = new List<ListItem>();
+        private bool refreshing;
+        private bool clearing;
 
         public event OnSelectionChanged SelectionChanged;
 
@@ -64,7 +63,7 @@ namespace UnityCommonLibrary.UI
             StartCoroutine(_RefreshList());
         }
 
-        void Update()
+        private void Update()
         {
             if (elements.Count != cells.Count)
             {
@@ -93,7 +92,7 @@ namespace UnityCommonLibrary.UI
             }
         }
 
-        IEnumerator _RefreshList()
+        private IEnumerator _RefreshList()
         {
             if (!refreshing)
             {
@@ -122,7 +121,7 @@ namespace UnityCommonLibrary.UI
             refreshing = false;
         }
 
-        void DestroyLastListItem()
+        private void DestroyLastListItem()
         {
             var last = cells[cells.Count - 1];
             cells.RemoveAt(cells.Count - 1);
@@ -136,7 +135,7 @@ namespace UnityCommonLibrary.UI
             }
         }
 
-        ListItem CreateListItem()
+        private ListItem CreateListItem()
         {
             var newChild = new GameObject("ListItem");
             var newText = new GameObject("ListItemText");
@@ -167,7 +166,7 @@ namespace UnityCommonLibrary.UI
             return listItem;
         }
 
-        void FireSelectionChanged(ListItem newItem)
+        private void FireSelectionChanged(ListItem newItem)
         {
             var oldItem = selected;
             selected = newItem;
@@ -177,7 +176,7 @@ namespace UnityCommonLibrary.UI
             }
         }
 
-        void ResetTransform(Transform t)
+        private void ResetTransform(Transform t)
         {
             t.localPosition = Vector3.zero;
             t.localRotation = Quaternion.identity;

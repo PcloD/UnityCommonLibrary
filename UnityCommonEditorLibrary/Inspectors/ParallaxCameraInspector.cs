@@ -9,7 +9,7 @@ namespace UnityCommonEditorLibrary.Inspectors
     {
         private ParallaxCamera options;
 
-        void Awake()
+        private void Awake()
         {
             options = (ParallaxCamera)target;
         }

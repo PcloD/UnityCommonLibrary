@@ -39,7 +39,6 @@ namespace UnityCommonLibrary.FSM
             if (obj == null)
             {
                 return false;
-
             }
             var other = obj as AbstractHPDAState;
             if (other == null)

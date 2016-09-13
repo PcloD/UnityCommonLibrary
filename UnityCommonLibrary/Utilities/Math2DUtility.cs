@@ -4,7 +4,6 @@ namespace UnityCommonLibrary.Utilities
 {
     public static class Math2DUtility
     {
-
         public static float AngleRaw(Transform a, Transform b)
         {
             return AngleRaw(a.position, b.position);

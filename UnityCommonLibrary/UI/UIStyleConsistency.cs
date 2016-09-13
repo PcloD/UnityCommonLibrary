@@ -7,11 +7,11 @@ namespace UnityCommonLibrary.UI
     public class UIStyleConsistency : MonoBehaviour
     {
         [SerializeField, Header("Selectables")]
-        ColorBlock selectable;
+        private ColorBlock selectable;
         [SerializeField, Header("Font")]
-        Font font;
+        private Font font;
 
-        void Update()
+        private void Update()
         {
             var selectables = Selectable.allSelectables;
             foreach (var s in selectables)
@@ -30,10 +30,9 @@ namespace UnityCommonLibrary.UI
             }
         }
 
-        void Reset()
+        private void Reset()
         {
             selectable = ColorBlock.defaultColorBlock;
         }
-
     }
 }

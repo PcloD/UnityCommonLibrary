@@ -18,6 +18,5 @@ namespace UnityCommonLibrary
             transform.Translate(movement, movementSpace);
             transform.Rotate(rotation, rotationSpace);
         }
-
     }
 }

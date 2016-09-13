@@ -4,7 +4,6 @@ namespace UnityCommonLibrary.Utilities
 {
     public static class PathUtility
     {
-
         public static string Combine(params string[] paths)
         {
             var path = string.Empty;
@@ -14,6 +13,5 @@ namespace UnityCommonLibrary.Utilities
             }
             return path;
         }
-
     }
 }

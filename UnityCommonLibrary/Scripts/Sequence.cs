@@ -7,7 +7,7 @@ namespace UnityCommonLibrary
 {
     /// <summary>
     /// Represents a series of Coroutines for creating
-    /// defined sequences of events, like an in-game cutscene or 
+    /// defined sequences of events, like an in-game cutscene or
     /// tutorial.
     /// </summary>
     public abstract class Sequence : MonoBehaviour
@@ -66,18 +66,14 @@ namespace UnityCommonLibrary
         /// The current playback status of this sequence.
         /// </summary>
         public Status status { get; private set; }
-        public bool isRunningRoutine
-        {
-            get
-            {
+        public bool isRunningRoutine {
+            get {
                 return routineExecutor != null;
             }
         }
         public int totalRoutineCount { get; private set; }
-        public int routinesLeft
-        {
-            get
-            {
+        public int routinesLeft {
+            get {
                 return routines.Count;
             }
         }
@@ -384,7 +380,7 @@ namespace UnityCommonLibrary
             yield return new WaitForSeconds(time);
         }
         /// <summary>
-        /// Invokes a method without blocking. 
+        /// Invokes a method without blocking.
         /// </summary>
         /// <param name="a">The callback to invoke.</param>
         protected internal IEnumerator MainThread(Action a)
@@ -393,7 +389,7 @@ namespace UnityCommonLibrary
             yield break;
         }
         /// <summary>
-        /// Invokes a Coroutine without blocking. 
+        /// Invokes a Coroutine without blocking.
         /// </summary>
         /// <param name="a">The coroutine to start.</param>
         protected internal IEnumerator NonBlock(IEnumerator ienum)

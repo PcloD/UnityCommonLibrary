@@ -4,7 +4,6 @@ namespace UnityCommonLibrary.Utilities
 {
     public static class TrigUtility
     {
-
         public static float NormalizeAngle(float x, float a, float b)
         {
             var width = b - a;
@@ -43,6 +42,5 @@ namespace UnityCommonLibrary.Utilities
         {
             return new Vector3(Mathf.Sin(degrees * Mathf.Deg2Rad), 0f, Mathf.Cos(degrees * Mathf.Deg2Rad));
         }
-
     }
 }

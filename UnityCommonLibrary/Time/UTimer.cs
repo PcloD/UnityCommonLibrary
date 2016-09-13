@@ -67,10 +67,8 @@ namespace UnityCommonLibrary.Time
         /// <summary>
         /// Returns a new TimeSpan object representing the current value.
         /// </summary>
-        public TimeSpan span
-        {
-            get
-            {
+        public TimeSpan span {
+            get {
                 return TimeSpan.FromSeconds(value);
             }
         }
@@ -78,10 +76,8 @@ namespace UnityCommonLibrary.Time
         /// The current interval, returns 0 if <see cref="mechanism"/>
         /// == Timer.
         /// </summary>
-        public uint interval
-        {
-            get
-            {
+        public uint interval {
+            get {
                 return mechanism == Mechanism.Timer ? 0 : nextInterval - 1;
             }
         }

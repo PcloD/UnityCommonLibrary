@@ -5,7 +5,6 @@ namespace UnityCommonEditorLibrary
 {
     public class SpriteUtility : MonoBehaviour
     {
-
         [MenuItem("CONTEXT/Rigidbody2D/Ground Sprite")]
         public static void GroundSprite(MenuCommand command)
         {
@@ -24,6 +23,5 @@ namespace UnityCommonEditorLibrary
 
             DestroyImmediate(p2d);
         }
-
     }
 }

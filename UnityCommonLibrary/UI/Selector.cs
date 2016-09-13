@@ -104,6 +104,5 @@ namespace UnityCommonLibrary.UI
                 selected = options.Count - 1;
             }
         }
-
     }
 }

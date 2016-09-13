@@ -7,7 +7,6 @@ namespace UnityCommonEditorLibrary.Inspectors
     [CustomPropertyDrawer(typeof(DisplayNameAttribute))]
     public class DisplayNameAttributeDrawer : PropertyDrawer
     {
-
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             return EditorGUI.GetPropertyHeight(property, (attribute as DisplayNameAttribute).label);
@@ -17,6 +16,5 @@ namespace UnityCommonEditorLibrary.Inspectors
         {
             EditorGUI.PropertyField(position, property, (attribute as DisplayNameAttribute).label, true);
         }
-
     }
 }

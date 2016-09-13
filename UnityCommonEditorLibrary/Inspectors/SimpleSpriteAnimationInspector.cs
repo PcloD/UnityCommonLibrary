@@ -68,6 +68,5 @@ namespace UnityCommonEditorLibrary.Inspectors
                 serializedObject.ApplyModifiedProperties();
             }
         }
-
     }
 }

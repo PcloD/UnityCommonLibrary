@@ -39,6 +39,5 @@ namespace UnityCommonLibrary
                 transform.rotation = Quaternion.Euler(fakeParent.transform.eulerAngles + localRotation);
             }
         }
-
     }
 }

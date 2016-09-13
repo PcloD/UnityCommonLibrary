@@ -4,7 +4,6 @@ namespace UnityCommonLibrary.Utilities
 {
     public static class MathUtility
     {
-
         /// <summary>
         /// Clamps a float to the -1...1 inclusive range
         /// </summary>
@@ -75,7 +74,6 @@ namespace UnityCommonLibrary.Utilities
             var multiple = 1f / nearest;
             return (float)Math.Round(f * multiple, MidpointRounding.AwayFromZero) / multiple;
         }
-
 
         public static float Map(float value, float oldMin, float oldMax, float newMin, float newMax)
         {

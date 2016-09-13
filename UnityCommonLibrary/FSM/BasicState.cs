@@ -5,79 +5,79 @@ namespace UnityCommonLibrary.FSM
 {
     public sealed class BasicState : AbstractHPDAState
     {
-        public delegate IEnumerator OnStateAsyncEvent(AbstractHPDAState otherState);
-        public delegate void OnStateEvent(AbstractHPDAState otherState);
-        public delegate void OnStateTick();
+        public delegate IEnumerator StateAsyncEvent(AbstractHPDAState otherState);
+        public delegate void StateEvent(AbstractHPDAState otherState);
+        public delegate void StateTick();
 
-        private OnStateAsyncEvent onEnterAsync;
-        private OnStateAsyncEvent onExitAsync;
-        private OnStateEvent onEnter;
-        private OnStateEvent onExit;
-        private OnStateTick onTick;
+        private event StateAsyncEvent OnEnterAsync;
+        private event StateAsyncEvent OnExitAsync;
+        private event StateEvent OnEnter;
+        private event StateEvent OnExit;
+        private event StateTick OnTick;
 
         public BasicState(string id = null, bool useAsyncEnter = false, bool useAsyncExit = false)
             : base(id, useAsyncEnter, useAsyncExit)
         { }
 
-        public BasicState AddOnEnterAsync(OnStateAsyncEvent onEnterAsync)
+        public BasicState AddOnEnterAsync(StateAsyncEvent onEnterAsync)
         {
-            this.onEnterAsync += onEnterAsync;
+            OnEnterAsync += onEnterAsync;
             return this;
         }
-        public BasicState AddOnExitAsync(OnStateAsyncEvent onExitAsync)
+        public BasicState AddOnExitAsync(StateAsyncEvent onExitAsync)
         {
-            this.onExitAsync += onExitAsync;
+            OnExitAsync += onExitAsync;
             return this;
         }
-        public BasicState AddOnEnter(OnStateEvent onEnter)
+        public BasicState AddOnEnter(StateEvent onEnter)
         {
-            this.onEnter += onEnter;
+            OnEnter += onEnter;
             return this;
         }
-        public BasicState AddOnExit(OnStateEvent onExit)
+        public BasicState AddOnExit(StateEvent onExit)
         {
-            this.onExit += onExit;
+            OnExit += onExit;
             return this;
         }
-        public BasicState AddOnTick(OnStateTick onTick)
+        public BasicState AddOnTick(StateTick onTick)
         {
-            this.onTick += onTick;
+            OnTick += onTick;
             return this;
         }
 
         public sealed override IEnumerator EnterAsync(AbstractHPDAState currentState)
         {
-            if (onEnterAsync != null)
+            if (OnEnterAsync != null)
             {
-                yield return CoroutineUtility.StartCoroutine(onEnterAsync(currentState));
+                yield return CoroutineUtility.StartCoroutine(OnEnterAsync(currentState));
             }
         }
         public sealed override IEnumerator ExitAsync(AbstractHPDAState nextState)
         {
-            if (onExitAsync != null)
+            if (OnExitAsync != null)
             {
-                yield return CoroutineUtility.StartCoroutine(onExitAsync(nextState));
+                yield return CoroutineUtility.StartCoroutine(OnExitAsync(nextState));
             }
         }
         public sealed override void Enter(AbstractHPDAState previousState)
         {
-            if (onEnter != null)
+            if (OnEnter != null)
             {
-                onEnter(previousState);
+                OnEnter(previousState);
             }
         }
         public sealed override void Exit(AbstractHPDAState nextState)
         {
-            if (onExit != null)
+            if (OnExit != null)
             {
-                onExit(nextState);
+                OnExit(nextState);
             }
         }
         public sealed override void Tick()
         {
-            if (onTick != null)
+            if (OnTick != null)
             {
-                onTick();
+                OnTick();
             }
         }
 

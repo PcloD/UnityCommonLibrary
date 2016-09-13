@@ -8,18 +8,18 @@ namespace UnityCommonEditorLibrary
 {
     public class TestMaterialGenerator : ScriptableWizard
     {
-        static TestMaterialGenerator wizard;
-        static string saveFolder, projRelativeSaveFolder, filename = "TestMaterial";
-        static bool isFoldout = true;
+        private static TestMaterialGenerator wizard;
+        private static string saveFolder, projRelativeSaveFolder, filename = "TestMaterial";
+        private static bool isFoldout = true;
 
         public static Color32 primary = new Color32(255, 255, 255, 255);
         public static Color32 secondary = new Color32(190, 190, 190, 255);
         public static List<Vector2> scales = new List<Vector2>();
 
-        Texture2D texture;
+        private Texture2D texture;
 
         [MenuItem("Assets/Create/Test Materials")]
-        static void CreateWizard()
+        private static void CreateWizard()
         {
             wizard = DisplayWizard<TestMaterialGenerator>("Create Test Material", "Create");
             if (scales.Count == 0)
@@ -34,13 +34,13 @@ namespace UnityCommonEditorLibrary
             }
         }
 
-        void OnWizardCreate()
+        private void OnWizardCreate()
         {
             CreateTexture();
             CreateMaterials();
         }
 
-        void CreateMaterials()
+        private void CreateMaterials()
         {
             var distinct = scales.Distinct();
             foreach (var s in distinct)
@@ -65,7 +65,7 @@ namespace UnityCommonEditorLibrary
             return EditorGUI.EndChangeCheck();
         }
 
-        void DrawScales()
+        private void DrawScales()
         {
             isFoldout = EditorGUILayout.Foldout(isFoldout, "Scales");
             if (isFoldout)
@@ -84,7 +84,7 @@ namespace UnityCommonEditorLibrary
             }
         }
 
-        void ResizeList<T>(List<T> list, int count)
+        private void ResizeList<T>(List<T> list, int count)
         {
             count = Mathf.Clamp(count, 0, int.MaxValue);
             while (list.Count > count)
@@ -104,13 +104,13 @@ namespace UnityCommonEditorLibrary
             }
         }
 
-        void DrawColorFields()
+        private void DrawColorFields()
         {
             primary = EditorGUILayout.ColorField("Primary", primary);
             secondary = EditorGUILayout.ColorField("Secondary", secondary);
         }
 
-        void UpdateValidity()
+        private void UpdateValidity()
         {
             if (projRelativeSaveFolder == null || projRelativeSaveFolder.Length == 0)
             {
@@ -171,6 +171,5 @@ namespace UnityCommonEditorLibrary
             importer.textureType = TextureImporterType.Image;
             importer.SaveAndReimport();
         }
-
     }
 }

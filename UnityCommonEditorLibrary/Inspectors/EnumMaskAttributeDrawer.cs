@@ -10,7 +10,6 @@ namespace UnityCommonEditorLibrary.Inspectors
     [CustomPropertyDrawer(typeof(EnumMaskAttribute))]
     public class EnumMaskAttributeDrawer : PropertyDrawer
     {
-
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             var targetEnum = PropertyDrawerUtils.GetBaseProperty<Enum>(property);
@@ -24,7 +23,6 @@ namespace UnityCommonEditorLibrary.Inspectors
 
     public static class PropertyDrawerUtils
     {
-
         public static T GetBaseProperty<T>(SerializedProperty prop)
         {
             var target = prop.serializedObject.targetObject;

@@ -8,7 +8,6 @@ namespace UnityCommonEditorLibrary.Inspectors
 {
     public static class SelectorInspector
     {
-
         [MenuItem("GameObject/UI/Selector", false)]
         public static void CreateSelector(MenuCommand command)
         {
@@ -188,6 +187,5 @@ namespace UnityCommonEditorLibrary.Inspectors
                 Selection.activeGameObject = esys.gameObject;
             }
         }
-
     }
 }

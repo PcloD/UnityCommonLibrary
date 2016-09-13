@@ -16,17 +16,13 @@
         private readonly AbstractHPDAState _state;
         private readonly Type _type;
 
-        public AbstractHPDAState state
-        {
-            get
-            {
+        public AbstractHPDAState state {
+            get {
                 return _state;
             }
         }
-        public Type type
-        {
-            get
-            {
+        public Type type {
+            get {
                 return _type;
             }
         }

@@ -12,10 +12,8 @@ namespace UnityCommonLibrary
         public bool loop;
         public Sprite[] frames;
 
-        public UTimer timer
-        {
-            get
-            {
+        public UTimer timer {
+            get {
                 return _timer;
             }
         }

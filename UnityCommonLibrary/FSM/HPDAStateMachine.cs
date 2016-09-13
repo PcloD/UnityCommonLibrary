@@ -19,8 +19,11 @@ namespace UnityCommonLibrary.FSM
     {
         private static readonly Dictionary<int, HPDAStateMachine> allMachines = new Dictionary<int, HPDAStateMachine>();
 
-        public delegate void OnStateSwitch(string previousState, string nextState);
-        public event OnStateSwitch onStateSwitched;
+        public delegate void LogFormat(string log);
+        public static event LogFormat OnLogFormat;
+
+        public delegate void StateSwitched(string previousState, string nextState);
+        public event StateSwitched OnStateSwitched;
 
         public bool log;
         private Dictionary<int, AbstractHPDAState> states = new Dictionary<int, AbstractHPDAState>();
@@ -44,11 +47,13 @@ namespace UnityCommonLibrary.FSM
                 return currentState.id;
             }
         }
+        public string previousStateID {
+            get {
+                return previousState.id;
+            }
+        }
         public Status status { get; private set; }
         public string id { get; private set; }
-        /// <summary>
-        /// Exposes the number of states in the PDA history stack.
-        /// </summary>
         public int historyCount {
             get {
                 return history.Count;
@@ -62,16 +67,11 @@ namespace UnityCommonLibrary.FSM
         }
         public HPDAStateMachine AddState(AbstractHPDAState state)
         {
-            switch (status)
+            if (states.Count == 0)
             {
-                case Status.Stopped:
-                    if (states.Count == 0)
-                    {
-                        previousState = state;
-                    }
-                    states.Add(state.GetHashCode(), state);
-                    break;
+                previousState = state;
             }
+            states.Add(state.GetHashCode(), state);
             return this;
         }
         public void EngageMachine()
@@ -192,6 +192,10 @@ namespace UnityCommonLibrary.FSM
         /// <returns>A StateSwitch object for further configuration.</returns>
         private StateSwitch SwitchState(AbstractHPDAState state, StateSwitch.Type type)
         {
+            if (currentState == state)
+            {
+                return null;
+            }
             var stateSwitch = new StateSwitch(state, type);
             switchQueue.Enqueue(stateSwitch);
             return stateSwitch;
@@ -248,9 +252,9 @@ namespace UnityCommonLibrary.FSM
             currentState.timeEntered = TimeSlice.Create();
             status = Status.InState;
             switchRoutine = null;
-            if (onStateSwitched != null)
+            if (OnStateSwitched != null)
             {
-                onStateSwitched(previousState == null ? string.Empty : previousState.id, currentState.id);
+                OnStateSwitched(previousState == null ? string.Empty : previousState.id, currentState.id);
             }
         }
         private void StopCoroutines(params Coroutine[] routines)
@@ -267,7 +271,15 @@ namespace UnityCommonLibrary.FSM
         {
             if (log)
             {
-                Debug.LogFormat("[{0}] {1}", id, string.Format(format, args));
+                var str = string.Format("[{0}] {1}", id, string.Format(format, args));
+                if (OnLogFormat == null)
+                {
+                    Debug.Log(str);
+                }
+                else
+                {
+                    OnLogFormat(str);
+                }
             }
         }
         #endregion
@@ -292,13 +304,6 @@ namespace UnityCommonLibrary.FSM
         public bool IsInState(AbstractHPDAState state)
         {
             return currentState == state;
-        }
-        public static void EngageAllMachines()
-        {
-            foreach (var kvp in allMachines)
-            {
-                kvp.Value.EngageMachine();
-            }
         }
         #endregion
 

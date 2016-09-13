@@ -7,16 +7,16 @@ namespace UnityCommonLibrary
 {
     public class ArraySelector<T>
     {
-        T[] array;
-        int lastSelected;
-        Queue<int> indiciesLeft = new Queue<int>();
+        private T[] array;
+        private int lastSelected;
+        private Queue<int> indiciesLeft = new Queue<int>();
 
         public ArraySelector(T[] array)
         {
             this.array = array;
         }
 
-        void ResetIndexList()
+        private void ResetIndexList()
         {
             if (array.Length == 1)
             {

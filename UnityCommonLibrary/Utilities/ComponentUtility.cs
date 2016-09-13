@@ -5,7 +5,6 @@ namespace UnityCommonLibrary.Utilities
 {
     public static class ComponentUtility
     {
-
         public static T Create<T>() where T : Component
         {
             return Create<T>(typeof(T).Name);
@@ -36,6 +35,5 @@ namespace UnityCommonLibrary.Utilities
                 }
             }
         }
-
     }
 }

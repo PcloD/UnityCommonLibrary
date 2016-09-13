@@ -4,7 +4,6 @@ namespace UnityCommonLibrary.Utilities
 {
     public static class RandomUtility
     {
-
         public static Vector4 Vector4(float min, float max)
         {
             return new Vector4(Random.Range(min, max), Random.Range(min, max), Random.Range(min, max), Random.Range(min, max));
@@ -29,6 +28,5 @@ namespace UnityCommonLibrary.Utilities
         {
             return Random.Range(-1f, 1f);
         }
-
     }
 }

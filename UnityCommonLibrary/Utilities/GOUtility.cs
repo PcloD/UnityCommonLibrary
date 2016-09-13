@@ -58,6 +58,5 @@ namespace UnityCommonLibrary.Utilities
                 }
             }
         }
-
     }
 }

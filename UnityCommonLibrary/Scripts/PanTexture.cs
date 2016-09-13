@@ -8,7 +8,6 @@ namespace UnityCommonLibrary
         public Vector2 speed;
         public Time.TimeMode timeMode;
 
-
         private new Renderer renderer;
         private Material material;
         private Vector2 offset;
@@ -26,6 +25,5 @@ namespace UnityCommonLibrary
             offset.y %= 1f;
             material.SetTextureOffset("_MainTex", offset);
         }
-
     }
 }

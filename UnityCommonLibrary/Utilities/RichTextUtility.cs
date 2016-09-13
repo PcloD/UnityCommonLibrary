@@ -4,7 +4,6 @@ namespace UnityCommonLibrary.Utilities
 {
     public static class RichTextUtility
     {
-
         public static string MakeColored(this string s, Color c)
         {
             return string.Format("<color=#{0}>{1}</color>", ColorUtility.ToHtmlStringRGB(c), s);
@@ -19,6 +18,5 @@ namespace UnityCommonLibrary.Utilities
         {
             return string.Format("<i>{0}</i>", s);
         }
-
     }
 }

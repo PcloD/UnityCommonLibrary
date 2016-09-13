@@ -8,20 +8,19 @@ namespace UnityCommonLibrary.UI
     [ExecuteInEditMode]
     public class SliderEffects : MonoBehaviour
     {
+        [SerializeField]
+        private Text text;
 
         [SerializeField]
-        Text text;
+        private string formatStr = "{0}";
 
         [SerializeField]
-        string formatStr = "{0}";
+        private Gradient fill = new Gradient();
 
-        [SerializeField]
-        Gradient fill = new Gradient();
+        private Image fillImg;
+        private Slider slider;
 
-        Image fillImg;
-        Slider slider;
-
-        void Update()
+        private void Update()
         {
             if (slider == null)
             {

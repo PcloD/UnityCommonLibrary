@@ -48,7 +48,6 @@ namespace UnityCommonLibrary.Attributes
         {
             return validRelatives == rule;
         }
-
     }
 
     [Flags]

@@ -7,7 +7,6 @@ namespace UnityCommonEditorLibrary.Inspectors
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
     public class ReadOnlyAttributeDrawer : DecoratorDrawer
     {
-
         public override float GetHeight()
         {
             return 0f;
@@ -17,6 +16,5 @@ namespace UnityCommonEditorLibrary.Inspectors
         {
             GUI.enabled = false;
         }
-
     }
 }

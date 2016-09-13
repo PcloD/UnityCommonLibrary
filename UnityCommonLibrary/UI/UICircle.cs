@@ -16,10 +16,8 @@ namespace UnityCommonLibrary.UI
         [Range(0, 50)]
         public int segments = 50;
 
-        public override Texture mainTexture
-        {
-            get
-            {
+        public override Texture mainTexture {
+            get {
                 return s_WhiteTexture;
             }
         }

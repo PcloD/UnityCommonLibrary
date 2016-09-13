@@ -4,7 +4,6 @@ namespace UnityCommonLibrary.Utilities
 {
     public static class GradientUtility
     {
-
         public static Gradient MakeRainbow(this Gradient g)
         {
             g.SetColors(new Color(1f, 0f, 0f),
@@ -52,6 +51,5 @@ namespace UnityCommonLibrary.Utilities
             g.alphaKeys = keys;
             return g;
         }
-
     }
 }

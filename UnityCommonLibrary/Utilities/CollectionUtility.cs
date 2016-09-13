@@ -7,7 +7,6 @@ namespace UnityCommonLibrary.Utilities
 {
     public static class CollectionUtility
     {
-
         public static void Shuffle<T>(this IList<T> list)
         {
             var n = list.Count;
@@ -48,6 +47,5 @@ namespace UnityCommonLibrary.Utilities
             }
             return array;
         }
-
     }
 }

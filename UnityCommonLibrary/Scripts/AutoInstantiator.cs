@@ -8,7 +8,6 @@ namespace UnityCommonLibrary
 {
     public class AutoInstantiator
     {
-
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Load()
         {
@@ -34,6 +33,5 @@ namespace UnityCommonLibrary
                 }
             }
         }
-
     }
 }

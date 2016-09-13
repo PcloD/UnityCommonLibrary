@@ -4,14 +4,11 @@ using UnityEngine;
 
 namespace UnityCommonLibrary.Utilities
 {
-
     public static class CoroutineUtility
     {
         private static EmptyMonoBehaviour _surrogate;
-        private static EmptyMonoBehaviour surrogate
-        {
-            get
-            {
+        private static EmptyMonoBehaviour surrogate {
+            get {
                 EnsureSurrogate();
                 return _surrogate;
             }
