@@ -52,10 +52,7 @@
     <Compile Include="Colliders\ColliderUnityEvents2D.cs" />
     <Compile Include="Colliders\ColliderUnityEvents.cs" />
     <Compile Include="Colliders\ColliderEvents.cs" />
-    <Compile Include="FSM\BasicState.cs" />
-    <Compile Include="FSM\AbstractHPDAState.cs" />
-    <Compile Include="FSM\HPDAStateMachine.cs" />
-    <Compile Include="FSM\NullState.cs" />
+    <Compile Include="FSM\UCLStateMachine.cs" />
     <Compile Include="FSM\StateSwitch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\ArraySelector.cs" />

@@ -1,4 +1,6 @@
-﻿namespace UnityCommonLibrary.FSM
+﻿using System;
+
+namespace UnityCommonLibrary.FSM
 {
     /// <summary>
     /// Implementing the command design pattern,
@@ -8,15 +10,15 @@
     /// TODO: Determine how we can use this class to pass information
     /// from one state to another on switch. Maybe look at using generics.
     /// </remarks>
-    public class StateSwitch
+    public class StateSwitch<T> where T : struct, IFormattable, IConvertible, IComparable
     {
-        public delegate void OnSwitchEvent();
-        public event OnSwitchEvent onSwitch;
+        public delegate void OnSwitch();
+        public event OnSwitch Switch;
 
-        private readonly AbstractHPDAState _state;
+        private readonly T _state;
         private readonly Type _type;
 
-        public AbstractHPDAState state {
+        public T state {
             get {
                 return _state;
             }
@@ -27,7 +29,7 @@
             }
         }
 
-        public StateSwitch(AbstractHPDAState state, Type type)
+        public StateSwitch(T state, Type type)
         {
             _state = state;
             _type = type;
@@ -44,9 +46,9 @@
 
         internal void FireOnSwitch()
         {
-            if (onSwitch != null)
+            if (Switch != null)
             {
-                onSwitch();
+                Switch();
             }
         }
     }
