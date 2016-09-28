@@ -119,6 +119,7 @@
     <Compile Include="UI\UIStyleConsistency.cs" />
     <Compile Include="UI\Selector.cs" />
     <Compile Include="UI\WorldCanvasSizer.cs" />
+    <Compile Include="Utilities\UIUtility.cs" />
     <Compile Include="Utilities\VectorUtility.cs" />
   </ItemGroup>
   <ItemGroup />
