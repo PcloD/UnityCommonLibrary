@@ -81,14 +81,18 @@ namespace UnityCommonLibrary.Utilities
 
         public static Transform FindChildDeep(this Transform t, string name)
         {
-            var child = t.Find(name);
-            if(child)
-            {
-                return child;
-            }
             for(int i = 0; i < t.childCount; i++)
             {
-                FindChildDeep(t.GetChild(i), name);
+                var child = t.GetChild(i);
+                if(child.name == name)
+                {
+                    return child;
+                }
+                child = FindChildDeep(t.GetChild(i), name);
+                if(child)
+                {
+                    return child;
+                }
             }
             return null;
         }

@@ -52,15 +52,17 @@ namespace UnityCommonLibrary.FSM
         public T previousState { get; private set; }
         public Status status { get; private set; }
         public string id { get; private set; }
-        public int historyCount {
-            get {
+        public int historyCount
+        {
+            get
+            {
                 return history.Count;
             }
         }
 
         public UCLStateMachine(string id = null)
         {
-            if (!typeof(T).IsEnum)
+            if(!typeof(T).IsEnum)
             {
                 throw new Exception("T must be Enum");
             }
@@ -95,7 +97,7 @@ namespace UnityCommonLibrary.FSM
         }
         public void EngageMachine()
         {
-            switch (status)
+            switch(status)
             {
                 case Status.Stopped:
                     initialSwitch = true;
@@ -107,11 +109,11 @@ namespace UnityCommonLibrary.FSM
         }
         public void Tick()
         {
-            switch (status)
+            switch(status)
             {
                 case Status.InState:
                     // Switch to next state if not switching
-                    if (switchQueue.Count > 0)
+                    if(switchQueue.Count > 0)
                     {
                         var nextSwitch = switchQueue.Dequeue();
                         StopCoroutines(switchRoutine, enterRoutine, exitRoutine);
@@ -120,7 +122,7 @@ namespace UnityCommonLibrary.FSM
                     else
                     {
                         Action tick;
-                        if (onStateTick.TryGetValue(currentState, out tick))
+                        if(onStateTick.TryGetValue(currentState, out tick))
                         {
                             tick();
                         }
@@ -150,7 +152,7 @@ namespace UnityCommonLibrary.FSM
         /// <returns>A StateSwitch object for further configuration, or null if history is empty.</returns>
         public StateSwitch<T> Rewind()
         {
-            if (history.Count > 0)
+            if(history.Count > 0)
             {
                 return SwitchState(history.Pop(), StateSwitch<T>.Type.Rewind);
             }
@@ -168,7 +170,7 @@ namespace UnityCommonLibrary.FSM
         /// <returns>A StateSwitch object for further configuration.</returns>
         private StateSwitch<T> SwitchState(T state, StateSwitch<T>.Type type)
         {
-            if (!initialSwitch && currentState.Equals(state))
+            if(!initialSwitch && currentState.Equals(state))
             {
                 return null;
             }
@@ -183,14 +185,14 @@ namespace UnityCommonLibrary.FSM
         private IEnumerator SwitchStateRoutine(StateSwitch<T> @switch)
         {
             Log("Begin SwitchState type '{0}'", @switch.type);
-            if (!initialSwitch)
+            if(!initialSwitch)
             {
                 Log("Exiting state '{0}'", currentState);
                 // Exit current
                 status = Status.ExitingState;
 
                 OnStateAsync onExitAsync;
-                if (onStateExitAsync.TryGetValue(currentState, out onExitAsync))
+                if(onStateExitAsync.TryGetValue(currentState, out onExitAsync))
                 {
                     // Wait for exiting state to finish exiting.
                     exitRoutine = CoroutineUtility.StartCoroutine(onExitAsync(@switch.state));
@@ -198,12 +200,12 @@ namespace UnityCommonLibrary.FSM
                     exitRoutine = null;
                 }
                 OnState onExit;
-                if (onStateExit.TryGetValue(currentState, out onExit))
+                if(onStateExit.TryGetValue(currentState, out onExit))
                 {
                     onExit(@switch.state);
                 }
                 // Only push the exiting state to history if not rewinding
-                if (@switch.type == StateSwitch<T>.Type.Switch)
+                if(@switch.type == StateSwitch<T>.Type.Switch)
                 {
                     previousState = currentState;
                     history.Push(currentState);
@@ -218,7 +220,7 @@ namespace UnityCommonLibrary.FSM
             Log("Entering state '{0}'", currentState);
             status = Status.EnteringState;
             OnStateAsync onEnterAsync;
-            if (onStateEnterAsync.TryGetValue(currentState, out onEnterAsync))
+            if(onStateEnterAsync.TryGetValue(currentState, out onEnterAsync))
             {
                 // Wait for exiting state to finish exiting.
                 exitRoutine = CoroutineUtility.StartCoroutine(onEnterAsync(@switch.state));
@@ -226,14 +228,14 @@ namespace UnityCommonLibrary.FSM
                 exitRoutine = null;
             }
             OnState onEnter;
-            if (onStateEnter.TryGetValue(currentState, out onEnter))
+            if(onStateEnter.TryGetValue(currentState, out onEnter))
             {
                 onEnter(@switch.state);
             }
             lastSwitchTime = TimeSlice.Create();
             status = Status.InState;
             switchRoutine = null;
-            if (!initialSwitch && StateSwitched != null)
+            if(!initialSwitch && StateSwitched != null)
             {
                 StateSwitched(previousState, currentState);
             }
@@ -241,9 +243,9 @@ namespace UnityCommonLibrary.FSM
         }
         private void StopCoroutines(params Coroutine[] routines)
         {
-            for (int i = 0; i < routines.Length; i++)
+            for(int i = 0; i < routines.Length; i++)
             {
-                if (routines[i] != null)
+                if(routines[i] != null)
                 {
                     CoroutineUtility.StopCoroutine(routines[i]);
                 }
@@ -251,10 +253,10 @@ namespace UnityCommonLibrary.FSM
         }
         private void Log(string format, params object[] args)
         {
-            if (log)
+            if(log)
             {
                 var str = string.Format("[{0}] {1}", id, string.Format(format, args));
-                if (LogFormat == null)
+                if(LogFormat == null)
                 {
                     Debug.Log(str);
                 }
