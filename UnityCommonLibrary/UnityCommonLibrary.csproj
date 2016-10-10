@@ -59,6 +59,7 @@
     <Compile Include="Scripts\AutoInstantiator.cs" />
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
     <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
+    <Compile Include="Scripts\EnumData.cs" />
     <Compile Include="Scripts\Invoker.cs" />
     <Compile Include="Scripts\Jobs.cs" />
     <Compile Include="Scripts\IUpdateable.cs" />
@@ -66,10 +67,13 @@
     <Compile Include="Scripts\MakeWorldBounds.cs" />
     <Compile Include="Scripts\ManagedUpdater.cs" />
     <Compile Include="Scripts\MaterialOverrider.cs" />
+    <Compile Include="Scripts\MultiTagsExtensions.cs" />
+    <Compile Include="Scripts\MultiTags.cs" />
     <Compile Include="Scripts\ObservedValue.cs" />
     <Compile Include="Scripts\PanTexture.cs" />
     <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
     <Compile Include="Scripts\TransformElement.cs" />
+    <Compile Include="Scripts\TriggerContents.cs" />
     <Compile Include="Time\TimeMode.cs" />
     <Compile Include="Time\TimeSlice.cs" />
     <Compile Include="Time\UTimer.cs" />

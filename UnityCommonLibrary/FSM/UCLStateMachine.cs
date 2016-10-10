@@ -40,7 +40,6 @@ namespace UnityCommonLibrary.FSM
         private readonly Dictionary<T, OnState> onStateExit = new Dictionary<T, OnState>();
         private readonly Dictionary<T, OnStateAsync> onStateExitAsync = new Dictionary<T, OnStateAsync>();
         private readonly Dictionary<T, Action> onStateTick = new Dictionary<T, Action>();
-        private readonly T[] values;
         /// <summary>
         /// Creates a formatted string of detailed information
         /// about the current status of this machine.
@@ -67,7 +66,6 @@ namespace UnityCommonLibrary.FSM
                 throw new Exception("T must be Enum");
             }
             this.id = string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id;
-            values = (T[])Enum.GetValues(typeof(T));
         }
 
         public UCLStateMachine<T> SetOnEnter(T state, OnState onEnter)
