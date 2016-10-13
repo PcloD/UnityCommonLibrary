@@ -5,8 +5,8 @@ namespace UnityCommonLibrary.Events
 {
 	public class EventData
 	{
-		private readonly Dictionary<string, object> data = new Dictionary<string, object>();
 		internal bool isLocked;
+		private readonly Dictionary<string, object> data = new Dictionary<string, object>();
 
 		public EventData(string key, object value)
 		{
