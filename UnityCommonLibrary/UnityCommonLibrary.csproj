@@ -62,6 +62,7 @@
     <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="Events\IEventListener.cs" />
+    <Compile Include="Scripts\GLog.cs" />
     <Compile Include="Scripts\Invoker.cs" />
     <Compile Include="Scripts\Jobs.cs" />
     <Compile Include="Scripts\IUpdateable.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Scripts\PanTexture.cs" />
     <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
     <Compile Include="Scripts\TransformElement.cs" />
+    <Compile Include="Scripts\TriggerContents.cs" />
     <Compile Include="Time\TimeMode.cs" />
     <Compile Include="Time\TimeSlice.cs" />
     <Compile Include="Time\UTimer.cs" />
