@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using UnityCommonLibrary.Attributes;
-using UnityCommonLibrary.Utilities;
+using UnityCommonLibrary.Utility;
 using UnityEngine;
 
 namespace UnityCommonLibrary

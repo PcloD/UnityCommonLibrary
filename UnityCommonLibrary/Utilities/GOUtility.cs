@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace UnityCommonLibrary.Utilities
+namespace UnityCommonLibrary.Utility
 {
     public static class GameObjectUtility
     {

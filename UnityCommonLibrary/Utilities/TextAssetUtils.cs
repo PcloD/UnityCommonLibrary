@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UnityCommonLibrary.Utilities
+namespace UnityCommonLibrary.Utility
 {
     public static class TextAssetUtility
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace UnityCommonLibrary.Utilities
+namespace UnityCommonLibrary.Utility
 {
 	public static class TransformUtility
 	{
@@ -96,7 +96,7 @@ namespace UnityCommonLibrary.Utilities
 				t.localScale = other.localScale;
 			}
 		}
-		public static Transform FindChildBFS(this Transform t, string name)
+		public static Transform FindChildBFS(this Transform t, string search, bool tag = false)
 		{
 			bfsSearchQueue.Clear();
 			for(int i = 0; i < t.childCount; i++)
@@ -107,7 +107,7 @@ namespace UnityCommonLibrary.Utilities
 			while(bfsSearchQueue.Count > 0)
 			{
 				var child = bfsSearchQueue.Dequeue();
-				if(child.name == name)
+				if((!tag && child.name == search) || (tag && child.tag == search))
 				{
 					found = child;
 					break;
@@ -120,16 +120,16 @@ namespace UnityCommonLibrary.Utilities
 			bfsSearchQueue.Clear();
 			return found;
 		}
-		public static Transform FindChildDFS(this Transform t, string name)
+		public static Transform FindChildDFS(this Transform t, string search, bool tag = false)
 		{
 			for(int i = 0; i < t.childCount; i++)
 			{
 				var child = t.GetChild(i);
-				if(child.name == name)
+				if((!tag && child.name == search) || (tag && child.tag == search))
 				{
 					return child;
 				}
-				child = FindChildDFS(t.GetChild(i), name);
+				child = FindChildDFS(t.GetChild(i), search);
 				if(child)
 				{
 					return child;

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace UnityCommonLibrary.Utilities
+namespace UnityCommonLibrary.Utility
 {
     public static class PathUtility
     {

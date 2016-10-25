@@ -2,7 +2,7 @@
 using UnityCommonLibrary.Time;
 using UTime = UnityEngine.Time;
 
-namespace UnityCommonLibrary.Utilities
+namespace UnityCommonLibrary.Utility
 {
     public static class TimeUtility
     {

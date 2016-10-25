@@ -1,4 +1,4 @@
-﻿using UnityCommonLibrary.Utilities;
+﻿using UnityCommonLibrary.Utility;
 using UnityEngine;
 
 namespace UnityCommonLibrary

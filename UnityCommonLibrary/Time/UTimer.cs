@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using UnityCommonLibrary.Utilities;
+using UnityCommonLibrary.Utility;
 
 namespace UnityCommonLibrary.Time
 {

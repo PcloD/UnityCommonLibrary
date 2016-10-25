@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using URandom = UnityEngine.Random;
 
-namespace UnityCommonLibrary.Utilities
+namespace UnityCommonLibrary.Utility
 {
 	public static class CollectionUtility
 	{

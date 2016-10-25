@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityCommonLibrary.Time;
-using UnityCommonLibrary.Utilities;
+using UnityCommonLibrary.Utility;
 using UnityEngine;
 
 namespace UnityCommonLibrary.FSM
