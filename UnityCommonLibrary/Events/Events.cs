@@ -5,12 +5,14 @@ namespace UnityCommonLibrary.Events
 {
 	public static class Events<T> where T : struct, IFormattable, IConvertible, IComparable
 	{
-		private static Dictionary<T, List<IEventListener<T>>> listeners = new Dictionary<T, List<IEventListener<T>>>();
+		public delegate void OnEvent(EventData data);
+
+		private static Dictionary<T, List<OnEvent>> listeners = new Dictionary<T, List<OnEvent>>();
 		private static T[] allEvents;
 
 		static Events()
 		{
-			if (!typeof(T).IsEnum)
+			if(!typeof(T).IsEnum)
 			{
 				throw new Exception("Type T must be enum.");
 			}
@@ -20,43 +22,31 @@ namespace UnityCommonLibrary.Events
 		public static void Broadcast(T ge, EventData data = null)
 		{
 			data.isLocked = true;
-			List<IEventListener<T>> list;
-			if (listeners.TryGetValue(ge, out list) && list.Count > 0)
+			List<OnEvent> list;
+			if(listeners.TryGetValue(ge, out list) && list.Count > 0)
 			{
-				for (int i = list.Count - 1; i >= 0; i--)
+				for(int i = list.Count - 1; i >= 0; i--)
 				{
-					if (list[i] == null)
+					if(list[i] == null || list[i].Target == null)
 					{
 						list.RemoveAt(i);
 					}
 					else
 					{
-						list[i].OnEvent(ge, data);
+						list[i](data);
 					}
 				}
 			}
 		}
-		public static void Register(IEventListener<T> listener, params T[] events)
+		public static void Register(T evt, OnEvent callback)
 		{
-			for (int i = 0; i < events.Length; i++)
+			List<OnEvent> list;
+			if(!listeners.TryGetValue(evt, out list))
 			{
-				var evt = events[i];
-				List<IEventListener<T>> list;
-				if (!listeners.TryGetValue(evt, out list))
-				{
-					list = new List<IEventListener<T>>();
-					listeners[evt] = list;
-				}
-				list.Add(listener);
+				list = new List<OnEvent>();
+				listeners[evt] = list;
 			}
+			list.Add(callback);
 		}
-		public static void RegisterAll(IEventListener<T> listener)
-		{
-			for (int i = 0; i < allEvents.Length; i++)
-			{
-				Register(listener, allEvents[i]);
-			}
-		}
-
 	}
 }
