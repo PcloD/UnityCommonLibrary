@@ -14,7 +14,6 @@ namespace UnityCommonLibrary.Events
 		}
 		public bool TryGetData<T>(string key, out T value)
 		{
-			// TODO: Replace with TryGetValue?
 			try
 			{
 				value = GetData<T>(key);
