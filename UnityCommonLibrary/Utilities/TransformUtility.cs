@@ -39,7 +39,6 @@ namespace UnityCommonLibrary.Utility
 				transform.localRotation = Quaternion.Euler(newV3);
 			}
 		}
-
 		public static void Reset(this Transform t)
 		{
 			Reset(t, TransformElement.All, Space.World);
