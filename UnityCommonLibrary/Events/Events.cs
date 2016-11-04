@@ -13,19 +13,20 @@ namespace UnityCommonLibrary.Events
 
 		static Events()
 		{
-			if (!typeof(T).IsEnum)
+			if(!typeof(T).IsEnum)
 			{
 				throw new Exception("Type T must be enum.");
 			}
 			allEvents = (T[])Enum.GetValues(typeof(T));
 			runner = Utility.ComponentUtility.Create<EventsRunner>(string.Format("{0}_EventRunner", typeof(T).Name));
+			UnityEngine.Object.DontDestroyOnLoad(runner);
 			runner.getListeners = (e) =>
 			{
 				var list = listeners[FromEnum(e)];
 				list.RemoveAll(l => l == null || l.Target == null);
 				return list;
 			};
-			for (int i = 0; i < allEvents.Length; i++)
+			for(int i = 0; i < allEvents.Length; i++)
 			{
 				listeners.Add(allEvents[i], new List<OnEvent>());
 			}
@@ -43,12 +44,25 @@ namespace UnityCommonLibrary.Events
 		public static void Register(T evt, OnEvent callback)
 		{
 			List<OnEvent> list;
-			if (!listeners.TryGetValue(evt, out list))
+			if(!listeners.TryGetValue(evt, out list))
 			{
 				list = new List<OnEvent>();
 				listeners[evt] = list;
 			}
 			list.Add(callback);
+		}
+		public static void Remove(object target)
+		{
+			foreach(var kvp in listeners)
+			{
+				for(int i = kvp.Value.Count - 1; i >= 0; i--)
+				{
+					if(kvp.Value[i].Target == target)
+					{
+						kvp.Value.RemoveAt(i);
+					}
+				}
+			}
 		}
 		public static T FromEnum(Enum e)
 		{
