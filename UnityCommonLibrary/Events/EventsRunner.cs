@@ -12,19 +12,31 @@ namespace UnityCommonLibrary.Events
 			public EventData data;
 		}
 
-		internal Func<Enum, List<OnEvent>> getListeners;
-		internal Queue<EventCall> rawQueue = new Queue<EventCall>();
+		internal Func<Enum, HashSet<OnEvent>> getListeners;
+		private bool isExecutingQueue;
+		private Queue<EventCall> primaryQueue = new Queue<EventCall>();
+		private Queue<EventCall> secondaryQueue = new Queue<EventCall>();
 
+		internal void Enqueue(EventCall evt)
+		{
+			(isExecutingQueue ? secondaryQueue : primaryQueue).Enqueue(evt);
+		}
 		private void Update()
 		{
-			while (rawQueue.Count > 0)
+			isExecutingQueue = true;
+			while(primaryQueue.Count > 0)
 			{
-				var evt = rawQueue.Dequeue();
+				var evt = primaryQueue.Dequeue();
 				var callbacks = getListeners(evt.eventType);
-				for (int i = 0; i < callbacks.Count; i++)
+				foreach(var cb in callbacks)
 				{
-					callbacks[i](evt.data);
+					cb(evt.data);
 				}
+			}
+			isExecutingQueue = false;
+			while(secondaryQueue.Count > 0)
+			{
+				primaryQueue.Enqueue(secondaryQueue.Dequeue());
 			}
 		}
 	}

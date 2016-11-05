@@ -7,7 +7,7 @@ namespace UnityCommonLibrary.Events
 	public static class Events<T> where T : struct, IFormattable, IConvertible, IComparable
 	{
 
-		internal static Dictionary<T, List<OnEvent>> listeners = new Dictionary<T, List<OnEvent>>();
+		internal static Dictionary<T, HashSet<OnEvent>> listeners = new Dictionary<T, HashSet<OnEvent>>();
 		private static T[] allEvents;
 		private static EventsRunner runner;
 
@@ -22,20 +22,20 @@ namespace UnityCommonLibrary.Events
 			UnityEngine.Object.DontDestroyOnLoad(runner);
 			runner.getListeners = (e) =>
 			{
-				var list = listeners[FromEnum(e)];
-				list.RemoveAll(l => l == null || l.Target == null);
-				return list;
+				var set = listeners[FromEnum(e)];
+				set.RemoveWhere(l => l == null || l.Target == null);
+				return set;
 			};
 			for(int i = 0; i < allEvents.Length; i++)
 			{
-				listeners.Add(allEvents[i], new List<OnEvent>());
+				listeners.Add(allEvents[i], new HashSet<OnEvent>());
 			}
 		}
 
 		public static void Broadcast(T ge, EventData data = null)
 		{
 			data.isLocked = true;
-			runner.rawQueue.Enqueue(new EventsRunner.EventCall()
+			runner.Enqueue(new EventsRunner.EventCall()
 			{
 				eventType = ToEnum(ge),
 				data = data,
@@ -43,26 +43,24 @@ namespace UnityCommonLibrary.Events
 		}
 		public static void Register(T evt, OnEvent callback)
 		{
-			List<OnEvent> list;
+			HashSet<OnEvent> list;
 			if(!listeners.TryGetValue(evt, out list))
 			{
-				list = new List<OnEvent>();
+				list = new HashSet<OnEvent>();
 				listeners[evt] = list;
 			}
 			list.Add(callback);
 		}
-		public static void Remove(object target)
+		public static void RemoveAll(object target)
 		{
 			foreach(var kvp in listeners)
 			{
-				for(int i = kvp.Value.Count - 1; i >= 0; i--)
-				{
-					if(kvp.Value[i].Target == target)
-					{
-						kvp.Value.RemoveAt(i);
-					}
-				}
+				Remove(kvp.Key, target);
 			}
+		}
+		public static void Remove(T evt, object target)
+		{
+			listeners[evt].RemoveWhere(v => v.Target == target);
 		}
 		public static T FromEnum(Enum e)
 		{
