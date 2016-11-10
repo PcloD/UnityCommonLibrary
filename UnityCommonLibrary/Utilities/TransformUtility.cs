@@ -140,5 +140,17 @@ namespace UnityCommonLibrary.Utility
 		{
 			return (other.position - t.position).normalized;
 		}
+		public static Vector3 DirectionTo(this Transform t, Vector3 other)
+		{
+			return (other - t.position).normalized;
+		}
+		public static Vector3 DirectionTo(this Vector3 v, Vector3 other)
+		{
+			return (other - v).normalized;
+		}
+		public static Vector3 DirectionTo(this Vector3 v, Transform other)
+		{
+			return (other.position - v).normalized;
+		}
 	}
 }
