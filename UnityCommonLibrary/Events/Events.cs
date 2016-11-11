@@ -34,7 +34,10 @@ namespace UnityCommonLibrary.Events
 
 		public static void Broadcast(T ge, EventData data = null)
 		{
-			data.isLocked = true;
+			if(data != null)
+			{
+				data.isLocked = true;
+			}
 			runner.Enqueue(new EventsRunner.EventCall()
 			{
 				eventType = ToEnum(ge),
