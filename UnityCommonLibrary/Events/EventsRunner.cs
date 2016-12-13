@@ -13,6 +13,7 @@ namespace UnityCommonLibrary.Events
 		}
 
 		internal Func<Enum, HashSet<OnEvent>> getListeners;
+		internal Action doPendingRemovals;
 		private bool isExecutingQueue;
 		private Queue<EventCall> primaryQueue = new Queue<EventCall>();
 		private Queue<EventCall> secondaryQueue = new Queue<EventCall>();
@@ -38,6 +39,7 @@ namespace UnityCommonLibrary.Events
 			{
 				primaryQueue.Enqueue(secondaryQueue.Dequeue());
 			}
+			doPendingRemovals();
 		}
 	}
 }

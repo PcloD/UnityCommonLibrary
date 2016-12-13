@@ -6,8 +6,8 @@ namespace UnityCommonLibrary.Events
 	public delegate void OnEvent(EventData data);
 	public static class Events<T> where T : struct, IFormattable, IConvertible, IComparable
 	{
-
-		internal static Dictionary<T, HashSet<OnEvent>> listeners = new Dictionary<T, HashSet<OnEvent>>();
+		internal static HashSet<object> toRemove = new HashSet<object>();
+		private static Dictionary<T, HashSet<OnEvent>> listeners = new Dictionary<T, HashSet<OnEvent>>();
 		private static T[] allEvents;
 		private static EventsRunner runner;
 
@@ -26,6 +26,7 @@ namespace UnityCommonLibrary.Events
 				set.RemoveWhere(l => l == null || l.Target == null);
 				return set;
 			};
+			runner.doPendingRemovals = RemovePending;
 			for(int i = 0; i < allEvents.Length; i++)
 			{
 				listeners.Add(allEvents[i], new HashSet<OnEvent>());
@@ -46,20 +47,17 @@ namespace UnityCommonLibrary.Events
 		}
 		public static void Register(T evt, OnEvent callback)
 		{
-			HashSet<OnEvent> list;
-			if(!listeners.TryGetValue(evt, out list))
+			HashSet<OnEvent> set;
+			if(!listeners.TryGetValue(evt, out set))
 			{
-				list = new HashSet<OnEvent>();
-				listeners[evt] = list;
+				set = new HashSet<OnEvent>();
+				listeners[evt] = set;
 			}
-			list.Add(callback);
+			set.Add(callback);
 		}
 		public static void RemoveAll(object target)
 		{
-			foreach(var kvp in listeners)
-			{
-				Remove(kvp.Key, target);
-			}
+			toRemove.Add(target);
 		}
 		public static void Remove(T evt, object target)
 		{
@@ -72,6 +70,17 @@ namespace UnityCommonLibrary.Events
 		public static Enum ToEnum(T e)
 		{
 			return (Enum)(object)e;
+		}
+		private static void RemovePending()
+		{
+			foreach(var k in listeners.Keys)
+			{
+				foreach(var o in toRemove)
+				{
+					Remove(k, o);
+				}
+			}
+			toRemove.Clear();
 		}
 	}
 }

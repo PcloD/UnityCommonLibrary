@@ -152,5 +152,14 @@ namespace UnityCommonLibrary.Utility
 		{
 			return (other.position - v).normalized;
 		}
+		public static Transform[] GetChildren(this Transform transform)
+		{
+			var array = new Transform[transform.childCount];
+			for(int i = 0; i < array.Length; i++)
+			{
+				array[i] = transform.GetChild(i);
+			}
+			return array;
+		}
 	}
 }

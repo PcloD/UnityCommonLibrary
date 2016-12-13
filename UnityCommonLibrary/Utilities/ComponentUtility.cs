@@ -23,9 +23,9 @@ namespace UnityCommonLibrary.Utility
 		}
 		public static void SetEnabledAll(bool enabled, params Behaviour[] behaviors)
 		{
-			foreach (var b in behaviors)
+			foreach(var b in behaviors)
 			{
-				if (b != null)
+				if(b != null)
 				{
 					b.enabled = enabled;
 				}
@@ -34,7 +34,7 @@ namespace UnityCommonLibrary.Utility
 		public static bool TryDestroy<T>(Component c) where T : Component
 		{
 			var t = c.GetComponent<T>();
-			if (t)
+			if(t)
 			{
 				UnityEngine.Object.Destroy(t);
 				return true;
@@ -44,7 +44,7 @@ namespace UnityCommonLibrary.Utility
 		public static bool TryDestroyAll<T>(Component c) where T : Component
 		{
 			var all = c.GetComponents<T>();
-			for (int i = 0; i < all.Length; i++)
+			for(int i = 0; i < all.Length; i++)
 			{
 				UnityEngine.Object.Destroy(all[i]);
 			}

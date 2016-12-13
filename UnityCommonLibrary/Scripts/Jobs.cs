@@ -46,6 +46,10 @@ namespace UnityCommonLibrary
 		{
 			get.StartCoroutine(get._ExecuteNextFrame(action));
 		}
+		public static void ExecuteInFrames(int frames, Action action)
+		{
+			get.StartCoroutine(get._ExecuteInFrames(frames, action));
+		}
 
 		private IEnumerator _ExecuteDelayed(float delay, Action action)
 		{
@@ -57,27 +61,35 @@ namespace UnityCommonLibrary
 			yield return null;
 			action();
 		}
+		private IEnumerator _ExecuteInFrames(int frames, Action action)
+		{
+			for(int i = 0; i < frames; i++)
+			{
+				yield return null;
+			}
+			action();
+		}
 		private void Update()
 		{
-			while (onUnityThreadJobs.Count > 0)
+			while(onUnityThreadJobs.Count > 0)
 			{
 				var count = onUnityThreadJobs.Count;
 				var job = onUnityThreadJobs.Dequeue();
 				// Check for infinite loop from a callback adding itself back
-				if (job != null)
+				if(job != null)
 				{
 					job();
 				}
-				if (onUnityThreadJobs.Count == count)
+				if(onUnityThreadJobs.Count == count)
 				{
 					Debug.LogFormat("{0} on {1} added job to onthread queue!", job.Method, job.Target);
 					break;
 				}
 			}
-			for (int i = onUpdateJobs.Count - 1; i >= 0; i--)
+			for(int i = onUpdateJobs.Count - 1; i >= 0; i--)
 			{
 				var job = onUpdateJobs[i];
-				if (job == null || !job())
+				if(job == null || !job())
 				{
 					onUpdateJobs.RemoveAt(i);
 				}
@@ -85,10 +97,10 @@ namespace UnityCommonLibrary
 		}
 		private void FixedUpdate()
 		{
-			for (int i = onFixedUpdateJobs.Count - 1; i >= 0; i--)
+			for(int i = onFixedUpdateJobs.Count - 1; i >= 0; i--)
 			{
 				var job = onFixedUpdateJobs[i];
-				if (job == null || !job())
+				if(job == null || !job())
 				{
 					onFixedUpdateJobs.RemoveAt(i);
 				}
@@ -96,10 +108,10 @@ namespace UnityCommonLibrary
 		}
 		private void LateUpdate()
 		{
-			for (int i = onLateUpdateJobs.Count - 1; i >= 0; i--)
+			for(int i = onLateUpdateJobs.Count - 1; i >= 0; i--)
 			{
 				var job = onLateUpdateJobs[i];
-				if (job == null || !job())
+				if(job == null || !job())
 				{
 					onLateUpdateJobs.RemoveAt(i);
 				}
