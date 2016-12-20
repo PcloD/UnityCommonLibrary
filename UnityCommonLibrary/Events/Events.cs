@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace UnityCommonLibrary.Events
 {
@@ -13,6 +14,10 @@ namespace UnityCommonLibrary.Events
 
 		static Events()
 		{
+			if(!Application.isPlaying)
+			{
+				return;
+			}
 			if(!typeof(T).IsEnum)
 			{
 				throw new Exception("Type T must be enum.");
@@ -35,6 +40,10 @@ namespace UnityCommonLibrary.Events
 
 		public static void Broadcast(T ge, EventData data = null)
 		{
+			if(!Application.isPlaying)
+			{
+				return;
+			}
 			if(data != null)
 			{
 				data.isLocked = true;
@@ -47,6 +56,10 @@ namespace UnityCommonLibrary.Events
 		}
 		public static void Register(T evt, OnEvent callback)
 		{
+			if(!Application.isPlaying)
+			{
+				return;
+			}
 			HashSet<OnEvent> set;
 			if(!listeners.TryGetValue(evt, out set))
 			{
@@ -57,10 +70,18 @@ namespace UnityCommonLibrary.Events
 		}
 		public static void RemoveAll(object target)
 		{
+			if(!Application.isPlaying)
+			{
+				return;
+			}
 			toRemove.Add(target);
 		}
 		public static void Remove(T evt, object target)
 		{
+			if(!Application.isPlaying)
+			{
+				return;
+			}
 			listeners[evt].RemoveWhere(v => v.Target == target);
 		}
 		public static T FromEnum(Enum e)
@@ -73,6 +94,10 @@ namespace UnityCommonLibrary.Events
 		}
 		private static void RemovePending()
 		{
+			if(!Application.isPlaying)
+			{
+				return;
+			}
 			foreach(var k in listeners.Keys)
 			{
 				foreach(var o in toRemove)
