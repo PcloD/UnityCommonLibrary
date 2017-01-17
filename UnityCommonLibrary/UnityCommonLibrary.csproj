@@ -76,6 +76,7 @@
     <Compile Include="Scripts\ScriptableSingleton.cs" />
     <Compile Include="Scripts\ObservedValue.cs" />
     <Compile Include="Scripts\PanTexture.cs" />
+    <Compile Include="Scripts\Services.cs" />
     <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
     <Compile Include="Scripts\TransformElement.cs" />
     <Compile Include="Scripts\TriggerContents.cs" />
