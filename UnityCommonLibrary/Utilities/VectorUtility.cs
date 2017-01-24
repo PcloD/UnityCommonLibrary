@@ -48,15 +48,15 @@ namespace UnityCommonLibrary.Utility
 		}
 		public static void SetXYZ(this Vector3 v3, float? x = null, float? y = null, float? z = null)
 		{
-			if (x.HasValue)
+			if(x.HasValue)
 			{
 				v3.x = x.Value;
 			}
-			if (y.HasValue)
+			if(y.HasValue)
 			{
 				v3.y = y.Value;
 			}
-			if (z.HasValue)
+			if(z.HasValue)
 			{
 				v3.z = z.Value;
 			}

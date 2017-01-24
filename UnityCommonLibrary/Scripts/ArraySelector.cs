@@ -24,12 +24,12 @@ namespace UnityCommonLibrary
 		{
 			var index = 0;
 			do index = Random.Range(0, array.Length - 1);
-			while (index == lastSelected && array.Length > 1);
+			while(index == lastSelected && array.Length > 1);
 			return array[index];
 		}
 		public T GetRandomUnique()
 		{
-			if (shuffled.Count == 0)
+			if(shuffled.Count == 0)
 			{
 				RefillShuffledList();
 			}
@@ -39,7 +39,7 @@ namespace UnityCommonLibrary
 		}
 		public void UpdateArray(T[] array)
 		{
-			if (array != null && array.Length > 0)
+			if(array != null && array.Length > 0)
 			{
 				this.array = array;
 				RefillShuffledList();

@@ -2,32 +2,32 @@
 
 namespace UnityCommonLibrary.Utility
 {
-    public static class BoundsUtility
-    {
-        /// <summary>
-        /// Returns true if this bounds.size >= target.size in all axes.
-        /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public static bool CouldContain(this Bounds bounds, Bounds target)
-        {
-            var bSize = bounds.size;
-            var tSize = target.size;
+	public static class BoundsUtility
+	{
+		/// <summary>
+		/// Returns true if this bounds.size >= target.size in all axes.
+		/// </summary>
+		/// <param name="bounds"></param>
+		/// <param name="target"></param>
+		/// <returns></returns>
+		public static bool CouldContain(this Bounds bounds, Bounds target)
+		{
+			var bSize = bounds.size;
+			var tSize = target.size;
 
-            return bSize.x >= tSize.x &&
-                   bSize.y >= tSize.y &&
-                   bSize.z >= tSize.z;
-        }
+			return bSize.x >= tSize.x &&
+				   bSize.y >= tSize.y &&
+				   bSize.z >= tSize.z;
+		}
 
-        public static Vector3 RandomPointInside(this Bounds bounds)
-        {
-            return new Vector3()
-            {
-                x = Random.Range(bounds.min.x, bounds.max.x),
-                y = Random.Range(bounds.min.y, bounds.max.y),
-                z = Random.Range(bounds.min.z, bounds.max.z)
-            };
-        }
-    }
+		public static Vector3 RandomPointInside(this Bounds bounds)
+		{
+			return new Vector3()
+			{
+				x = Random.Range(bounds.min.x, bounds.max.x),
+				y = Random.Range(bounds.min.y, bounds.max.y),
+				z = Random.Range(bounds.min.z, bounds.max.z)
+			};
+		}
+	}
 }

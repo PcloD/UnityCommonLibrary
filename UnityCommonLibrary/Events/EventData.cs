@@ -19,7 +19,7 @@ namespace UnityCommonLibrary.Events
 				value = GetData<T>(key);
 				return true;
 			}
-			catch (Exception)
+			catch(Exception)
 			{
 				value = default(T);
 				return false;
@@ -31,7 +31,7 @@ namespace UnityCommonLibrary.Events
 		}
 		public EventData Append(string key, object value)
 		{
-			if (!isLocked)
+			if(!isLocked)
 			{
 				data.Add(key, value);
 			}

@@ -42,9 +42,9 @@ namespace UnityCommonLibrary
 
 		private void Timer_TimerElapsed()
 		{
-			if (!GotoIndex(index))
+			if(!GotoIndex(index))
 			{
-				if (loop)
+				if(loop)
 				{
 					index = 0;
 				}
@@ -66,15 +66,15 @@ namespace UnityCommonLibrary
 
 		public bool GotoIndex(int index)
 		{
-			if (index >= frames.Length || index < 0)
+			if(index >= frames.Length || index < 0)
 			{
 				return false;
 			}
-			if (spriteRenderer != null)
+			if(spriteRenderer != null)
 			{
 				spriteRenderer.sprite = frames[index];
 			}
-			if (img != null)
+			if(img != null)
 			{
 				img.sprite = frames[index];
 			}

@@ -17,9 +17,9 @@ namespace UnityCommonLibrary
 
 		private void Update()
 		{
-			if (rigidbody)
+			if(rigidbody)
 			{
-				if (movementSpace == Space.Self)
+				if(movementSpace == Space.Self)
 				{
 					rigidbody.velocity = transform.TransformVector(movement);
 					rigidbody.angularVelocity = transform.TransformVector(rotation);
@@ -30,7 +30,8 @@ namespace UnityCommonLibrary
 					rigidbody.angularVelocity = rotation;
 				}
 			}
-			else {
+			else
+			{
 				transform.Translate(movement, movementSpace);
 				transform.Rotate(rotation, rotationSpace);
 			}

@@ -20,7 +20,7 @@ namespace UnityCommonLibrary
 			material.bounciness = 0f;
 
 			var surfaces = new BoxCollider[6];
-			for (var i = 0; i < 6; i++)
+			for(var i = 0; i < 6; i++)
 			{
 				var obj = new GameObject();
 				obj.transform.SetParent(transform, false);
@@ -60,9 +60,9 @@ namespace UnityCommonLibrary
 			surfaces[5].transform.localPosition = new Vector3(offset, 0f, 0f);
 			surfaces[5].name = "Wall X+";
 
-			if (useLayer)
+			if(useLayer)
 			{
-				for (int i = 0; i < surfaces.Length; i++)
+				for(int i = 0; i < surfaces.Length; i++)
 				{
 					surfaces[i].gameObject.layer = gameObject.layer;
 				}
@@ -71,7 +71,7 @@ namespace UnityCommonLibrary
 
 		public void OnDrawGizmosSelected()
 		{
-			if (!Application.isPlaying)
+			if(!Application.isPlaying)
 			{
 				Gizmos.DrawWireCube(transform.position, transform.localScale);
 			}

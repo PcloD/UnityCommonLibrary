@@ -7,199 +7,199 @@ using UnityEngine.UI;
 
 namespace UnityCommonLibrary.UI
 {
-    [ExecuteInEditMode]
-    [RequireComponent(typeof(VerticalLayoutGroup))]
-    public class UIList : MonoBehaviour
-    {
-        public delegate void OnSelectionChanged(ListItem oldItem, ListItem newItem);
+	[ExecuteInEditMode]
+	[RequireComponent(typeof(VerticalLayoutGroup))]
+	public class UIList : MonoBehaviour
+	{
+		public delegate void OnSelectionChanged(ListItem oldItem, ListItem newItem);
 
-        public delegate void OnRefreshComplete();
+		public delegate void OnRefreshComplete();
 
-        public delegate void OnClearComplete();
+		public delegate void OnClearComplete();
 
-        [SerializeField, Header("Text Settings")]
-        private int fontSize;
+		[SerializeField, Header("Text Settings")]
+		private int fontSize;
 
-        [SerializeField]
-        private FontStyle fontStyle;
+		[SerializeField]
+		private FontStyle fontStyle;
 
-        [SerializeField]
-        private Font font;
+		[SerializeField]
+		private Font font;
 
-        [SerializeField]
-        private bool supportRichText = false;
+		[SerializeField]
+		private bool supportRichText = false;
 
-        [SerializeField]
-        private float top, left, right, bottom;
+		[SerializeField]
+		private float top, left, right, bottom;
 
-        [SerializeField, Header("Background Settings")]
-        private Color backgroundColor;
+		[SerializeField, Header("Background Settings")]
+		private Color backgroundColor;
 
-        [SerializeField]
-        private Color alternateColor;
+		[SerializeField]
+		private Color alternateColor;
 
-        [SerializeField]
-        private bool alternateColors;
+		[SerializeField]
+		private bool alternateColors;
 
-        [Header("Items")]
-        public List<string> elements = new List<string>();
+		[Header("Items")]
+		public List<string> elements = new List<string>();
 
-        public ListItem selected { get; private set; }
+		public ListItem selected { get; private set; }
 
-        private List<ListItem> cells = new List<ListItem>();
-        private bool refreshing;
-        private bool clearing;
+		private List<ListItem> cells = new List<ListItem>();
+		private bool refreshing;
+		private bool clearing;
 
-        public event OnSelectionChanged SelectionChanged;
+		public event OnSelectionChanged SelectionChanged;
 
-        public event OnClearComplete ClearComplete;
+		public event OnClearComplete ClearComplete;
 
-        public event OnRefreshComplete RefreshComplete;
+		public event OnRefreshComplete RefreshComplete;
 
-        public void ClearList()
-        {
-            clearing = true;
-            elements.Clear();
-            StartCoroutine(_RefreshList());
-        }
+		public void ClearList()
+		{
+			clearing = true;
+			elements.Clear();
+			StartCoroutine(_RefreshList());
+		}
 
-        private void Update()
-        {
-            if (elements.Count != cells.Count)
-            {
-                StartCoroutine(_RefreshList());
-            }
-            if (!refreshing)
-            {
-                for (int i = 0; i < elements.Count; i++)
-                {
-                    if (elements.Count != cells.Count)
-                    {
-                        //safety check for refreshing
-                        break;
-                    }
-                    var li = cells[i];
-                    li.text.text = elements[i];
-                    li.text.fontSize = fontSize;
-                    li.text.fontStyle = fontStyle;
-                    li.text.supportRichText = supportRichText;
-                    li.background.color = (alternateColors && i % 2 != 0) ? alternateColor : backgroundColor;
-                    li.rt.anchorMin = Vector2.zero;
-                    li.rt.anchorMax = Vector2.one;
-                    li.rt.offsetMax = new Vector2(right, top);
-                    li.rt.offsetMin = new Vector2(left, bottom);
-                }
-            }
-        }
+		private void Update()
+		{
+			if(elements.Count != cells.Count)
+			{
+				StartCoroutine(_RefreshList());
+			}
+			if(!refreshing)
+			{
+				for(int i = 0; i < elements.Count; i++)
+				{
+					if(elements.Count != cells.Count)
+					{
+						//safety check for refreshing
+						break;
+					}
+					var li = cells[i];
+					li.text.text = elements[i];
+					li.text.fontSize = fontSize;
+					li.text.fontStyle = fontStyle;
+					li.text.supportRichText = supportRichText;
+					li.background.color = (alternateColors && i % 2 != 0) ? alternateColor : backgroundColor;
+					li.rt.anchorMin = Vector2.zero;
+					li.rt.anchorMax = Vector2.one;
+					li.rt.offsetMax = new Vector2(right, top);
+					li.rt.offsetMin = new Vector2(left, bottom);
+				}
+			}
+		}
 
-        private IEnumerator _RefreshList()
-        {
-            if (!refreshing)
-            {
-                refreshing = true;
+		private IEnumerator _RefreshList()
+		{
+			if(!refreshing)
+			{
+				refreshing = true;
 
-                while (elements.Count > cells.Count)
-                {
-                    cells.Add(CreateListItem());
-                    yield return null;
-                }
-                while (elements.Count < cells.Count)
-                {
-                    DestroyLastListItem();
-                    yield return null;
-                }
-            }
-            if (RefreshComplete != null)
-            {
-                RefreshComplete();
-            }
-            if (clearing && ClearComplete != null)
-            {
-                ClearComplete();
-            }
-            clearing = false;
-            refreshing = false;
-        }
+				while(elements.Count > cells.Count)
+				{
+					cells.Add(CreateListItem());
+					yield return null;
+				}
+				while(elements.Count < cells.Count)
+				{
+					DestroyLastListItem();
+					yield return null;
+				}
+			}
+			if(RefreshComplete != null)
+			{
+				RefreshComplete();
+			}
+			if(clearing && ClearComplete != null)
+			{
+				ClearComplete();
+			}
+			clearing = false;
+			refreshing = false;
+		}
 
-        private void DestroyLastListItem()
-        {
-            var last = cells[cells.Count - 1];
-            cells.RemoveAt(cells.Count - 1);
-            if (Application.isPlaying)
-            {
-                Destroy(last.gameObj);
-            }
-            else
-            {
-                DestroyImmediate(last.gameObj);
-            }
-        }
+		private void DestroyLastListItem()
+		{
+			var last = cells[cells.Count - 1];
+			cells.RemoveAt(cells.Count - 1);
+			if(Application.isPlaying)
+			{
+				Destroy(last.gameObj);
+			}
+			else
+			{
+				DestroyImmediate(last.gameObj);
+			}
+		}
 
-        private ListItem CreateListItem()
-        {
-            var newChild = new GameObject("ListItem");
-            var newText = new GameObject("ListItemText");
+		private ListItem CreateListItem()
+		{
+			var newChild = new GameObject("ListItem");
+			var newText = new GameObject("ListItemText");
 
-            //Set parents and scale
-            newText.transform.parent = newChild.transform;
-            newChild.transform.parent = transform;
-            ResetTransform(newText.transform);
-            ResetTransform(newChild.transform);
+			//Set parents and scale
+			newText.transform.parent = newChild.transform;
+			newChild.transform.parent = transform;
+			ResetTransform(newText.transform);
+			ResetTransform(newChild.transform);
 
-            var textRect = newText.AddComponent<RectTransform>();
+			var textRect = newText.AddComponent<RectTransform>();
 
-            //Create necessary components
-            var background = newChild.AddComponent<Image>();
-            var text = newText.AddComponent<Text>();
-            var button = newText.AddComponent<Button>();
-            var inferrer = newChild.AddComponent<InferSize>();
-            var trigger = newChild.AddComponent<EventTrigger>();
+			//Create necessary components
+			var background = newChild.AddComponent<Image>();
+			var text = newText.AddComponent<Text>();
+			var button = newText.AddComponent<Button>();
+			var inferrer = newChild.AddComponent<InferSize>();
+			var trigger = newChild.AddComponent<EventTrigger>();
 
-            text.font = font;
-            button.targetGraphic = text;
-            inferrer.targetGraphic = text;
-            var listItem = new ListItem(newChild, text, textRect, background, button);
-            button.onClick.AddListener(() =>
-            {
-                FireSelectionChanged(listItem);
-            });
-            return listItem;
-        }
+			text.font = font;
+			button.targetGraphic = text;
+			inferrer.targetGraphic = text;
+			var listItem = new ListItem(newChild, text, textRect, background, button);
+			button.onClick.AddListener(() =>
+			{
+				FireSelectionChanged(listItem);
+			});
+			return listItem;
+		}
 
-        private void FireSelectionChanged(ListItem newItem)
-        {
-            var oldItem = selected;
-            selected = newItem;
-            if (SelectionChanged != null)
-            {
-                SelectionChanged(oldItem, newItem);
-            }
-        }
+		private void FireSelectionChanged(ListItem newItem)
+		{
+			var oldItem = selected;
+			selected = newItem;
+			if(SelectionChanged != null)
+			{
+				SelectionChanged(oldItem, newItem);
+			}
+		}
 
-        private void ResetTransform(Transform t)
-        {
-            t.localPosition = Vector3.zero;
-            t.localRotation = Quaternion.identity;
-            t.localScale = Vector3.one;
-        }
-    }
+		private void ResetTransform(Transform t)
+		{
+			t.localPosition = Vector3.zero;
+			t.localRotation = Quaternion.identity;
+			t.localScale = Vector3.one;
+		}
+	}
 
-    [Serializable]
-    public class ListItem
-    {
-        public GameObject gameObj;
-        public Text text;
-        public RectTransform rt;
-        public Image background;
-        public Button button;
+	[Serializable]
+	public class ListItem
+	{
+		public GameObject gameObj;
+		public Text text;
+		public RectTransform rt;
+		public Image background;
+		public Button button;
 
-        public ListItem(GameObject gameObj, Text text, RectTransform rt, Image background, Button button)
-        {
-            this.gameObj = gameObj;
-            this.text = text;
-            this.rt = rt;
-            this.background = background;
-            this.button = button;
-        }
-    }
+		public ListItem(GameObject gameObj, Text text, RectTransform rt, Image background, Button button)
+		{
+			this.gameObj = gameObj;
+			this.text = text;
+			this.rt = rt;
+			this.background = background;
+			this.button = button;
+		}
+	}
 }
