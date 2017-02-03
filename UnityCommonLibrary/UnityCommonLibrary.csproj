@@ -79,6 +79,7 @@
     <Compile Include="Scripts\Services.cs" />
     <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
     <Compile Include="Scripts\TransformElement.cs" />
+    <Compile Include="Scripts\TransformSettings.cs" />
     <Compile Include="Scripts\TriggerContents.cs" />
     <Compile Include="Time\TimeMode.cs" />
     <Compile Include="Time\TimeSlice.cs" />
