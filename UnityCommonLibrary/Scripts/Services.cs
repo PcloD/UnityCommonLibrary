@@ -22,10 +22,21 @@ namespace UnityCommonLibrary
 			UnityEngine.Object.DontDestroyOnLoad(provider);
 			return Register<S>(provider);
 		}
-		public static S Register<S>(S instance) where S : class
+		public static S Register<S>(S provider) where S : class
 		{
-			registry.Add(typeof(S), instance);
-			return instance;
+			return (S)Register(typeof(S), provider);
+		}
+		private static object Register(Type type, object provider)
+		{
+			if(registry.ContainsKey(type))
+			{
+				registry[type] = provider;
+			}
+			else
+			{
+				registry.Add(type, provider);
+			}
+			return provider;
 		}
 	}
 }

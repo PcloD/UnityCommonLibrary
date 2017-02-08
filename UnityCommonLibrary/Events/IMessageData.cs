@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace UnityCommonLibrary.Events
+namespace UnityCommonLibrary.Messaging
 {
-	public class EventData
+	public interface IMessageData
+	{
+		void OnBroadcast();
+	}
+	public class GenericMessageData : IMessageData
 	{
 		internal bool isLocked;
 		private readonly Dictionary<string, object> data = new Dictionary<string, object>();
 
-		public EventData(string key, object value)
+		public GenericMessageData(string key, object value)
 		{
 			data.Add(key, value);
 		}
+
 		public bool TryGetData<T>(string key, out T value)
 		{
 			try
@@ -29,13 +34,17 @@ namespace UnityCommonLibrary.Events
 		{
 			return (T)data[key];
 		}
-		public EventData Append(string key, object value)
+		public IMessageData Append(string key, object value)
 		{
 			if(!isLocked)
 			{
 				data.Add(key, value);
 			}
 			return this;
+		}
+		public void OnBroadcast()
+		{
+			isLocked = true;
 		}
 	}
 }

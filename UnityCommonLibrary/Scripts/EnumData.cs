@@ -1,24 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace UnityCommonLibrary
 {
-	public static class EnumData
+	public static class EnumData<T> where T : struct, IComparable, IFormattable, IConvertible
 	{
-		private static Dictionary<Type, Array> lookup = new Dictionary<Type, Array>();
+		public static readonly Type type;
+		public static readonly T[] values;
+		public static readonly string[] names;
 
-		public static T[] GetValues<T>() where T : struct, IFormattable, IConvertible, IComparable
+		public static int count
 		{
-			var t = typeof(T);
-			Array raw;
-			if(!lookup.TryGetValue(t, out raw))
+			get
 			{
-				raw = Enum.GetValues(t);
-				lookup.Add(t, raw);
+				return values.Length;
 			}
-			return (T[])raw;
+		}
+
+		static EnumData()
+		{
+			type = typeof(T);
+			if(!type.IsEnum)
+			{
+				throw new Exception("Type T must be enum.");
+			}
+			values = (T[])Enum.GetValues(type);
+			names = Enum.GetNames(type);
+		}
+
+		public static string GetName(T value)
+		{
+			return names[Array.IndexOf(values, value)];
+		}
+		public static T GetValue(string name)
+		{
+			return values[Array.IndexOf(names, name)];
 		}
 	}
 }
