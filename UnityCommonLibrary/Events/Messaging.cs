@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UnityCommonLibrary.Messaging
 {
-	public delegate void OnMessage(IMessageData data);
+	public delegate void OnMessage(IMessageData iData);
 
 	public static class Messaging<M> where M : struct, IFormattable, IConvertible, IComparable
 	{

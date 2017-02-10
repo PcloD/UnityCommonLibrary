@@ -22,6 +22,12 @@ namespace UnityCommonLibrary
 			UnityEngine.Object.DontDestroyOnLoad(provider);
 			return Register<S>(provider);
 		}
+		public static S RegisterAsScriptable<S, P>(bool dontDestroy = true) where S : class where P : ScriptableObject, S
+		{
+			var provider = ScriptableObject.CreateInstance<P>();
+			UnityEngine.Object.DontDestroyOnLoad(provider);
+			return Register<S>(provider);
+		}
 		public static S Register<S>(S provider) where S : class
 		{
 			return (S)Register(typeof(S), provider);
