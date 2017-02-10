@@ -8,6 +8,10 @@ namespace UnityCommonLibrary
 	{
 		private static readonly Dictionary<Type, object> registry = new Dictionary<Type, object>();
 
+		public static void Clear()
+		{
+			registry.Clear();
+		}
 		public static S Get<S>() where S : class
 		{
 			return (S)registry[typeof(S)];
