@@ -16,21 +16,27 @@ namespace UnityCommonLibrary
 		{
 			return (S)registry[typeof(S)];
 		}
+		public static S RegisterNewBehaviour<S, P>(bool dontDestroy = true) where S : class where P : MonoBehaviour, S
+		{
+			var provider = new GameObject(typeof(P).Name).AddComponent<P>();
+			return RegisterBehaviour<S, P>(provider, dontDestroy);
+		}
+		public static S RegisterBehaviour<S, P>(P provider, bool dontDestroy = true) where S : class where P : MonoBehaviour, S
+		{
+			if(dontDestroy)
+			{
+				UnityEngine.Object.DontDestroyOnLoad(provider);
+			}
+			return Register<S>(provider);
+		}
+		public static S RegisterNewScriptable<S, P>() where S : class where P : ScriptableObject, S
+		{
+			var provider = ScriptableObject.CreateInstance<P>();
+			return Register<S>(provider);
+		}
 		public static S Register<S, P>() where S : class where P : S, new()
 		{
 			return Register<S>(new P());
-		}
-		public static S RegisterAsBehaviour<S, P>(bool dontDestroy = true) where S : class where P : MonoBehaviour, S
-		{
-			var provider = new GameObject(typeof(P).Name).AddComponent<P>();
-			UnityEngine.Object.DontDestroyOnLoad(provider);
-			return Register<S>(provider);
-		}
-		public static S RegisterAsScriptable<S, P>(bool dontDestroy = true) where S : class where P : ScriptableObject, S
-		{
-			var provider = ScriptableObject.CreateInstance<P>();
-			UnityEngine.Object.DontDestroyOnLoad(provider);
-			return Register<S>(provider);
 		}
 		public static S Register<S>(S provider) where S : class
 		{

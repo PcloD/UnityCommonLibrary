@@ -39,7 +39,7 @@ namespace UnityCommonLibrary.Messaging
 			{
 				var evt = primaryQueue.Dequeue();
 				var callbacks = listeners[evt.messageType];
-				callbacks.RemoveWhere(l => l == null);
+				callbacks.RemoveWhere(cb => cb.Target == null && !cb.Method.IsStatic);
 				foreach(var cb in callbacks)
 				{
 					cb(evt.data);
@@ -87,7 +87,14 @@ namespace UnityCommonLibrary.Messaging
 		}
 		public static void Remove(M msg, object target)
 		{
-			listeners[msg].RemoveWhere(v => v.Target == target);
+			listeners[msg].RemoveWhere(v =>
+			{
+				if(v.Target == null)
+				{
+					return !v.Method.IsStatic;
+				}
+				return v.Target.Equals(target);
+			});
 		}
 	}
 }

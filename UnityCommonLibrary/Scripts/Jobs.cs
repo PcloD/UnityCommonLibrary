@@ -44,7 +44,7 @@ namespace UnityCommonLibrary
 		}
 		public static void ExecuteNextFrame(Action action)
 		{
-			get.StartCoroutine(get._ExecuteNextFrame(action));
+			get.StartCoroutine(get._ExecuteInFrames(1, action));
 		}
 		public static void ExecuteInFrames(int frames, Action action)
 		{
@@ -54,11 +54,6 @@ namespace UnityCommonLibrary
 		private IEnumerator _ExecuteDelayed(float delay, Action action)
 		{
 			yield return new WaitForSeconds(delay);
-			action();
-		}
-		private IEnumerator _ExecuteNextFrame(Action action)
-		{
-			yield return null;
 			action();
 		}
 		private IEnumerator _ExecuteInFrames(int frames, Action action)
@@ -89,7 +84,7 @@ namespace UnityCommonLibrary
 			for(int i = onUpdateJobs.Count - 1; i >= 0; i--)
 			{
 				var job = onUpdateJobs[i];
-				if(job == null || !job())
+				if((job == null && !job.Method.IsStatic) || !job())
 				{
 					onUpdateJobs.RemoveAt(i);
 				}
@@ -100,7 +95,7 @@ namespace UnityCommonLibrary
 			for(int i = onFixedUpdateJobs.Count - 1; i >= 0; i--)
 			{
 				var job = onFixedUpdateJobs[i];
-				if(job == null || !job())
+				if((job == null && !job.Method.IsStatic) || !job())
 				{
 					onFixedUpdateJobs.RemoveAt(i);
 				}
@@ -111,7 +106,7 @@ namespace UnityCommonLibrary
 			for(int i = onLateUpdateJobs.Count - 1; i >= 0; i--)
 			{
 				var job = onLateUpdateJobs[i];
-				if(job == null || !job())
+				if((job == null && !job.Method.IsStatic) || !job())
 				{
 					onLateUpdateJobs.RemoveAt(i);
 				}
