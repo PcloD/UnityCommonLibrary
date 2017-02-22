@@ -13,10 +13,21 @@ namespace UnityCommonLibrary.FSM
 	/// </summary>
 	public sealed class UCLStateMachine<T> where T : struct, IFormattable, IConvertible, IComparable
 	{
+		/// <summary>
+		/// Represents what the machine is currently doing.
+		/// </summary>
+		public enum Status
+		{
+			Stopped,
+			InState,
+			ExitingState,
+			EnteringState
+		}
+
 		public delegate void OnLogFormat(string log);
 		public delegate void OnStateSwitched(T previousState, T currentState);
-		public delegate void OnState(T previousState);
-		public delegate IEnumerator OnStateAsync(T nextState);
+		public delegate void OnStateEnter(T previous);
+		public delegate void OnStateExit(T next);
 
 		public static event OnLogFormat LogFormat;
 		public event OnStateSwitched StateSwitched;
@@ -31,14 +42,10 @@ namespace UnityCommonLibrary.FSM
 		/// Stores the history of switches to allow reversal.
 		/// </summary>
 		private Stack<T> history = new Stack<T>();
-		private Coroutine switchRoutine;
-		private Coroutine enterRoutine;
-		private Coroutine exitRoutine;
 		private bool initialSwitch;
-		private readonly Dictionary<T, OnState> onStateEnter = new Dictionary<T, OnState>();
-		private readonly Dictionary<T, OnStateAsync> onStateEnterAsync = new Dictionary<T, OnStateAsync>();
-		private readonly Dictionary<T, OnState> onStateExit = new Dictionary<T, OnState>();
-		private readonly Dictionary<T, OnStateAsync> onStateExitAsync = new Dictionary<T, OnStateAsync>();
+		private readonly Dictionary<T, bool> canTick = new Dictionary<T, bool>();
+		private readonly Dictionary<T, OnStateEnter> onStateEnter = new Dictionary<T, OnStateEnter>();
+		private readonly Dictionary<T, OnStateExit> onStateExit = new Dictionary<T, OnStateExit>();
 		private readonly Dictionary<T, Action> onStateTick = new Dictionary<T, Action>();
 		/// <summary>
 		/// Creates a formatted string of detailed information
@@ -66,26 +73,20 @@ namespace UnityCommonLibrary.FSM
 				throw new Exception("T must be Enum");
 			}
 			this.id = string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id;
+			for(int i = 0; i < EnumData<T>.count; i++)
+			{
+				canTick.Add(EnumData<T>.values[i], true);
+			}
 		}
 
-		public UCLStateMachine<T> SetOnEnter(T state, OnState onEnter)
+		public UCLStateMachine<T> SetOnEnter(T state, OnStateEnter onEnter)
 		{
 			onStateEnter.AddOrSet(state, onEnter);
 			return this;
 		}
-		public UCLStateMachine<T> SetOnEnterAsync(T state, OnStateAsync onEnter)
-		{
-			onStateEnterAsync.AddOrSet(state, onEnter);
-			return this;
-		}
-		public UCLStateMachine<T> SetOnExit(T state, OnState onExit)
+		public UCLStateMachine<T> SetOnExit(T state, OnStateExit onExit)
 		{
 			onStateExit.AddOrSet(state, onExit);
-			return this;
-		}
-		public UCLStateMachine<T> SetOnExitAsync(T state, OnStateAsync onExit)
-		{
-			onStateExitAsync.AddOrSet(state, onExit);
 			return this;
 		}
 		public UCLStateMachine<T> SetOnTick(T state, Action onTick)
@@ -114,10 +115,9 @@ namespace UnityCommonLibrary.FSM
 					if(switchQueue.Count > 0)
 					{
 						var nextSwitch = switchQueue.Dequeue();
-						StopCoroutines(switchRoutine, enterRoutine, exitRoutine);
-						switchRoutine = CoroutineUtility.StartCoroutine(SwitchStateRoutine(nextSwitch));
+						SwitchStateRoutine(nextSwitch);
 					}
-					else
+					else if(canTick[currentState])
 					{
 						Action tick;
 						if(onStateTick.TryGetValue(currentState, out tick))
@@ -127,6 +127,14 @@ namespace UnityCommonLibrary.FSM
 					}
 					break;
 			}
+		}
+		public bool CanTick(T state)
+		{
+			return canTick[state];
+		}
+		public bool SetCanTick(T state, bool canTick)
+		{
+			return this.canTick[state] = canTick;
 		}
 		public bool IsInState(T state)
 		{
@@ -180,7 +188,7 @@ namespace UnityCommonLibrary.FSM
 		/// The actual coroutine that switches states.
 		/// </summary>
 		/// <param name="switch">The StateSwitch instance to process.</param>
-		private IEnumerator SwitchStateRoutine(StateSwitch<T> @switch)
+		private void SwitchStateRoutine(StateSwitch<T> @switch)
 		{
 			Log("Begin SwitchState type '{0}'", @switch.type);
 			if(!initialSwitch)
@@ -189,15 +197,7 @@ namespace UnityCommonLibrary.FSM
 				// Exit current
 				status = Status.ExitingState;
 
-				OnStateAsync onExitAsync;
-				if(onStateExitAsync.TryGetValue(currentState, out onExitAsync))
-				{
-					// Wait for exiting state to finish exiting.
-					exitRoutine = CoroutineUtility.StartCoroutine(onExitAsync(@switch.state));
-					yield return exitRoutine;
-					exitRoutine = null;
-				}
-				OnState onExit;
+				OnStateExit onExit;
 				if(onStateExit.TryGetValue(currentState, out onExit))
 				{
 					onExit(@switch.state);
@@ -210,6 +210,7 @@ namespace UnityCommonLibrary.FSM
 				}
 			}
 
+			var previous = currentState;
 			// Enter next
 			currentState = @switch.state;
 			// Fire callback for onSwitch
@@ -217,22 +218,13 @@ namespace UnityCommonLibrary.FSM
 			@switch.FireOnSwitch();
 			Log("Entering state '{0}'", currentState);
 			status = Status.EnteringState;
-			OnStateAsync onEnterAsync;
-			if(onStateEnterAsync.TryGetValue(currentState, out onEnterAsync))
-			{
-				// Wait for exiting state to finish exiting.
-				exitRoutine = CoroutineUtility.StartCoroutine(onEnterAsync(@switch.state));
-				yield return exitRoutine;
-				exitRoutine = null;
-			}
-			OnState onEnter;
+			OnStateEnter onEnter;
 			if(onStateEnter.TryGetValue(currentState, out onEnter))
 			{
-				onEnter(@switch.state);
+				onEnter(previous);
 			}
 			lastSwitchTime = TimeSlice.Create();
 			status = Status.InState;
-			switchRoutine = null;
 			if(!initialSwitch && StateSwitched != null)
 			{
 				StateSwitched(previousState, currentState);
@@ -273,17 +265,6 @@ namespace UnityCommonLibrary.FSM
 			toStringBuilder.AppendLine(string.Format("PreviousState: {0}", previousState));
 			toStringBuilder.AppendLine(string.Format("CurrentState: {0}", currentState));
 			return toStringBuilder.ToString().Trim();
-		}
-
-		/// <summary>
-		/// Represents what the machine is currently doing.
-		/// </summary>
-		public enum Status
-		{
-			Stopped,
-			InState,
-			ExitingState,
-			EnteringState
 		}
 	}
 }
