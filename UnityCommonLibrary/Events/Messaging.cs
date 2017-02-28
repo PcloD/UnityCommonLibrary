@@ -54,7 +54,10 @@ namespace UnityCommonLibrary.Messaging
 			{
 				foreach(var o in toRemove)
 				{
-					Remove(k, o);
+					listeners[k].RemoveWhere(v =>
+					{
+						return Equals(v.Target, o);
+					});
 				}
 			}
 			toRemove.Clear();
@@ -84,17 +87,6 @@ namespace UnityCommonLibrary.Messaging
 		public static void RemoveAll(object target)
 		{
 			toRemove.Add(target);
-		}
-		public static void Remove(M msg, object target)
-		{
-			listeners[msg].RemoveWhere(v =>
-			{
-				if(v.Target == null)
-				{
-					return !v.Method.IsStatic;
-				}
-				return v.Target.Equals(target);
-			});
 		}
 	}
 }
