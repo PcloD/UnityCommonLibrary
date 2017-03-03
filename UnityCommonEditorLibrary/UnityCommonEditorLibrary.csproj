@@ -57,6 +57,7 @@
     <Compile Include="Editor\ComponentEditorUtility.cs" />
     <Compile Include="Editor\EditorCoroutine.cs" />
     <Compile Include="Inspectors\EnumMaskAttributeDrawer.cs" />
+    <Compile Include="Inspectors\MultiTagApplicatorInspector.cs" />
     <Compile Include="Inspectors\RelativesOnlyAttributeDrawer.cs" />
     <Compile Include="Inspectors\NoteAttributeDrawer.cs" />
     <Compile Include="Inspectors\ParallaxCameraInspector.cs" />

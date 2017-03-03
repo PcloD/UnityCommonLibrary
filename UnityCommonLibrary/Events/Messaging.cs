@@ -38,14 +38,59 @@ namespace UnityCommonLibrary.Messaging
 			while(primaryQueue.Count > 0)
 			{
 				var evt = primaryQueue.Dequeue();
-				var callbacks = listeners[evt.messageType];
-				callbacks.RemoveWhere(cb => cb.Target == null && !cb.Method.IsStatic);
-				foreach(var cb in callbacks)
-				{
-					cb(evt.data);
-				}
+				ExecuteMessage(evt);
 			}
 			isExecutingQueue = false;
+			PostInternalUpdateCleanup();
+		}
+		public static void Broadcast(M msg, IMessageData data = null)
+		{
+			(isExecutingQueue ? addQueue : primaryQueue).Enqueue(PrepareBroadcast(msg, data));
+		}
+		public static void BroadcastImmediate(M msg, IMessageData data = null)
+		{
+			var message = PrepareBroadcast(msg, data);
+			// Force update
+			ExecuteMessage(message);
+			PostInternalUpdateCleanup();
+		}
+		public static void Register(M evt, OnMessage callback)
+		{
+			HashSet<OnMessage> set;
+			if(!listeners.TryGetValue(evt, out set))
+			{
+				set = new HashSet<OnMessage>();
+				listeners[evt] = set;
+			}
+			set.Add(callback);
+		}
+		public static void RemoveAll(object target)
+		{
+			toRemove.Add(target);
+		}
+		private static MessageCall PrepareBroadcast(M msg, IMessageData data)
+		{
+			if(data != null)
+			{
+				data.OnBroadcast();
+			}
+			return new MessageCall()
+			{
+				messageType = msg,
+				data = data,
+			};
+		}
+		private static void ExecuteMessage(MessageCall evt)
+		{
+			var callbacks = listeners[evt.messageType];
+			callbacks.RemoveWhere(cb => cb.Target == null && !cb.Method.IsStatic);
+			foreach(var cb in callbacks)
+			{
+				cb(evt.data);
+			}
+		}
+		private static void PostInternalUpdateCleanup()
+		{
 			while(addQueue.Count > 0)
 			{
 				primaryQueue.Enqueue(addQueue.Dequeue());
@@ -61,32 +106,6 @@ namespace UnityCommonLibrary.Messaging
 				}
 			}
 			toRemove.Clear();
-		}
-		public static void Broadcast(M msg, IMessageData data = null)
-		{
-			if(data != null)
-			{
-				data.OnBroadcast();
-			}
-			(isExecutingQueue ? addQueue : primaryQueue).Enqueue(new MessageCall()
-			{
-				messageType = msg,
-				data = data,
-			});
-		}
-		public static void Register(M evt, OnMessage callback)
-		{
-			HashSet<OnMessage> set;
-			if(!listeners.TryGetValue(evt, out set))
-			{
-				set = new HashSet<OnMessage>();
-				listeners[evt] = set;
-			}
-			set.Add(callback);
-		}
-		public static void RemoveAll(object target)
-		{
-			toRemove.Add(target);
 		}
 	}
 }

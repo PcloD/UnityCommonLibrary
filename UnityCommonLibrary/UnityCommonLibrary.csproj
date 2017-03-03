@@ -73,6 +73,9 @@
     <Compile Include="Scripts\MakeWorldBounds.cs" />
     <Compile Include="Scripts\ManagedUpdater.cs" />
     <Compile Include="Scripts\MaterialOverrider.cs" />
+    <Compile Include="Scripts\MultiTagApplicator.cs" />
+    <Compile Include="Scripts\MultiTags.cs" />
+    <Compile Include="Scripts\MultiTagsExtensions.cs" />
     <Compile Include="Scripts\ScriptableSingleton.cs" />
     <Compile Include="Scripts\ObservedValue.cs" />
     <Compile Include="Scripts\PanTexture.cs" />

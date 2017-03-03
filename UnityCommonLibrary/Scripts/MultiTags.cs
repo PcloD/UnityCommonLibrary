@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityCommonLibrary;
 using UnityEngine;
 
 namespace UnityCommonLibrary
@@ -7,22 +8,7 @@ namespace UnityCommonLibrary
 	public static class MultiTags<T> where T : struct, IFormattable, IConvertible, IComparable
 	{
 		private static readonly Dictionary<GameObject, T> lookup = new Dictionary<GameObject, T>();
-		private static readonly T[] allValues;
-		private static readonly T noneValue;
-		private static readonly Type enumType;
-
-		static MultiTags()
-		{
-			allValues = EnumData.GetValues<T>();
-			enumType = typeof(T);
-			for(int i = int.MinValue; i <= int.MaxValue; i++)
-			{
-				if(!Enum.IsDefined(enumType, i))
-				{
-					noneValue = FromInt(i);
-				}
-			}
-		}
+		private static readonly T noneValue = FromInt(0);
 
 		public static bool HasAnyTags(Component cmp, T mask)
 		{
@@ -39,9 +25,9 @@ namespace UnityCommonLibrary
 			}
 			var foundVal = ToInt(found);
 			var maskVal = ToInt(mask);
-			for(int i = 0; i < allValues.Length; i++)
+			for(int i = 0; i < EnumData<T>.values.Length; i++)
 			{
-				var v = ToInt(allValues[i]);
+				var v = ToInt(EnumData<T>.values[i]);
 				if((maskVal & v) == v)
 				{
 					if((foundVal & v) == v)
@@ -67,9 +53,9 @@ namespace UnityCommonLibrary
 			}
 			var maskVal = ToInt(mask);
 			var foundVal = ToInt(found);
-			for(int i = 0; i < allValues.Length; i++)
+			for(int i = 0; i < EnumData<T>.values.Length; i++)
 			{
-				var v = ToInt(allValues[i]);
+				var v = ToInt(EnumData<T>.values[i]);
 				if((maskVal & v) == v)
 				{
 					if((foundVal & v) != v)
@@ -174,9 +160,9 @@ namespace UnityCommonLibrary
 		}
 		public static bool SharesAny(GameObject obj, GameObject other)
 		{
-			for(int i = 0; i < allValues.Length; i++)
+			for(int i = 0; i < EnumData<T>.values.Length; i++)
 			{
-				var v = allValues[i];
+				var v = EnumData<T>.values[i];
 				if(SharesTag(obj, other, v))
 				{
 					return true;
@@ -201,6 +187,17 @@ namespace UnityCommonLibrary
 		{
 			return HasTags(obj, tag) && HasTags(other, tag);
 		}
+		public static GameObject GetFirstWithTag(T tag)
+		{
+			foreach(var kvp in lookup)
+			{
+				if(HasTags(kvp.Key, tag))
+				{
+					return kvp.Key;
+				}
+			}
+			return null;
+		}
 		public static List<GameObject> GetWithTag(T tag)
 		{
 			var list = new List<GameObject>();
@@ -220,7 +217,7 @@ namespace UnityCommonLibrary
 		}
 		private static T FromInt(int i)
 		{
-			return (T)Enum.ToObject(enumType, i);
+			return (T)Enum.ToObject(EnumData<T>.type, i);
 		}
 	}
 }
