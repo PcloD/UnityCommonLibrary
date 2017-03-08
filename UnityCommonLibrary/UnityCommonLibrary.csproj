@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\AutoInstantiateAttribute.cs" />
+    <Compile Include="Attributes\NullProvider.cs" />
     <Compile Include="Attributes\RelativesOnlyAttribute.cs" />
     <Compile Include="Colliders\ColliderEvents2D.cs" />
     <Compile Include="Colliders\ColliderUnityEvents2D.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Scripts\ScriptableSingleton.cs" />
     <Compile Include="Scripts\ObservedValue.cs" />
     <Compile Include="Scripts\PanTexture.cs" />
-    <Compile Include="Scripts\Services.cs" />
+    <Compile Include="Scripts\ServiceLocator.cs" />
     <Compile Include="Scripts\SimpleSpriteAnimation.cs" />
     <Compile Include="Scripts\TransformElement.cs" />
     <Compile Include="Scripts\TransformSettings.cs" />
