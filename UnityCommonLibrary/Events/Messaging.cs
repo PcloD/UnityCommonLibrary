@@ -4,108 +4,131 @@ using UnityEngine;
 
 namespace UnityCommonLibrary.Messaging
 {
-	public delegate void OnMessage(IMessageData iData);
+    public delegate void OnMessage(IMessageData iData);
 
-	public static class Messaging<M> where M : struct, IFormattable, IConvertible, IComparable
-	{
+    public static class Messaging<M> where M : struct, IFormattable, IConvertible, IComparable
+    {
+        /// <summary>
+        /// Pairs a specific message call to the
+        /// data that was passed with it.
+        /// </summary>
 		private struct MessageCall
-		{
-			public M messageType;
-			public IMessageData data;
-		}
+        {
+            public M messageType;
+            public IMessageData data;
+        }
 
-		private static readonly HashSet<object> toRemove = new HashSet<object>();
-		private static readonly Dictionary<M, HashSet<OnMessage>> listeners = new Dictionary<M, HashSet<OnMessage>>();
-		private static readonly Queue<MessageCall> primaryQueue = new Queue<MessageCall>();
-		private static readonly Queue<MessageCall> addQueue = new Queue<MessageCall>();
-		private static bool isExecutingQueue;
+        /// <summary>
+        /// Binds message types to registered callbacks
+        /// </summary>
+        private static readonly Dictionary<M, HashSet<OnMessage>> listeners = new Dictionary<M, HashSet<OnMessage>>();
+        /// <summary>
+        /// Standard queue that broadcasted messages are added to.
+        /// </summary>
+        private static readonly Queue<MessageCall> primaryQueue = new Queue<MessageCall>();
+        /// <summary>
+        /// Secondary queue used if callbacks broadcast messages themselves.
+        /// </summary>
+        private static readonly Queue<MessageCall> secondayQueue = new Queue<MessageCall>();
+        /// <summary>
+        /// Flag to prevent infinite loops if callbacks broadcast messages themselves.
+        /// </summary>
+        private static bool updating;
 
-		static Messaging()
-		{
-			if(!typeof(M).IsEnum)
-			{
-				throw new Exception("Type M must be enum.");
-			}
-			for(int i = 0; i < EnumData<M>.count; i++)
-			{
-				listeners.Add(EnumData<M>.values[i], new HashSet<OnMessage>());
-			}
-		}
+        static Messaging()
+        {
+            if (!typeof(M).IsEnum)
+            {
+                throw new Exception("Type M must be enum.");
+            }
+            for (int i = 0; i < EnumData<M>.count; i++)
+            {
+                listeners.Add(EnumData<M>.values[i], new HashSet<OnMessage>());
+            }
+        }
 
-		public static void Update()
-		{
-			isExecutingQueue = true;
-			while(primaryQueue.Count > 0)
-			{
-				var evt = primaryQueue.Dequeue();
-				ExecuteMessage(evt);
-			}
-			isExecutingQueue = false;
-			PostInternalUpdateCleanup();
-		}
-		public static void Broadcast(M msg, IMessageData data = null)
-		{
-			(isExecutingQueue ? addQueue : primaryQueue).Enqueue(PrepareBroadcast(msg, data));
-		}
-		public static void BroadcastImmediate(M msg, IMessageData data = null)
-		{
-			var message = PrepareBroadcast(msg, data);
-			// Force update
-			ExecuteMessage(message);
-			PostInternalUpdateCleanup();
-		}
-		public static void Register(M evt, OnMessage callback)
-		{
-			HashSet<OnMessage> set;
-			if(!listeners.TryGetValue(evt, out set))
-			{
-				set = new HashSet<OnMessage>();
-				listeners[evt] = set;
-			}
-			set.Add(callback);
-		}
-		public static void RemoveAll(object target)
-		{
-			toRemove.Add(target);
-		}
-		private static MessageCall PrepareBroadcast(M msg, IMessageData data)
-		{
-			if(data != null)
-			{
-				data.OnBroadcast();
-			}
-			return new MessageCall()
-			{
-				messageType = msg,
-				data = data,
-			};
-		}
-		private static void ExecuteMessage(MessageCall evt)
-		{
-			var callbacks = listeners[evt.messageType];
-			callbacks.RemoveWhere(cb => cb.Target == null && !cb.Method.IsStatic);
-			foreach(var cb in callbacks)
-			{
-				cb(evt.data);
-			}
-		}
-		private static void PostInternalUpdateCleanup()
-		{
-			while(addQueue.Count > 0)
-			{
-				primaryQueue.Enqueue(addQueue.Dequeue());
-			}
-			foreach(var k in listeners.Keys)
-			{
-				foreach(var o in toRemove)
-				{
-					listeners[k].RemoveWhere(v =>
-					{
-						return Equals(v.Target, o);
-					});
-				}
-			}
-			toRemove.Clear();
-		}
-	}
+        public static void Update()
+        {
+            updating = true;
+            while (primaryQueue.Count > 0)
+            {
+                var evt = primaryQueue.Dequeue();
+                ExecuteMessage(evt);
+            }
+            updating = false;
+            PostUpdateCleanup();
+        }
+        /// <summary>
+        /// Queues a Message for broadcasting.
+        /// </summary>
+        public static void Broadcast(M msg, IMessageData data = null)
+        {
+            (updating ? secondayQueue : primaryQueue).Enqueue(CreateBroadcastMessage(msg, data));
+        }
+        /// <summary>
+        /// Immediately broadcasts a message.
+        /// </summary>
+        public static void BroadcastImmediate(M msg, IMessageData data = null)
+        {
+            var message = CreateBroadcastMessage(msg, data);
+            // Force update
+            updating = true;
+            ExecuteMessage(message);
+            PostUpdateCleanup();
+            updating = false;
+        }
+        public static void Register(M evt, OnMessage callback)
+        {
+            HashSet<OnMessage> set;
+            if (!listeners.TryGetValue(evt, out set))
+            {
+                set = new HashSet<OnMessage>();
+                listeners[evt] = set;
+            }
+            set.Add(callback);
+        }
+        /// <summary>
+        /// Removes all callbacks associated with target.
+        /// </summary>
+        public static void RemoveAll(object target)
+        {
+            for (int i = 0; i < EnumData<M>.count; i++)
+            {
+                listeners[EnumData<M>.values[i]].RemoveWhere(v =>
+                {
+                    return Equals(v.Target, target);
+                });
+            }
+        }
+        private static MessageCall CreateBroadcastMessage(M msg, IMessageData data)
+        {
+            if (data != null)
+            {
+                data.OnBroadcast();
+            }
+            return new MessageCall()
+            {
+                messageType = msg,
+                data = data,
+            };
+        }
+        private static void ExecuteMessage(MessageCall evt)
+        {
+            var callbacks = listeners[evt.messageType];
+            // Remove any callbacks in which the non-static target no longer exists
+            callbacks.RemoveWhere(cb => cb.Target == null && !cb.Method.IsStatic);
+            foreach (var cb in callbacks)
+            {
+                cb(evt.data);
+            }
+        }
+        private static void PostUpdateCleanup()
+        {
+            // Move secondary queue elements to primary queue
+            while (secondayQueue.Count > 0)
+            {
+                primaryQueue.Enqueue(secondayQueue.Dequeue());
+            }
+        }
+    }
 }
