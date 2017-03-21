@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UnityCommonLibrary.Messaging
 {
-    public delegate void OnMessage(IMessageData iData);
+    public delegate void OnMessage(MessageData abstData);
 
     public static class Messaging<M> where M : struct, IFormattable, IConvertible, IComparable
     {
@@ -15,7 +15,7 @@ namespace UnityCommonLibrary.Messaging
 		private struct MessageCall
         {
             public M messageType;
-            public IMessageData data;
+            public MessageData data;
         }
 
         /// <summary>
@@ -61,14 +61,14 @@ namespace UnityCommonLibrary.Messaging
         /// <summary>
         /// Queues a Message for broadcasting.
         /// </summary>
-        public static void Broadcast(M msg, IMessageData data = null)
+        public static void Broadcast(M msg, MessageData data = null)
         {
             (updating ? secondayQueue : primaryQueue).Enqueue(CreateBroadcastMessage(msg, data));
         }
         /// <summary>
         /// Immediately broadcasts a message.
         /// </summary>
-        public static void BroadcastImmediate(M msg, IMessageData data = null)
+        public static void BroadcastImmediate(M msg, MessageData data = null)
         {
             var message = CreateBroadcastMessage(msg, data);
             // Force update
@@ -100,11 +100,11 @@ namespace UnityCommonLibrary.Messaging
                 });
             }
         }
-        private static MessageCall CreateBroadcastMessage(M msg, IMessageData data)
+        private static MessageCall CreateBroadcastMessage(M msg, MessageData data)
         {
             if (data != null)
             {
-                data.OnBroadcast();
+                data.PrepareBroadcast();
             }
             return new MessageCall()
             {

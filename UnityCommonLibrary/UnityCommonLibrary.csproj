@@ -56,7 +56,8 @@
     <Compile Include="Colliders\ColliderUnityEvents2D.cs" />
     <Compile Include="Colliders\ColliderUnityEvents.cs" />
     <Compile Include="Colliders\ColliderEvents.cs" />
-    <Compile Include="Events\IMessageData.cs" />
+    <Compile Include="Messaging\GenericMessageData.cs" />
+    <Compile Include="Messaging\MessageData.cs" />
     <Compile Include="FSM\UCLStateMachine.cs" />
     <Compile Include="FSM\StateSwitch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,7 +65,7 @@
     <Compile Include="Scripts\AutoInstantiator.cs" />
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
     <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
-    <Compile Include="Events\Messaging.cs" />
+    <Compile Include="Messaging\Messaging.cs" />
     <Compile Include="Scripts\EnumData.cs" />
     <Compile Include="Scripts\GLog.cs" />
     <Compile Include="Scripts\Invoker.cs" />
