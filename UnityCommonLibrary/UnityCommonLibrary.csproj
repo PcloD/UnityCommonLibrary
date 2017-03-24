@@ -62,7 +62,6 @@
     <Compile Include="FSM\StateSwitch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\ArraySelector.cs" />
-    <Compile Include="Scripts\AutoInstantiator.cs" />
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
     <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
     <Compile Include="Messaging\Messaging.cs" />
