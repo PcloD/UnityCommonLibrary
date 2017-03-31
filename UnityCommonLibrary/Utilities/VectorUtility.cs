@@ -46,7 +46,7 @@ namespace UnityCommonLibrary.Utility
 				y = Mathf.SmoothStep(from.y, to.y, t),
 			};
 		}
-		public static void SetXYZ(this Vector3 v3, float? x = null, float? y = null, float? z = null)
+		public static void SetXYZ(ref Vector3 v3, float? x = null, float? y = null, float? z = null)
 		{
 			if(x.HasValue)
 			{
