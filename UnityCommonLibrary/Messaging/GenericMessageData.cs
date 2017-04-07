@@ -3,12 +3,21 @@ using System.Collections.Generic;
 
 namespace UnityCommonLibrary.Messaging
 {
-    public sealed class GenericMessageData : MessageData
+    public sealed class GenericMessageData<T> : MessageData
+    {
+        public T value { get; private set; }
+
+        public GenericMessageData(T value)
+        {
+            this.value = value;
+        }
+    }
+    public sealed class CollectionMessageData : MessageData
     {
         internal bool isLocked;
         private readonly Dictionary<string, object> data = new Dictionary<string, object>();
 
-        public GenericMessageData(string key, object value)
+        public CollectionMessageData(string key, object value)
         {
             data.Add(key, value);
         }
