@@ -115,9 +115,11 @@ namespace UnityCommonLibrary.Messaging
         private static void ExecuteMessage(MessageCall evt)
         {
             var callbacks = listeners[evt.messageType];
+            var copy = new OnMessage[callbacks.Count];
             // Remove any callbacks in which the non-static target no longer exists
             callbacks.RemoveWhere(cb => cb.Target == null && !cb.Method.IsStatic);
-            foreach (var cb in callbacks)
+            callbacks.CopyTo(copy);
+            foreach (var cb in copy)
             {
                 cb(evt.data);
             }
