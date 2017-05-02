@@ -64,7 +64,7 @@
     <Compile Include="Scripts\ArraySelector.cs" />
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
     <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
-    <Compile Include="Messaging\Messaging.cs" />
+    <Compile Include="Messaging\Messenger.cs" />
     <Compile Include="Scripts\EnumData.cs" />
     <Compile Include="Scripts\GLog.cs" />
     <Compile Include="Scripts\Invoker.cs" />

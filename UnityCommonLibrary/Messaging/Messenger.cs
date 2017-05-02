@@ -6,7 +6,7 @@ namespace UnityCommonLibrary.Messaging
 {
     public delegate void OnMessage(MessageData abstData);
 
-    public static class Messaging<M> where M : struct, IFormattable, IConvertible, IComparable
+    public class Messenger<M> where M : struct, IFormattable, IConvertible, IComparable
     {
         /// <summary>
         /// Pairs a specific message call to the
@@ -18,24 +18,26 @@ namespace UnityCommonLibrary.Messaging
             public MessageData data;
         }
 
+        public static readonly Messenger<M> global = new Messenger<M>();
+
         /// <summary>
         /// Binds message types to registered callbacks
         /// </summary>
-        private static readonly Dictionary<M, HashSet<OnMessage>> listeners = new Dictionary<M, HashSet<OnMessage>>();
+        private readonly Dictionary<M, HashSet<OnMessage>> listeners = new Dictionary<M, HashSet<OnMessage>>();
         /// <summary>
         /// Standard queue that broadcasted messages are added to.
         /// </summary>
-        private static readonly Queue<MessageCall> primaryQueue = new Queue<MessageCall>();
+        private readonly Queue<MessageCall> primaryQueue = new Queue<MessageCall>();
         /// <summary>
         /// Secondary queue used if callbacks broadcast messages themselves.
         /// </summary>
-        private static readonly Queue<MessageCall> secondayQueue = new Queue<MessageCall>();
+        private readonly Queue<MessageCall> secondayQueue = new Queue<MessageCall>();
         /// <summary>
         /// Flag to prevent infinite loops if callbacks broadcast messages themselves.
         /// </summary>
-        private static bool updating;
+        private bool updating;
 
-        static Messaging()
+        public Messenger()
         {
             if (!typeof(M).IsEnum)
             {
@@ -47,7 +49,7 @@ namespace UnityCommonLibrary.Messaging
             }
         }
 
-        public static void Update()
+        public void Update()
         {
             updating = true;
             while (primaryQueue.Count > 0)
@@ -61,14 +63,14 @@ namespace UnityCommonLibrary.Messaging
         /// <summary>
         /// Queues a Message for broadcasting.
         /// </summary>
-        public static void Broadcast(M msg, MessageData data = null)
+        public void Broadcast(M msg, MessageData data = null)
         {
             (updating ? secondayQueue : primaryQueue).Enqueue(CreateBroadcastMessage(msg, data));
         }
         /// <summary>
         /// Immediately broadcasts a message.
         /// </summary>
-        public static void BroadcastImmediate(M msg, MessageData data = null)
+        public void BroadcastImmediate(M msg, MessageData data = null)
         {
             var message = CreateBroadcastMessage(msg, data);
             // Force update
@@ -77,7 +79,7 @@ namespace UnityCommonLibrary.Messaging
             PostUpdateCleanup();
             updating = false;
         }
-        public static void Register(M evt, OnMessage callback)
+        public void Register(M evt, OnMessage callback)
         {
             HashSet<OnMessage> set;
             if (!listeners.TryGetValue(evt, out set))
@@ -90,7 +92,7 @@ namespace UnityCommonLibrary.Messaging
         /// <summary>
         /// Removes all callbacks associated with target.
         /// </summary>
-        public static void RemoveAll(object target)
+        public void RemoveAll(object target)
         {
             for (int i = 0; i < EnumData<M>.count; i++)
             {
@@ -100,7 +102,7 @@ namespace UnityCommonLibrary.Messaging
                 });
             }
         }
-        private static MessageCall CreateBroadcastMessage(M msg, MessageData data)
+        private MessageCall CreateBroadcastMessage(M msg, MessageData data)
         {
             if (data != null)
             {
@@ -112,11 +114,11 @@ namespace UnityCommonLibrary.Messaging
                 data = data,
             };
         }
-        private static void ExecuteMessage(MessageCall evt)
+        private void ExecuteMessage(MessageCall evt)
         {
             var callbacks = listeners[evt.messageType];
             var copy = new OnMessage[callbacks.Count];
-            // Remove any callbacks in which the non-static target no longer exists
+            // Remove any callbacks in which the non-target no longer exists
             callbacks.RemoveWhere(cb => cb.Target == null && !cb.Method.IsStatic);
             callbacks.CopyTo(copy);
             foreach (var cb in copy)
@@ -124,7 +126,7 @@ namespace UnityCommonLibrary.Messaging
                 cb(evt.data);
             }
         }
-        private static void PostUpdateCleanup()
+        private void PostUpdateCleanup()
         {
             // Move secondary queue elements to primary queue
             while (secondayQueue.Count > 0)
