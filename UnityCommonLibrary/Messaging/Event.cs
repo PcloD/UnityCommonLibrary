@@ -1,35 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using UnityCommonLibrary.Utility;
 
 namespace UnityCommonLibrary.Messaging
 {
     public interface IEvent
     {
+        string subscriberList { get; }
         void UnsubscribeTarget(object target);
         void Update();
     }
-    public abstract class BaseEvent<T> : IEvent
+    public abstract class BaseEvent<T> : IEvent where T : class
     {
-        protected readonly HashSet<T> listeners = new HashSet<T>();
+        protected readonly HashSet<T> subscribers = new HashSet<T>();
+
+        public string subscriberList
+        {
+            get
+            {
+                if (subscribers.Count == 0)
+                {
+                    return string.Empty;
+                }
+                var sb = new StringBuilder();
+                foreach (var s in subscribers)
+                {
+                    var del = s as Delegate;
+                    sb.AppendLineFormat("{0}.{1}", del.Target, del.Method.Name);
+                }
+                sb.TrimEnd();
+                return sb.ToString();
+            }
+        }
 
         public BaseEvent()
         {
             Events.events.Add(this);
         }
 
-        public void Subscribe(T callback)
+        protected static bool ShouldRemoveCallback(T t)
         {
-            listeners.Add(callback);
+            var del = t as Delegate;
+            return del.Target == null && !del.Method.IsStatic;
         }
-        public void Unsubscribe(T callback)
+
+        public abstract void Update();
+        public void Subscribe(T subscriber)
         {
-            listeners.Remove(callback);
+            subscribers.Add(subscriber);
+        }
+        public void Unsubscribe(T subscriber)
+        {
+            subscribers.Remove(subscriber);
         }
         public void UnsubscribeTarget(object target)
         {
-            listeners.RemoveWhere(t => (t as Delegate).Target == target);
+            subscribers.RemoveWhere(s => Equals((s as Delegate).Target, target));
         }
-        public abstract void Update();
     }
 
     public class Event : BaseEvent<Event.OnEvent>
@@ -42,7 +70,7 @@ namespace UnityCommonLibrary.Messaging
         {
             if (callQueue > 0)
             {
-                listeners.RemoveWhere(Events.CheckRemoveCallback);
+                subscribers.RemoveWhere(ShouldRemoveCallback);
                 for (int i = 0; i < callQueue; i++)
                 {
                     InternalPublsh();
@@ -56,14 +84,14 @@ namespace UnityCommonLibrary.Messaging
         }
         public void PublishImmediate()
         {
-            listeners.RemoveWhere(Events.CheckRemoveCallback);
+            subscribers.RemoveWhere(ShouldRemoveCallback);
             InternalPublsh();
         }
         private void InternalPublsh()
         {
-            foreach (var l in listeners)
+            foreach (var s in subscribers)
             {
-                l.Invoke();
+                s.Invoke();
             }
         }
     }
@@ -77,7 +105,7 @@ namespace UnityCommonLibrary.Messaging
         {
             if (callQueue.Count > 0)
             {
-                listeners.RemoveWhere(Events.CheckRemoveCallback);
+                subscribers.RemoveWhere(ShouldRemoveCallback);
                 while (callQueue.Count > 0)
                 {
                     var call = callQueue.Dequeue();
@@ -91,14 +119,14 @@ namespace UnityCommonLibrary.Messaging
         }
         public void PublishImmediate(T arg = default(T))
         {
-            listeners.RemoveWhere(Events.CheckRemoveCallback);
+            subscribers.RemoveWhere(ShouldRemoveCallback);
             InternalPublish(arg);
         }
         private void InternalPublish(T arg)
         {
-            foreach (var l in listeners)
+            foreach (var s in subscribers)
             {
-                l.Invoke(arg);
+                s.Invoke(arg);
             }
         }
     }
@@ -124,7 +152,7 @@ namespace UnityCommonLibrary.Messaging
         {
             if (callQueue.Count > 0)
             {
-                listeners.RemoveWhere(Events.CheckRemoveCallback);
+                subscribers.RemoveWhere(ShouldRemoveCallback);
                 while (callQueue.Count > 0)
                 {
                     var call = callQueue.Dequeue();
@@ -138,14 +166,14 @@ namespace UnityCommonLibrary.Messaging
         }
         public void PublishImmediate(T1 arg1 = default(T1), T2 arg2 = default(T2))
         {
-            listeners.RemoveWhere(Events.CheckRemoveCallback);
+            subscribers.RemoveWhere(ShouldRemoveCallback);
             InternalPublish(arg1, arg2);
         }
         private void InternalPublish(T1 arg1, T2 arg2)
         {
-            foreach (var l in listeners)
+            foreach (var s in subscribers)
             {
-                l.Invoke(arg1, arg2);
+                s.Invoke(arg1, arg2);
             }
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityCommonLibrary.Utility;
 
 namespace UnityCommonLibrary.Messaging
 {
@@ -22,10 +23,6 @@ namespace UnityCommonLibrary.Messaging
             {
                 evt.UnsubscribeTarget(target);
             }
-        }
-        internal static bool CheckRemoveCallback(Delegate d)
-        {
-            return d.Target == null && !d.Method.IsStatic;
         }
     }
 }
