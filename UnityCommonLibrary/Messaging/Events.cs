@@ -16,11 +16,11 @@ namespace UnityCommonLibrary.Messaging
                 evt.Update();
             }
         }
-        public static void RemoveFromAll(object target)
+        public static void UnsubscribeFromAll(object target)
         {
             foreach (var evt in events)
             {
-                evt.RemoveTarget(target);
+                evt.UnsubscribeTarget(target);
             }
         }
         internal static bool CheckRemoveCallback(Delegate d)

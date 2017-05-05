@@ -5,7 +5,7 @@ namespace UnityCommonLibrary.Messaging
 {
     public interface IEvent
     {
-        void RemoveTarget(object target);
+        void UnsubscribeTarget(object target);
         void Update();
     }
     public abstract class BaseEvent<T> : IEvent
@@ -21,11 +21,11 @@ namespace UnityCommonLibrary.Messaging
         {
             listeners.Add(callback);
         }
-        public void Remove(T callback)
+        public void Unsubscribe(T callback)
         {
             listeners.Remove(callback);
         }
-        public void RemoveTarget(object target)
+        public void UnsubscribeTarget(object target)
         {
             listeners.RemoveWhere(t => (t as Delegate).Target == target);
         }
@@ -45,21 +45,21 @@ namespace UnityCommonLibrary.Messaging
                 listeners.RemoveWhere(Events.CheckRemoveCallback);
                 for (int i = 0; i < callQueue; i++)
                 {
-                    InternalBroadcast();
+                    InternalPublsh();
                 }
                 callQueue = 0;
             }
         }
-        public void Broadcast()
+        public void Publish()
         {
             callQueue++;
         }
-        public void BroadcastImmediate()
+        public void PublishImmediate()
         {
             listeners.RemoveWhere(Events.CheckRemoveCallback);
-            InternalBroadcast();
+            InternalPublsh();
         }
-        private void InternalBroadcast()
+        private void InternalPublsh()
         {
             foreach (var l in listeners)
             {
@@ -81,20 +81,20 @@ namespace UnityCommonLibrary.Messaging
                 while (callQueue.Count > 0)
                 {
                     var call = callQueue.Dequeue();
-                    InternalBroadcast(call);
+                    InternalPublish(call);
                 }
             }
         }
-        public void Broadcast(T arg = default(T))
+        public void Publish(T arg = default(T))
         {
             callQueue.Enqueue(arg);
         }
-        public void BroadcastImmediate(T arg = default(T))
+        public void PublishImmediate(T arg = default(T))
         {
             listeners.RemoveWhere(Events.CheckRemoveCallback);
-            InternalBroadcast(arg);
+            InternalPublish(arg);
         }
-        private void InternalBroadcast(T arg)
+        private void InternalPublish(T arg)
         {
             foreach (var l in listeners)
             {
@@ -128,20 +128,20 @@ namespace UnityCommonLibrary.Messaging
                 while (callQueue.Count > 0)
                 {
                     var call = callQueue.Dequeue();
-                    InternalBroadcast(call.arg1, call.arg2);
+                    InternalPublish(call.arg1, call.arg2);
                 }
             }
         }
-        public void Broadcast(T1 arg1 = default(T1), T2 arg2 = default(T2))
+        public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2))
         {
             callQueue.Enqueue(new QueueEntry(arg1, arg2));
         }
-        public void BroadcastImmediate(T1 arg1 = default(T1), T2 arg2 = default(T2))
+        public void PublishImmediate(T1 arg1 = default(T1), T2 arg2 = default(T2))
         {
             listeners.RemoveWhere(Events.CheckRemoveCallback);
-            InternalBroadcast(arg1, arg2);
+            InternalPublish(arg1, arg2);
         }
-        private void InternalBroadcast(T1 arg1, T2 arg2)
+        private void InternalPublish(T1 arg1, T2 arg2)
         {
             foreach (var l in listeners)
             {

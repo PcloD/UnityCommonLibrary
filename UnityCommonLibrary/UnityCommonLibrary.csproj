@@ -58,15 +58,12 @@
     <Compile Include="Colliders\ColliderEvents.cs" />
     <Compile Include="Messaging\Event.cs" />
     <Compile Include="Messaging\Events.cs" />
-    <Compile Include="Messaging\GenericMessageData.cs" />
-    <Compile Include="Messaging\MessageData.cs" />
     <Compile Include="FSM\UCLStateMachine.cs" />
     <Compile Include="FSM\StateSwitch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\ArraySelector.cs" />
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
     <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
-    <Compile Include="Messaging\Messenger.cs" />
     <Compile Include="Scripts\EnumData.cs" />
     <Compile Include="Scripts\GLog.cs" />
     <Compile Include="Scripts\Invoker.cs" />
