@@ -36,6 +36,10 @@ namespace UnityCommonLibrary.Messaging
 
         public BaseEvent()
         {
+            if (!typeof(T).IsSubclassOf(typeof(Delegate)))
+            {
+                throw new ArgumentException("T must be of type Delegate.");
+            }
             Events.events.Add(this);
         }
 
