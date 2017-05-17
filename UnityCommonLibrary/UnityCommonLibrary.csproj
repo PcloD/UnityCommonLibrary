@@ -56,8 +56,8 @@
     <Compile Include="Colliders\ColliderUnityEvents2D.cs" />
     <Compile Include="Colliders\ColliderUnityEvents.cs" />
     <Compile Include="Colliders\ColliderEvents.cs" />
-    <Compile Include="Messaging\Event.cs" />
-    <Compile Include="Messaging\Events.cs" />
+    <Compile Include="Messaging\Signal.cs" />
+    <Compile Include="Messaging\Signals.cs" />
     <Compile Include="FSM\UCLStateMachine.cs" />
     <Compile Include="FSM\StateSwitch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
