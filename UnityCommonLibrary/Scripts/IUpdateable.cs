@@ -2,7 +2,7 @@
 {
 	public interface IUpdateable
 	{
-		bool enabled { get; set; }
+		bool Enabled { get; set; }
 		void ManagedUpdate();
 	}
 }

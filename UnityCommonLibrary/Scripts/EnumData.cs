@@ -8,7 +8,7 @@ namespace UnityCommonLibrary
 		public static readonly T[] values;
 		public static readonly string[] names;
 
-		public static int count
+		public static int Count
 		{
 			get
 			{

@@ -65,7 +65,6 @@
     <Compile Include="Scripts\DontDestroyOnLoad.cs" />
     <Compile Include="Scripts\EmptyMonoBehaviour.cs" />
     <Compile Include="Scripts\EnumData.cs" />
-    <Compile Include="Scripts\GLog.cs" />
     <Compile Include="Scripts\Invoker.cs" />
     <Compile Include="Scripts\Jobs.cs" />
     <Compile Include="Scripts\IUpdateable.cs" />

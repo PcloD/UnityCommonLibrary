@@ -7,12 +7,6 @@ namespace UnityCommonLibrary
 {
 	public class Jobs : MonoSingleton<Jobs>
 	{
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-		private static void Create()
-		{
-			EnsureExists();
-		}
-
 		private Queue<Action> onUnityThreadJobs = new Queue<Action>();
 		private List<Func<bool>> onUpdateJobs = new List<Func<bool>>();
 		private List<Func<bool>> onFixedUpdateJobs = new List<Func<bool>>();
@@ -20,35 +14,35 @@ namespace UnityCommonLibrary
 
 		public static void ExecuteOnUnityThread(Action a)
 		{
-			get.onUnityThreadJobs.Enqueue(a);
+			Instance.onUnityThreadJobs.Enqueue(a);
 		}
 		public static void ExecuteOnUpdate(Func<bool> func)
 		{
-			get.onUpdateJobs.Add(func);
+			Instance.onUpdateJobs.Add(func);
 		}
 		public static void ExecuteOnFixedUpdate(Func<bool> func)
 		{
-			get.onFixedUpdateJobs.Add(func);
+			Instance.onFixedUpdateJobs.Add(func);
 		}
 		public static void ExecuteOnLateUpdate(Func<bool> func)
 		{
-			get.onLateUpdateJobs.Add(func);
+			Instance.onLateUpdateJobs.Add(func);
 		}
 		public static void ExecuteCoroutine(IEnumerator routine)
 		{
-			get.StartCoroutine(routine);
+			Instance.StartCoroutine(routine);
 		}
 		public static void ExecuteDelayed(float delay, Action action)
 		{
-			get.StartCoroutine(get._ExecuteDelayed(delay, action));
+			Instance.StartCoroutine(Instance._ExecuteDelayed(delay, action));
 		}
 		public static void ExecuteNextFrame(Action action)
 		{
-			get.StartCoroutine(get._ExecuteInFrames(1, action));
+			Instance.StartCoroutine(Instance._ExecuteInFrames(1, action));
 		}
 		public static void ExecuteInFrames(int frames, Action action)
 		{
-			get.StartCoroutine(get._ExecuteInFrames(frames, action));
+			Instance.StartCoroutine(Instance._ExecuteInFrames(frames, action));
 		}
 
 		private IEnumerator _ExecuteDelayed(float delay, Action action)

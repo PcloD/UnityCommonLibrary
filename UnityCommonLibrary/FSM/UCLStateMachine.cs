@@ -73,7 +73,7 @@ namespace UnityCommonLibrary.FSM
 				throw new Exception("T must be Enum");
 			}
 			this.id = string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id;
-			for(int i = 0; i < EnumData<T>.count; i++)
+			for(int i = 0; i < EnumData<T>.Count; i++)
 			{
 				canTick.Add(EnumData<T>.values[i], true);
 			}

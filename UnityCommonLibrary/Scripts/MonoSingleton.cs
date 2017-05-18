@@ -6,9 +6,9 @@ namespace UnityCommonLibrary
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
         private static bool isShuttingDown;
-        private static T _get;
+        private static T instance;
 
-        public static T get
+        public static T Instance
         {
             get
             {
@@ -16,35 +16,35 @@ namespace UnityCommonLibrary
                 {
                     return null;
                 }
-                if (_get == null)
+                if (instance == null)
                 {
                     FindOrCreate();
                 }
-                return _get;
+                return instance;
             }
         }
 
         public static void EnsureExists()
         {
-            var t = get;
+            var t = Instance;
         }
         private static void FindOrCreate()
         {
             var all = FindObjectsOfType<T>();
-            _get = all.Length == 0 ? ComponentUtility.Create<T>() : all[0];
+            instance = all.Length == 0 ? ComponentUtility.Create<T>() : all[0];
             if (all.Length > 1)
             {
                 Debug.LogError(string.Format("FindObjectsOfType<{0}>().Length == {1}", typeof(T).Name, all.Length));
             }
-            DontDestroyOnLoad(_get);
+            DontDestroyOnLoad(instance);
         }
 
         protected virtual void Awake()
         {
             DontDestroyOnLoad(this);
-            if (_get == null)
+            if (instance == null)
             {
-                _get = (T)this;
+                instance = (T)this;
             }
         }
         protected virtual void OnApplicationQuit()
@@ -55,34 +55,32 @@ namespace UnityCommonLibrary
 
     public abstract class Singleton<T> where T : Singleton<T>, new()
     {
-
-        private static T _get;
-        public static T get
+        private static T instance;
+        public static T Instance
         {
             get
             {
-                if (_get == null)
+                if (instance == null)
                 {
-                    _get = new T();
+                    instance = new T();
                 }
-                return _get;
+                return instance;
             }
         }
     }
 
     public abstract class ActivatorSingleton<T> where T : ActivatorSingleton<T>
     {
-
-        private static T _get;
-        public static T get
+        private static T instance;
+        public static T Instance
         {
             get
             {
-                if (_get == null)
+                if (instance == null)
                 {
-                    _get = System.Activator.CreateInstance<T>();
+                    instance = System.Activator.CreateInstance<T>();
                 }
-                return _get;
+                return instance;
             }
         }
     }

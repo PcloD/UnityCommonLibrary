@@ -31,7 +31,7 @@
 				if(!isNull)
 				{
 					highestExisting = i;
-					if(updatable.enabled)
+					if(updatable.Enabled)
 					{
 						active++;
 						updatable.ManagedUpdate();
