@@ -1,29 +1,30 @@
-﻿using UnityCommonLibrary.Utility;
+﻿using UnityCommonLibrary.Time;
+using UnityCommonLibrary.Utility;
 using UnityEngine;
 
 namespace UnityCommonLibrary
 {
-	public class PanTexture : MonoBehaviour
-	{
-		public Vector2 speed;
-		public Time.TimeMode timeMode;
+    public class PanTexture : MonoBehaviour
+    {
+        public Vector2 Speed;
+        public TimeMode TimeMode;
+        private Material _material;
+        private Vector2 _offset;
 
-		private new Renderer renderer;
-		private Material material;
-		private Vector2 offset;
+        private Renderer _renderer;
 
-		private void Awake()
-		{
-			renderer = GetComponent<Renderer>();
-			material = renderer.material;
-		}
+        private void Awake()
+        {
+            _renderer = GetComponent<Renderer>();
+            _material = _renderer.material;
+        }
 
-		private void Update()
-		{
-			offset += speed * TimeUtility.GetCurrentTime(timeMode);
-			offset.x %= 1f;
-			offset.y %= 1f;
-			material.SetTextureOffset("_MainTex", offset);
-		}
-	}
+        private void Update()
+        {
+            _offset += Speed * TimeUtility.GetCurrentTime(TimeMode);
+            _offset.x %= 1f;
+            _offset.y %= 1f;
+            _material.SetTextureOffset("_MainTex", _offset);
+        }
+    }
 }

@@ -58,7 +58,7 @@
     <Compile Include="Colliders\ColliderEvents.cs" />
     <Compile Include="Messaging\Signal.cs" />
     <Compile Include="Messaging\Signals.cs" />
-    <Compile Include="FSM\UCLStateMachine.cs" />
+    <Compile Include="FSM\StateMachine.cs" />
     <Compile Include="FSM\StateSwitch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\ArraySelector.cs" />
@@ -126,10 +126,7 @@
     <Compile Include="Utilities\TextAssetUtils.cs" />
     <Compile Include="Utilities\TransformUtility.cs" />
     <Compile Include="Scripts\MonoSingleton.cs" />
-    <Compile Include="UI\UICircle.cs" />
-    <Compile Include="UI\UIList.cs" />
     <Compile Include="UI\UIStyleConsistency.cs" />
-    <Compile Include="UI\Selector.cs" />
     <Compile Include="UI\WorldCanvasSizer.cs" />
     <Compile Include="Utilities\UIUtility.cs" />
     <Compile Include="Utilities\VectorUtility.cs" />

@@ -1,26 +1,27 @@
-﻿using UnityCommonLibrary.Utility;
+﻿using System;
+using UnityCommonLibrary.Utility;
 using UnityEngine;
 
 namespace UnityCommonLibrary
 {
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
-        private static bool isShuttingDown;
-        private static T instance;
+        private static T _instance;
+        private static bool _isShuttingDown;
 
         public static T Instance
         {
             get
             {
-                if (isShuttingDown)
+                if (_isShuttingDown)
                 {
                     return null;
                 }
-                if (instance == null)
+                if (_instance == null)
                 {
                     FindOrCreate();
                 }
-                return instance;
+                return _instance;
             }
         }
 
@@ -28,59 +29,64 @@ namespace UnityCommonLibrary
         {
             var t = Instance;
         }
+
         private static void FindOrCreate()
         {
             var all = FindObjectsOfType<T>();
-            instance = all.Length == 0 ? ComponentUtility.Create<T>() : all[0];
+            _instance = all.Length == 0 ? ComponentUtility.Create<T>() : all[0];
             if (all.Length > 1)
             {
-                Debug.LogError(string.Format("FindObjectsOfType<{0}>().Length == {1}", typeof(T).Name, all.Length));
+                Debug.LogError(string.Format("FindObjectsOfType<{0}>().Length == {1}",
+                    typeof(T).Name, all.Length));
             }
-            DontDestroyOnLoad(instance);
+            DontDestroyOnLoad(_instance);
         }
 
         protected virtual void Awake()
         {
             DontDestroyOnLoad(this);
-            if (instance == null)
+            if (_instance == null)
             {
-                instance = (T)this;
+                _instance = (T) this;
             }
         }
+
         protected virtual void OnApplicationQuit()
         {
-            isShuttingDown = true;
+            _isShuttingDown = true;
         }
     }
 
     public abstract class Singleton<T> where T : Singleton<T>, new()
     {
-        private static T instance;
+        private static T _instance;
+
         public static T Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = new T();
+                    _instance = new T();
                 }
-                return instance;
+                return _instance;
             }
         }
     }
 
     public abstract class ActivatorSingleton<T> where T : ActivatorSingleton<T>
     {
-        private static T instance;
+        private static T _instance;
+
         public static T Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = System.Activator.CreateInstance<T>();
+                    _instance = Activator.CreateInstance<T>();
                 }
-                return instance;
+                return _instance;
             }
         }
     }

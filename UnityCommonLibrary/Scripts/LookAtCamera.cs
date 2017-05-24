@@ -2,29 +2,31 @@
 
 namespace UnityCommonLibrary
 {
-	[ExecuteInEditMode]
-	public class LookAtCamera : MonoBehaviour
-	{
-		[SerializeField]
-		private Vector3 amount = Vector3.one;
-		[SerializeField]
-		private new Camera camera;
-		[SerializeField]
-		private bool invert;
+    [ExecuteInEditMode]
+    public class LookAtCamera : MonoBehaviour
+    {
+        [SerializeField]
+        private Vector3 _amount = Vector3.one;
 
-		private void Update()
-		{
-			var cam = camera == null ? Camera.main : camera;
-			if(!cam)
-			{
-				return;
-			}
-			transform.LookAt(cam.transform);
-			if(invert)
-			{
-				transform.forward *= -1f;
-			}
-			transform.eulerAngles = Vector3.Scale(transform.eulerAngles, amount);
-		}
-	}
+        [SerializeField]
+        private Camera _camera;
+
+        [SerializeField]
+        private bool _invert;
+
+        private void Update()
+        {
+            var cam = _camera == null ? Camera.main : _camera;
+            if (!cam)
+            {
+                return;
+            }
+            transform.LookAt(cam.transform);
+            if (_invert)
+            {
+                transform.forward *= -1f;
+            }
+            transform.eulerAngles = Vector3.Scale(transform.eulerAngles, _amount);
+        }
+    }
 }

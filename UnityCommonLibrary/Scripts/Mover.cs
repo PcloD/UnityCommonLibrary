@@ -4,37 +4,38 @@ namespace UnityCommonLibrary
 {
     public class Mover : MonoBehaviour
     {
-        public Vector3 movement = Vector3.one;
-        public Space movementSpace;
-        public Vector3 rotation = Vector3.one;
-        public Space rotationSpace;
-        public bool useRigidbody;
+        public Vector3 Movement = Vector3.one;
+        public Space MovementSpace;
+        public Vector3 Rotation = Vector3.one;
+        public Space RotationSpace;
+        public bool UseRigidbody;
 
-        private new Rigidbody rigidbody;
+        private Rigidbody _rigidbody;
 
         private void Awake()
         {
-            rigidbody = GetComponent<Rigidbody>();
+            _rigidbody = GetComponent<Rigidbody>();
         }
+
         private void Update()
         {
-            if (useRigidbody && rigidbody != null)
+            if (UseRigidbody && _rigidbody != null)
             {
-                if (movementSpace == Space.Self)
+                if (MovementSpace == Space.Self)
                 {
-                    rigidbody.velocity = transform.TransformVector(movement);
-                    rigidbody.angularVelocity = transform.TransformVector(rotation);
+                    _rigidbody.velocity = transform.TransformVector(Movement);
+                    _rigidbody.angularVelocity = transform.TransformVector(Rotation);
                 }
                 else
                 {
-                    rigidbody.velocity = movement;
-                    rigidbody.angularVelocity = rotation;
+                    _rigidbody.velocity = Movement;
+                    _rigidbody.angularVelocity = Rotation;
                 }
             }
             else
             {
-                transform.Translate(movement, movementSpace);
-                transform.Rotate(rotation, rotationSpace);
+                transform.Translate(Movement, MovementSpace);
+                transform.Rotate(Rotation, RotationSpace);
             }
         }
     }

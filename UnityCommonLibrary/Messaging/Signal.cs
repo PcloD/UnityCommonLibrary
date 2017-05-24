@@ -7,24 +7,24 @@ namespace UnityCommonLibrary.Messaging
 {
     public interface ISignal
     {
-        string subscriberList { get; }
+        string SubscriberList { get; }
         void UnsubscribeTarget(object target);
     }
 
     public abstract class BaseSignal<T> : ISignal where T : class
     {
-        protected readonly HashSet<T> subscribers = new HashSet<T>();
+        protected readonly HashSet<T> Subscribers = new HashSet<T>();
 
-        public string subscriberList
+        public string SubscriberList
         {
             get
             {
-                if (subscribers.Count == 0)
+                if (Subscribers.Count == 0)
                 {
                     return string.Empty;
                 }
                 var sb = new StringBuilder();
-                foreach (var s in subscribers)
+                foreach (var s in Subscribers)
                 {
                     var del = s as Delegate;
                     sb.AppendLineFormat("{0}.{1}", del.Target, del.Method.Name);
@@ -34,32 +34,34 @@ namespace UnityCommonLibrary.Messaging
             }
         }
 
+        protected BaseSignal()
+        {
+            if (!typeof(T).IsSubclassOf(typeof(Delegate)))
+            {
+                throw new ArgumentException("T must be of StateType Delegate.");
+            }
+            Signals.AllSignals.Add(this);
+        }
+
         protected static bool ShouldRemoveCallback(T t)
         {
             var del = t as Delegate;
             return del.Target == null && !del.Method.IsStatic;
         }
 
-        public BaseSignal()
-        {
-            if (!typeof(T).IsSubclassOf(typeof(Delegate)))
-            {
-                throw new ArgumentException("T must be of type Delegate.");
-            }
-            Signals.signals.Add(this);
-        }
-
         public void Subscribe(T subscriber)
         {
-            subscribers.Add(subscriber);
+            Subscribers.Add(subscriber);
         }
+
         public void Unsubscribe(T subscriber)
         {
-            subscribers.Remove(subscriber);
+            Subscribers.Remove(subscriber);
         }
+
         public void UnsubscribeTarget(object target)
         {
-            subscribers.RemoveWhere(s => Equals((s as Delegate).Target, target));
+            Subscribers.RemoveWhere(s => Equals((s as Delegate).Target, target));
         }
     }
 
@@ -67,8 +69,8 @@ namespace UnityCommonLibrary.Messaging
     {
         public void Publish()
         {
-            subscribers.RemoveWhere(ShouldRemoveCallback);
-            foreach (var s in subscribers)
+            Subscribers.RemoveWhere(ShouldRemoveCallback);
+            foreach (var s in Subscribers)
             {
                 s.Invoke();
             }
@@ -79,8 +81,8 @@ namespace UnityCommonLibrary.Messaging
     {
         public void Publish(T arg = default(T))
         {
-            subscribers.RemoveWhere(ShouldRemoveCallback);
-            foreach (var s in subscribers)
+            Subscribers.RemoveWhere(ShouldRemoveCallback);
+            foreach (var s in Subscribers)
             {
                 s.Invoke(arg);
             }
@@ -91,8 +93,8 @@ namespace UnityCommonLibrary.Messaging
     {
         public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2))
         {
-            subscribers.RemoveWhere(ShouldRemoveCallback);
-            foreach (var s in subscribers)
+            Subscribers.RemoveWhere(ShouldRemoveCallback);
+            foreach (var s in Subscribers)
             {
                 s.Invoke(arg1, arg2);
             }
@@ -101,10 +103,11 @@ namespace UnityCommonLibrary.Messaging
 
     public class Signal<T1, T2, T3> : BaseSignal<Action<T1, T2, T3>>
     {
-        public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2), T3 arg3 = default(T3))
+        public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2),
+            T3 arg3 = default(T3))
         {
-            subscribers.RemoveWhere(ShouldRemoveCallback);
-            foreach (var s in subscribers)
+            Subscribers.RemoveWhere(ShouldRemoveCallback);
+            foreach (var s in Subscribers)
             {
                 s.Invoke(arg1, arg2, arg3);
             }
@@ -113,10 +116,11 @@ namespace UnityCommonLibrary.Messaging
 
     public class Signal<T1, T2, T3, T4> : BaseSignal<Action<T1, T2, T3, T4>>
     {
-        public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2), T3 arg3 = default(T3), T4 arg4 = default(T4))
+        public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2),
+            T3 arg3 = default(T3), T4 arg4 = default(T4))
         {
-            subscribers.RemoveWhere(ShouldRemoveCallback);
-            foreach (var s in subscribers)
+            Subscribers.RemoveWhere(ShouldRemoveCallback);
+            foreach (var s in Subscribers)
             {
                 s.Invoke(arg1, arg2, arg3, arg4);
             }

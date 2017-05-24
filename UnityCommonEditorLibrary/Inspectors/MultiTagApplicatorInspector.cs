@@ -2,17 +2,22 @@
 using UnityCommonLibrary;
 using UnityEditor;
 
-public abstract class MultiTagApplicatorInspector<T> : Editor where T : struct, IFormattable, IConvertible, IComparable
+public abstract class MultiTagApplicatorInspector<T> : Editor
+    where T : struct, IFormattable, IConvertible, IComparable
 {
-	private MultiTagApplicator<T> obj;
+    private MultiTagApplicator<T> _obj;
 
-	private void OnEnable()
-	{
-		obj = target as MultiTagApplicator<T>;
-	}
-	public override void OnInspectorGUI()
-	{
-		obj.applyRecursively = EditorGUILayout.Toggle("Apply Recursively", obj.applyRecursively);
-		obj.tags = (T)Enum.ToObject(typeof(T), EditorGUILayout.EnumMaskField("Tags", (Enum)Enum.ToObject(typeof(T), obj.tags)));
-	}
+    public override void OnInspectorGUI()
+    {
+        _obj.ApplyRecursively =
+            EditorGUILayout.Toggle("Apply Recursively", _obj.ApplyRecursively);
+        _obj.Tags = (T) Enum.ToObject(typeof(T),
+            EditorGUILayout.EnumMaskField("Tags",
+                (Enum) Enum.ToObject(typeof(T), _obj.Tags)));
+    }
+
+    private void OnEnable()
+    {
+        _obj = target as MultiTagApplicator<T>;
+    }
 }

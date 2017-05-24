@@ -2,62 +2,62 @@
 
 namespace UnityCommonLibrary
 {
-	public struct TransformSettings
-	{
-		public int siblingIndex { get; private set; }
-		public Transform parent { get; private set; }
-		public Vector3 position { get; private set; }
-		public Quaternion rotation { get; private set; }
-		public Vector3 localScale { get; private set; }
+    public struct TransformSettings
+    {
+        public Vector3 LocalScale { get; }
+        public Transform Parent { get; }
+        public Vector3 Position { get; }
+        public Quaternion Rotation { get; }
+        public int SiblingIndex { get; }
 
-		public TransformSettings(Transform transform)
-		{
-			parent = transform.parent;
-			siblingIndex = transform.GetSiblingIndex();
-			position = transform.position;
-			rotation = transform.rotation;
-			localScale = transform.localScale;
-		}
+        public TransformSettings(Transform transform)
+        {
+            Parent = transform.parent;
+            SiblingIndex = transform.GetSiblingIndex();
+            Position = transform.position;
+            Rotation = transform.rotation;
+            LocalScale = transform.localScale;
+        }
 
-		public void ApplyTo(Transform transform)
-		{
-			transform.parent = parent;
-			transform.SetSiblingIndex(siblingIndex);
-			transform.position = position;
-			transform.rotation = rotation;
-			transform.localScale = localScale;
-		}
-	}
+        public void ApplyTo(Transform transform)
+        {
+            transform.parent = Parent;
+            transform.SetSiblingIndex(SiblingIndex);
+            transform.position = Position;
+            transform.rotation = Rotation;
+            transform.localScale = LocalScale;
+        }
+    }
 
-	public struct RectTransformSettings
-	{
-		private TransformSettings transformSettings;
+    public struct RectTransformSettings
+    {
+        private TransformSettings _transformSettings;
 
-		public Vector3 anchoredPosition3D { get; private set; }
-		public Vector2 anchorMin { get; private set; }
-		public Vector2 anchorMax { get; private set; }
-		public Vector2 sizeDelta { get; private set; }
-		public Vector2 pivot { get; private set; }
+        public Vector3 AnchoredPosition3D { get; }
+        public Vector2 AnchorMax { get; }
+        public Vector2 AnchorMin { get; }
+        public Vector2 Pivot { get; }
+        public Vector2 SizeDelta { get; }
 
 
-		public RectTransformSettings(RectTransform rect)
-		{
-			anchoredPosition3D = rect.anchoredPosition3D;
-			anchorMin = rect.anchorMin;
-			anchorMax = rect.anchorMax;
-			sizeDelta = rect.sizeDelta;
-			pivot = rect.pivot;
-			transformSettings = new TransformSettings(rect);
-		}
+        public RectTransformSettings(RectTransform rect)
+        {
+            AnchoredPosition3D = rect.anchoredPosition3D;
+            AnchorMin = rect.anchorMin;
+            AnchorMax = rect.anchorMax;
+            SizeDelta = rect.sizeDelta;
+            Pivot = rect.pivot;
+            _transformSettings = new TransformSettings(rect);
+        }
 
-		public void ApplyAll(RectTransform rect)
-		{
-			transformSettings.ApplyTo(rect);
-			rect.anchorMin = anchorMin;
-			rect.anchorMax = anchorMax;
-			rect.pivot = pivot;
-			rect.anchoredPosition3D = anchoredPosition3D;
-			rect.sizeDelta = sizeDelta;
-		}
-	}
+        public void ApplyAll(RectTransform rect)
+        {
+            _transformSettings.ApplyTo(rect);
+            rect.anchorMin = AnchorMin;
+            rect.anchorMax = AnchorMax;
+            rect.pivot = Pivot;
+            rect.anchoredPosition3D = AnchoredPosition3D;
+            rect.sizeDelta = SizeDelta;
+        }
+    }
 }

@@ -2,38 +2,37 @@
 
 namespace UnityCommonLibrary
 {
-	public static class EnumData<T> where T : struct, IComparable, IFormattable, IConvertible
-	{
-		public static readonly Type type;
-		public static readonly T[] values;
-		public static readonly string[] names;
+    public static class EnumData<T>
+        where T : struct, IComparable, IFormattable, IConvertible
+    {
+        public static readonly string[] Names;
+        public static readonly Type Type;
+        public static readonly T[] Values;
 
-		public static int Count
-		{
-			get
-			{
-				return values.Length;
-			}
-		}
+        public static int Count
+        {
+            get { return Values.Length; }
+        }
 
-		static EnumData()
-		{
-			type = typeof(T);
-			if(!type.IsEnum)
-			{
-				throw new Exception("Type T must be enum.");
-			}
-			values = (T[])Enum.GetValues(type);
-			names = Enum.GetNames(type);
-		}
+        static EnumData()
+        {
+            Type = typeof(T);
+            if (!Type.IsEnum)
+            {
+                throw new Exception("Type T must be enum.");
+            }
+            Values = (T[]) Enum.GetValues(Type);
+            Names = Enum.GetNames(Type);
+        }
 
-		public static string GetName(T value)
-		{
-			return names[Array.IndexOf(values, value)];
-		}
-		public static T GetValue(string name)
-		{
-			return values[Array.IndexOf(names, name)];
-		}
-	}
+        public static string GetName(T value)
+        {
+            return Names[Array.IndexOf(Values, value)];
+        }
+
+        public static T GetValue(string name)
+        {
+            return Values[Array.IndexOf(Names, name)];
+        }
+    }
 }

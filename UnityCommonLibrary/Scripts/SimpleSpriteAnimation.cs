@@ -4,82 +4,76 @@ using UnityEngine.UI;
 
 namespace UnityCommonLibrary
 {
-	public class SimpleSpriteAnimation : MonoBehaviour
-	{
-		public TimeMode timeMode;
-		[SerializeField]
-		private float fps = 30f;
-		public bool loop;
-		public Sprite[] frames;
+    public class SimpleSpriteAnimation : MonoBehaviour
+    {
+        public Sprite[] Frames;
+        public bool Loop;
+        public TimeMode TimeMode;
 
-		public UTimer timer
-		{
-			get
-			{
-				return _timer;
-			}
-		}
-		public SpriteRenderer spriteRenderer { get; private set; }
-		public Image img { get; private set; }
+        [SerializeField]
+        private float _fps = 30f;
 
-		private UTimer _timer = new UTimer();
-		private int index;
+        private int _index;
+        public Image Img { get; private set; }
+        public SpriteRenderer SpriteRenderer { get; private set; }
 
-		private void Awake()
-		{
-			spriteRenderer = GetComponent<SpriteRenderer>();
-			img = GetComponent<Image>();
+        public UTimer Timer { get; } = new UTimer();
 
-			SetDurationFromFPS();
-			timer.TimerElapsed += Timer_TimerElapsed;
-			timer.Restart();
-		}
+        public bool GotoIndex(int index)
+        {
+            if (index >= Frames.Length || index < 0)
+            {
+                return false;
+            }
+            if (SpriteRenderer != null)
+            {
+                SpriteRenderer.sprite = Frames[index];
+            }
+            if (Img != null)
+            {
+                Img.sprite = Frames[index];
+            }
+            _index = index;
+            return true;
+        }
 
-		public void SetDurationFromFPS()
-		{
-			timer.duration = fps == 0f ? 0f : 1f / fps;
-		}
+        public void PlayOneShot()
+        {
+            enabled = true;
+            _index = 1;
+            Timer.Restart();
+            GotoIndex(0);
+            Loop = false;
+        }
 
-		private void Timer_TimerElapsed()
-		{
-			if(!GotoIndex(index))
-			{
-				if(loop)
-				{
-					index = 0;
-				}
-				return;
-			}
-			SetDurationFromFPS();
-			index++;
-			timer.Restart();
-		}
+        public void SetDurationFromFps()
+        {
+            Timer.Duration = _fps == 0f ? 0f : 1f / _fps;
+        }
 
-		public void PlayOneShot()
-		{
-			enabled = true;
-			index = 1;
-			timer.Restart();
-			GotoIndex(0);
-			loop = false;
-		}
+        private void Awake()
+        {
+            SpriteRenderer = GetComponent<SpriteRenderer>();
+            Img = GetComponent<Image>();
 
-		public bool GotoIndex(int index)
-		{
-			if(index >= frames.Length || index < 0)
-			{
-				return false;
-			}
-			if(spriteRenderer != null)
-			{
-				spriteRenderer.sprite = frames[index];
-			}
-			if(img != null)
-			{
-				img.sprite = frames[index];
-			}
-			this.index = index;
-			return true;
-		}
-	}
+            SetDurationFromFps();
+            Timer.TimerElapsed += Timer_TimerElapsed;
+            Timer.Restart();
+        }
+
+        private void Timer_TimerElapsed()
+        {
+            if (!GotoIndex(_index))
+            {
+                if (Loop)
+                {
+                    _index = 0;
+                }
+                return;
+            }
+            SetDurationFromFps();
+            _index++;
+            Timer.Restart();
+        }
+    }
 }

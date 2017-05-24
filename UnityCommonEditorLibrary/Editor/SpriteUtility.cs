@@ -3,25 +3,26 @@ using UnityEngine;
 
 namespace UnityCommonEditorLibrary
 {
-	public class SpriteUtility : MonoBehaviour
-	{
-		[MenuItem("CONTEXT/Rigidbody2D/Ground Sprite")]
-		public static void GroundSprite(MenuCommand command)
-		{
-			var rb2d = command.context as Rigidbody2D;
-			var p2d = rb2d.gameObject.AddComponent<PolygonCollider2D>();
-			var hits2D = Physics2D.RaycastAll(rb2d.transform.position, Vector2.down, float.MaxValue);
-			foreach(var h2d in hits2D)
-			{
-				if(h2d.collider.gameObject != rb2d.gameObject)
-				{
-					var diff = h2d.distance - p2d.bounds.extents.y;
-					diff *= -1f;
-					rb2d.transform.position += Vector3.up * diff;
-				}
-			}
+    public class SpriteUtility : MonoBehaviour
+    {
+        [MenuItem("CONTEXT/Rigidbody2D/Ground Sprite")]
+        public static void GroundSprite(MenuCommand command)
+        {
+            var rb2D = command.context as Rigidbody2D;
+            var p2D = rb2D.gameObject.AddComponent<PolygonCollider2D>();
+            var hits2D = Physics2D.RaycastAll(rb2D.transform.position, Vector2.down,
+                float.MaxValue);
+            foreach (var h2D in hits2D)
+            {
+                if (h2D.collider.gameObject != rb2D.gameObject)
+                {
+                    var diff = h2D.distance - p2D.bounds.extents.y;
+                    diff *= -1f;
+                    rb2D.transform.position += Vector3.up * diff;
+                }
+            }
 
-			DestroyImmediate(p2d);
-		}
-	}
+            DestroyImmediate(p2D);
+        }
+    }
 }

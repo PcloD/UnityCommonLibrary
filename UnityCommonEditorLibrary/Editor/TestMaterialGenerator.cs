@@ -6,170 +6,175 @@ using UnityEngine;
 
 namespace UnityCommonEditorLibrary
 {
-	public class TestMaterialGenerator : ScriptableWizard
-	{
-		private static TestMaterialGenerator wizard;
-		private static string saveFolder, projRelativeSaveFolder, filename = "TestMaterial";
-		private static bool isFoldout = true;
+    public class TestMaterialGenerator : ScriptableWizard
+    {
+        public static Color32 Primary = new Color32(255, 255, 255, 255);
+        public static List<Vector2> Scales = new List<Vector2>();
+        public static Color32 Secondary = new Color32(190, 190, 190, 255);
+        private static bool _isFoldout = true;
 
-		public static Color32 primary = new Color32(255, 255, 255, 255);
-		public static Color32 secondary = new Color32(190, 190, 190, 255);
-		public static List<Vector2> scales = new List<Vector2>();
+        private static string _saveFolder,
+            _projRelativeSaveFolder,
+            _filename = "TestMaterial";
 
-		private Texture2D texture;
+        private static TestMaterialGenerator _wizard;
 
-		[MenuItem("Assets/Create/Test Materials")]
-		private static void CreateWizard()
-		{
-			wizard = DisplayWizard<TestMaterialGenerator>("Create Test Material", "Create");
-			if(scales.Count == 0)
-			{
-				scales.Add(Vector2.one);
-				scales.Add(Vector2.one * 2f);
-				scales.Add(Vector2.one * 5f);
-			}
-			if(saveFolder == null)
-			{
-				saveFolder = Application.dataPath;
-			}
-		}
+        private Texture2D _texture;
 
-		private void OnWizardCreate()
-		{
-			CreateTexture();
-			CreateMaterials();
-		}
+        [MenuItem("Assets/Create/Test Materials")]
+        private static void CreateWizard()
+        {
+            _wizard = DisplayWizard<TestMaterialGenerator>("Create Test Material",
+                "Create");
+            if (Scales.Count == 0)
+            {
+                Scales.Add(Vector2.one);
+                Scales.Add(Vector2.one * 2f);
+                Scales.Add(Vector2.one * 5f);
+            }
+            if (_saveFolder == null)
+            {
+                _saveFolder = Application.dataPath;
+            }
+        }
 
-		private void CreateMaterials()
-		{
-			var distinct = scales.Distinct();
-			foreach(var s in distinct)
-			{
-				var newMat = new Material(Shader.Find("Standard"));
-				newMat.mainTexture = texture;
-				newMat.mainTextureScale = s;
-				AssetDatabase.CreateAsset(newMat, string.Format("{0}/{1} {2}x{3}.mat", projRelativeSaveFolder, filename, s.x, s.y));
-			}
-		}
+        private static void DrawFileInfo()
+        {
+            if (GUILayout.Button("Browse"))
+            {
+                var newSaveFolder =
+                    EditorUtility.SaveFolderPanel("", _projRelativeSaveFolder, "");
+                _saveFolder = string.IsNullOrEmpty(newSaveFolder)
+                    ? _saveFolder
+                    : newSaveFolder;
+                GUI.changed = true;
+            }
+            _projRelativeSaveFolder = FileUtil.GetProjectRelativePath(_saveFolder);
 
-		protected override bool DrawWizardGUI()
-		{
-			EditorGUILayout.Space();
+            GUI.enabled = false;
+            EditorGUILayout.TextField("Save Folder", _projRelativeSaveFolder);
+            GUI.enabled = true;
 
-			EditorGUI.BeginChangeCheck();
-			DrawFileInfo();
-			DrawColorFields();
-			DrawScales();
-			UpdateValidity();
+            _filename = EditorGUILayout.TextField("Filename", _filename);
+        }
 
-			return EditorGUI.EndChangeCheck();
-		}
+        private static void DrawColorFields()
+        {
+            Primary = EditorGUILayout.ColorField("Primary", Primary);
+            Secondary = EditorGUILayout.ColorField("Secondary", Secondary);
+        }
 
-		private void DrawScales()
-		{
-			isFoldout = EditorGUILayout.Foldout(isFoldout, "Scales");
-			if(isFoldout)
-			{
-				EditorGUI.indentLevel = 1;
-				var newSize = EditorGUILayout.IntField("Size", scales.Count);
-				if(newSize != scales.Count)
-				{
-					ResizeList(scales, newSize);
-				}
-				for(var i = 0; i < scales.Count; i++)
-				{
-					scales[i] = EditorGUILayout.Vector2Field("Element " + i, scales[i]);
-				}
-				EditorGUI.indentLevel = 0;
-			}
-		}
+        private static void DrawScales()
+        {
+            _isFoldout = EditorGUILayout.Foldout(_isFoldout, "Scales");
+            if (_isFoldout)
+            {
+                EditorGUI.indentLevel = 1;
+                var newSize = EditorGUILayout.IntField("Size", Scales.Count);
+                if (newSize != Scales.Count)
+                {
+                    ResizeList(Scales, newSize);
+                }
+                for (var i = 0; i < Scales.Count; i++)
+                {
+                    Scales[i] = EditorGUILayout.Vector2Field("Element " + i, Scales[i]);
+                }
+                EditorGUI.indentLevel = 0;
+            }
+        }
 
-		private void ResizeList<T>(List<T> list, int count)
-		{
-			count = Mathf.Clamp(count, 0, int.MaxValue);
-			while(list.Count > count)
-			{
-				list.RemoveAt(list.Count - 1);
-			}
-			while(list.Count < count)
-			{
-				if(list.Count > 0)
-				{
-					list.Add(list[list.Count - 1]);
-				}
-				else
-				{
-					list.Add(default(T));
-				}
-			}
-		}
+        private static void ResizeList<T>(List<T> list, int count)
+        {
+            count = Mathf.Clamp(count, 0, int.MaxValue);
+            while (list.Count > count)
+            {
+                list.RemoveAt(list.Count - 1);
+            }
+            while (list.Count < count)
+            {
+                list.Add(list.Count > 0 ? list[list.Count - 1] : default(T));
+            }
+        }
 
-		private void DrawColorFields()
-		{
-			primary = EditorGUILayout.ColorField("Primary", primary);
-			secondary = EditorGUILayout.ColorField("Secondary", secondary);
-		}
+        protected override bool DrawWizardGUI()
+        {
+            EditorGUILayout.Space();
 
-		private void UpdateValidity()
-		{
-			if(projRelativeSaveFolder == null || projRelativeSaveFolder.Length == 0)
-			{
-				errorString = "Must be saved in project.";
-				isValid = false;
-			}
-			else
-			{
-				errorString = "";
-				isValid = true;
-			}
-		}
+            EditorGUI.BeginChangeCheck();
+            DrawFileInfo();
+            DrawColorFields();
+            DrawScales();
+            UpdateValidity();
 
-		private static void DrawFileInfo()
-		{
-			if(GUILayout.Button("Browse"))
-			{
-				var newSaveFolder = EditorUtility.SaveFolderPanel("", projRelativeSaveFolder, "");
-				saveFolder = newSaveFolder == null || newSaveFolder.Length == 0 ? saveFolder : newSaveFolder;
-				GUI.changed = true;
-			}
-			projRelativeSaveFolder = FileUtil.GetProjectRelativePath(saveFolder);
+            return EditorGUI.EndChangeCheck();
+        }
 
-			GUI.enabled = false;
-			EditorGUILayout.TextField("Save Folder", projRelativeSaveFolder);
-			GUI.enabled = true;
+        private void CreateMaterials()
+        {
+            var distinct = Scales.Distinct();
+            foreach (var s in distinct)
+            {
+                var newMat =
+                    new Material(Shader.Find("Standard"))
+                    {
+                        mainTexture = _texture,
+                        mainTextureScale = s
+                    };
+                AssetDatabase.CreateAsset(newMat,
+                    string.Format("{0}/{1} {2}x{3}.mat", _projRelativeSaveFolder,
+                        _filename,
+                        s.x, s.y));
+            }
+        }
 
-			filename = EditorGUILayout.TextField("Filename", filename);
-		}
+        private void CreateTexture()
+        {
+            var texPath = string.Format("{0}/{1}.png", _saveFolder, _filename);
 
-		private void CreateTexture()
-		{
-			var texPath = string.Format("{0}/{1}.png", saveFolder, filename);
+            // Clamp alpha
+            Primary.a = Secondary.a = 255;
 
-			// Clamp alpha
-			primary.a = secondary.a = 255;
+            // Create texture
+            _texture = new Texture2D(2, 2) {filterMode = FilterMode.Point};
+            _texture.SetPixels32(new[] {Primary, Secondary, Secondary, Primary});
+            _texture.Apply();
 
-			// Create texture
-			texture = new Texture2D(2, 2);
-			texture.filterMode = FilterMode.Point;
-			texture.SetPixels32(new Color32[] { primary, secondary, secondary, primary });
-			texture.Apply();
+            // Write to path
+            File.WriteAllBytes(texPath, _texture.EncodeToPNG());
+            DestroyImmediate(_texture);
+            AssetDatabase.Refresh();
 
-			// Write to path
-			File.WriteAllBytes(texPath, texture.EncodeToPNG());
-			DestroyImmediate(texture);
-			AssetDatabase.Refresh();
+            texPath = string.Format("{0}/{1}.png", _projRelativeSaveFolder, _filename);
+            _texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texPath);
 
-			texPath = string.Format("{0}/{1}.png", projRelativeSaveFolder, filename);
-			texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texPath);
+            // Change import settings
+            var importer = AssetImporter.GetAtPath(texPath) as TextureImporter;
+            importer.filterMode = FilterMode.Point;
+            importer.maxTextureSize = 32;
+            importer.textureFormat = TextureImporterFormat.AutomaticTruecolor;
+            importer.wrapMode = TextureWrapMode.Repeat;
+            importer.textureType = TextureImporterType.Image;
+            importer.SaveAndReimport();
+        }
 
-			// Change import settings
-			var importer = AssetImporter.GetAtPath(texPath) as TextureImporter;
-			importer.filterMode = FilterMode.Point;
-			importer.maxTextureSize = 32;
-			importer.textureFormat = TextureImporterFormat.AutomaticTruecolor;
-			importer.wrapMode = TextureWrapMode.Repeat;
-			importer.textureType = TextureImporterType.Image;
-			importer.SaveAndReimport();
-		}
-	}
+        private void OnWizardCreate()
+        {
+            CreateTexture();
+            CreateMaterials();
+        }
+
+        private void UpdateValidity()
+        {
+            if (string.IsNullOrEmpty(_projRelativeSaveFolder))
+            {
+                errorString = "Must be saved in project.";
+                isValid = false;
+            }
+            else
+            {
+                errorString = "";
+                isValid = true;
+            }
+        }
+    }
 }

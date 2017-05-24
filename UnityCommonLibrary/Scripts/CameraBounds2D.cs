@@ -3,98 +3,99 @@ using UnityEngine;
 
 namespace UnityCommonLibrary
 {
-	[ExecuteInEditMode]
-	public class CameraBounds2D : MonoBehaviour
-	{
-		public BoxCollider2D bounds;
-		public new Camera camera;
-		public bool boundedXMin = true,
-					boundedXMax = true,
-					boundedYMin = true,
-					boundedYMax = true;
+    [ExecuteInEditMode]
+    public class CameraBounds2D : MonoBehaviour
+    {
+        public bool BoundedXMin = true,
+            BoundedXMax = true,
+            BoundedYMin = true,
+            BoundedYMax = true;
 
-		[SerializeField]
-		private bool runInEditor = true;
+        public BoxCollider2D Bounds;
+        public Camera Camera;
 
-		public bool canFit { get; private set; }
+        [SerializeField]
+        private bool _runInEditor = true;
 
-		private void LateUpdate()
-		{
-			if(Application.isPlaying == false && !runInEditor)
-			{
-				return;
-			}
-			if(bounds == null || camera == null)
-			{
-				return;
-			}
-			var camRect = camera.OrthographicBounds();
-			var lvlBoundsRect = bounds.bounds;
+        public bool CanFit { get; private set; }
 
-			canFit = lvlBoundsRect.CouldContain(camRect);
+        private void LateUpdate()
+        {
+            if (Application.isPlaying == false && !_runInEditor)
+            {
+                return;
+            }
+            if (Bounds == null || Camera == null)
+            {
+                return;
+            }
+            var camRect = Camera.OrthographicBounds();
+            var lvlBoundsRect = Bounds.bounds;
 
-			if(!canFit || (!boundedXMin && !boundedXMax && !boundedYMin && !boundedYMax))
-			{
-				return;
-			}
+            CanFit = lvlBoundsRect.CouldContain(camRect);
 
-			var cbl = (Vector2)camRect.min;
-			var cbr = (Vector2)camRect.max;
-			var lbl = (Vector2)lvlBoundsRect.min;
-			var lbr = (Vector2)lvlBoundsRect.max;
+            if (!CanFit || !BoundedXMin && !BoundedXMax && !BoundedYMin && !BoundedYMax)
+            {
+                return;
+            }
 
-			//Check and correct X differences
-			if(boundedXMin || boundedXMax)
-			{
-				var lDiff = cbl.x - lbl.x;
-				var rDiff = cbr.x - lbr.x;
-				if(lDiff < 0f && boundedXMin)
-				{
-					OffsetXPosition(lDiff);
-				}
-				else if(rDiff > 0f && boundedXMax)
-				{
-					OffsetXPosition(rDiff);
-				}
-			}
-			//Check and correct Y differences
-			if(boundedYMin || boundedYMax)
-			{
-				var bDiff = cbl.y - lbl.y;
-				var tDiff = cbr.y - lbr.y;
-				if(bDiff < 0f && boundedYMin)
-				{
-					OffsetYPosition(bDiff);
-				}
-				else if(tDiff > 0f && boundedYMax)
-				{
-					OffsetYPosition(tDiff);
-				}
-			}
-		}
+            var cbl = (Vector2) camRect.min;
+            var cbr = (Vector2) camRect.max;
+            var lbl = (Vector2) lvlBoundsRect.min;
+            var lbr = (Vector2) lvlBoundsRect.max;
 
-		private void OffsetXPosition(float offset)
-		{
-			var position = transform.position;
-			position.x -= offset;
-			transform.position = position;
-		}
+            //Check and correct X differences
+            if (BoundedXMin || BoundedXMax)
+            {
+                var lDiff = cbl.x - lbl.x;
+                var rDiff = cbr.x - lbr.x;
+                if (lDiff < 0f && BoundedXMin)
+                {
+                    OffsetXPosition(lDiff);
+                }
+                else if (rDiff > 0f && BoundedXMax)
+                {
+                    OffsetXPosition(rDiff);
+                }
+            }
+            //Check and correct Y differences
+            if (BoundedYMin || BoundedYMax)
+            {
+                var bDiff = cbl.y - lbl.y;
+                var tDiff = cbr.y - lbr.y;
+                if (bDiff < 0f && BoundedYMin)
+                {
+                    OffsetYPosition(bDiff);
+                }
+                else if (tDiff > 0f && BoundedYMax)
+                {
+                    OffsetYPosition(tDiff);
+                }
+            }
+        }
 
-		private void OffsetYPosition(float offset)
-		{
-			var position = transform.position;
-			position.y -= offset;
-			transform.position = position;
-		}
+        private void OffsetXPosition(float offset)
+        {
+            var position = transform.position;
+            position.x -= offset;
+            transform.position = position;
+        }
 
-		private void OnDrawGizmosSelected()
-		{
-			if(bounds != null)
-			{
-				GizmosUtility.StoreColor(Color.green);
-				GizmosUtility.DrawBounds(bounds.bounds);
-				GizmosUtility.RestoreColor();
-			}
-		}
-	}
+        private void OffsetYPosition(float offset)
+        {
+            var position = transform.position;
+            position.y -= offset;
+            transform.position = position;
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (Bounds != null)
+            {
+                GizmosUtility.StoreColor(Color.green);
+                GizmosUtility.DrawBounds(Bounds.bounds);
+                GizmosUtility.RestoreColor();
+            }
+        }
+    }
 }

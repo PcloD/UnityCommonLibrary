@@ -2,114 +2,129 @@
 using System.Collections.Generic;
 using UnityCommonLibrary.Attributes;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace UnityCommonLibrary
 {
     public abstract class ServiceLocator : IServiceProvider
     {
-        private readonly Dictionary<Type, object> services = new Dictionary<Type, object>();
+        private readonly Dictionary<Type, object> _services =
+            new Dictionary<Type, object>();
 
-        public virtual bool registerNullServices
+        public virtual bool RegisterNullServices
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
-        public ServiceLocator()
+        protected ServiceLocator()
         {
             RegisterServices();
         }
 
         /// <summary>
-        /// Retrieves a service by generic type.
+        ///     Retrieves a service by generic StateType.
         /// </summary>
-        public S Get<S>() where S : class
+        public TS Get<TS>() where TS : class
         {
-            return (S)GetService(typeof(S));
+            return (TS) GetService(typeof(TS));
         }
+
         /// <summary>
-        /// Retrieves service by type. IServiceProvider implementation.
+        ///     Retrieves service by StateType. IServiceProvider implementation.
         /// </summary>
         public object GetService(Type serviceType)
         {
-            object service = null;
-            if ((!services.TryGetValue(serviceType, out service) || service == null) && registerNullServices)
+            object service;
+            if ((!_services.TryGetValue(serviceType, out service) || service == null) &&
+                RegisterNullServices)
             {
                 service = RegisterNullService(serviceType);
             }
             return service;
         }
+
         /// <summary>
-        /// Instantiates a new MonoBehaviour provider instance.
+        ///     Creates a new provider instance.
         /// </summary>
-        /// <typeparam name="S">Service type</typeparam>
-        /// <typeparam name="P">Provider type</typeparam>
-        protected S RegisterNewBehaviour<S, P>(bool dontDestroy = true) where S : class where P : MonoBehaviour, S
+        /// <typeparam name="S">Service StateType</typeparam>
+        /// <typeparam name="P">Provider StateType</typeparam>
+        protected TS Register<TS, TP>() where TS : class where TP : TS, new()
         {
-            return RegisterBehaviour<S, P>(new GameObject(typeof(P).Name).AddComponent<P>(), dontDestroy);
+            return Register<TS>(new TP());
         }
+
         /// <summary>
-        /// Binds an existing MonoBehaviour provider instance to a service.
+        ///     Binds an existing provider instance to a service.
         /// </summary>
-        /// <typeparam name="S">Service type</typeparam>
-        /// <typeparam name="P">Provider type</typeparam>
-        protected S RegisterBehaviour<S, P>(P provider, bool dontDestroy = true) where S : class where P : MonoBehaviour, S
+        /// <typeparam name="S">Service StateType</typeparam>
+        /// <typeparam name="P">Provider StateType</typeparam>
+        protected TS Register<TS>(TS provider) where TS : class
         {
-            if (dontDestroy)
-            {
-                UnityEngine.Object.DontDestroyOnLoad(provider);
-            }
-            return Register<S>(provider);
+            return (TS) Register(typeof(TS), provider);
         }
-        /// <summary>
-        /// Creates a new ScriptableObject provider instance.
-        /// </summary>
-        /// <typeparam name="S">Service type</typeparam>
-        /// <typeparam name="P">Provider type</typeparam>
-        protected S RegisterNewScriptable<S, P>() where S : class where P : ScriptableObject, S
-        {
-            return Register<S>(ScriptableObject.CreateInstance<P>());
-        }
-        /// <summary>
-        /// Creates a new provider instance.
-        /// </summary>
-        /// <typeparam name="S">Service type</typeparam>
-        /// <typeparam name="P">Provider type</typeparam>
-        protected S Register<S, P>() where S : class where P : S, new()
-        {
-            return Register<S>(new P());
-        }
-        /// <summary>
-        /// Binds an existing provider instance to a service.
-        /// </summary>
-        /// <typeparam name="S">Service type</typeparam>
-        /// <typeparam name="P">Provider type</typeparam>
-        protected S Register<S>(S provider) where S : class
-        {
-            return (S)Register(typeof(S), provider);
-        }
+
         protected object Register(Type type, object provider)
         {
-            if (services.ContainsKey(type))
+            if (_services.ContainsKey(type))
             {
-                services[type] = provider;
+                _services[type] = provider;
             }
             else
             {
-                services.Add(type, provider);
+                _services.Add(type, provider);
             }
             return provider;
         }
+
+        /// <summary>
+        ///     Binds an existing MonoBehaviour provider instance to a service.
+        /// </summary>
+        /// <typeparam name="S">Service StateType</typeparam>
+        /// <typeparam name="P">Provider StateType</typeparam>
+        protected TS RegisterBehaviour<TS, TP>(TP provider, bool dontDestroy = true)
+            where TS : class where TP : MonoBehaviour, TS
+        {
+            if (dontDestroy)
+            {
+                Object.DontDestroyOnLoad(provider);
+            }
+            return Register<TS>(provider);
+        }
+
+        /// <summary>
+        ///     Instantiates a new MonoBehaviour provider instance.
+        /// </summary>
+        /// <typeparam name="S">Service StateType</typeparam>
+        /// <typeparam name="P">Provider StateType</typeparam>
+        protected TS RegisterNewBehaviour<TS, TP>(bool dontDestroy = true)
+            where TS : class where TP : MonoBehaviour, TS
+        {
+            return RegisterBehaviour<TS, TP>(
+                new GameObject(typeof(TP).Name).AddComponent<TP>(), dontDestroy);
+        }
+
+        /// <summary>
+        ///     Creates a new ScriptableObject provider instance.
+        /// </summary>
+        /// <typeparam name="S">Service StateType</typeparam>
+        /// <typeparam name="P">Provider StateType</typeparam>
+        protected TS RegisterNewScriptable<TS, TP>()
+            where TS : class where TP : ScriptableObject, TS
+        {
+            return Register<TS>(ScriptableObject.CreateInstance<TP>());
+        }
+
         protected abstract void RegisterServices();
+
         private object RegisterNullService(Type serviceType)
         {
             var allTypes = serviceType.Assembly.GetTypes();
-            for (int i = 0; i < allTypes.Length; i++)
+            for (var i = 0; i < allTypes.Length; i++)
             {
                 var t = allTypes[i];
-                if (serviceType.IsAssignableFrom(t) && t.GetCustomAttributes(typeof(NullProviderAttribute), false).Length > 0)
+                if (serviceType.IsAssignableFrom(t) &&
+                    t.GetCustomAttributes(typeof(NullProviderAttribute), false).Length >
+                    0)
                 {
                     return Register(Activator.CreateInstance(t));
                 }

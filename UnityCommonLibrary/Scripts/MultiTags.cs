@@ -1,33 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityCommonLibrary;
 using UnityEngine;
 
 namespace UnityCommonLibrary
 {
-    public static class MultiTags<T> where T : struct, IFormattable, IConvertible, IComparable
+    public static class MultiTags<T>
+        where T : struct, IFormattable, IConvertible, IComparable
     {
-        private static readonly Dictionary<GameObject, T> lookup = new Dictionary<GameObject, T>();
-        private static readonly T noneValue = FromInt(0);
+        private static readonly Dictionary<GameObject, T> Lookup =
+            new Dictionary<GameObject, T>();
+
+        private static readonly T NoneValue = FromInt(0);
 
         public static bool HasAnyTags(Component cmp, T mask)
         {
             return HasAnyTags(cmp.gameObject, mask);
         }
+
         public static bool HasAnyTags(GameObject obj, T mask)
         {
-            var found = noneValue;
-            if (!lookup.TryGetValue(obj, out found))
+            T found;
+            if (!Lookup.TryGetValue(obj, out found))
             {
-                lookup.Add(obj, noneValue);
+                Lookup.Add(obj, NoneValue);
                 return false;
-
             }
             var foundVal = ToInt(found);
             var maskVal = ToInt(mask);
-            for (int i = 0; i < EnumData<T>.values.Length; i++)
+            for (var i = 0; i < EnumData<T>.Values.Length; i++)
             {
-                var v = ToInt(EnumData<T>.values[i]);
+                var v = ToInt(EnumData<T>.Values[i]);
                 if ((maskVal & v) == v)
                 {
                     if ((foundVal & v) == v)
@@ -38,24 +40,25 @@ namespace UnityCommonLibrary
             }
             return false;
         }
+
         public static bool HasTags(Component cmp, T tag)
         {
             return HasTags(cmp.gameObject, tag);
         }
+
         public static bool HasTags(GameObject obj, T mask)
         {
-            var found = noneValue;
-            if (!lookup.TryGetValue(obj, out found))
+            var found = NoneValue;
+            if (!Lookup.TryGetValue(obj, out found))
             {
-                lookup.Add(obj, noneValue);
+                Lookup.Add(obj, NoneValue);
                 return false;
-
             }
             var maskVal = ToInt(mask);
             var foundVal = ToInt(found);
-            for (int i = 0; i < EnumData<T>.values.Length; i++)
+            for (var i = 0; i < EnumData<T>.Values.Length; i++)
             {
-                var v = ToInt(EnumData<T>.values[i]);
+                var v = ToInt(EnumData<T>.Values[i]);
                 if ((maskVal & v) == v)
                 {
                     if ((foundVal & v) != v)
@@ -66,66 +69,74 @@ namespace UnityCommonLibrary
             }
             return true;
         }
+
         public static T GetTags(Component cmp)
         {
             return GetTags(cmp.gameObject);
         }
+
         public static T GetTags(GameObject obj)
         {
-            var found = noneValue;
-            if (!lookup.TryGetValue(obj, out found))
+            var found = NoneValue;
+            if (!Lookup.TryGetValue(obj, out found))
             {
-                lookup.Add(obj, noneValue);
+                Lookup.Add(obj, NoneValue);
             }
             return found;
         }
+
         public static void SetTags(Component cmp, T tags)
         {
             SetTags(cmp.gameObject, tags);
         }
+
         public static void SetTags(GameObject obj, T tags)
         {
-            if (lookup.ContainsKey(obj))
+            if (Lookup.ContainsKey(obj))
             {
-                lookup[obj] = tags;
+                Lookup[obj] = tags;
             }
             else
             {
-                lookup.Add(obj, tags);
+                Lookup.Add(obj, tags);
             }
         }
+
         public static void AddTags(Component cmp, T mask)
         {
             AddTags(cmp.gameObject, mask);
         }
+
         public static void AddTags(GameObject obj, T mask)
         {
-            if (lookup.ContainsKey(obj))
+            if (Lookup.ContainsKey(obj))
             {
-                var maskVal = ToInt(lookup[obj]);
+                var maskVal = ToInt(Lookup[obj]);
                 maskVal |= ToInt(mask);
-                lookup[obj] = FromInt(maskVal);
+                Lookup[obj] = FromInt(maskVal);
             }
             else
             {
-                lookup.Add(obj, mask);
+                Lookup.Add(obj, mask);
             }
         }
+
         public static void RemoveTags(Component cmp, T mask)
         {
             RemoveTags(cmp.gameObject, mask);
         }
+
         public static void RemoveTags(GameObject obj, T mask)
         {
-            if (lookup.ContainsKey(obj))
+            if (Lookup.ContainsKey(obj))
             {
-                var maskVal = ToInt(lookup[obj]);
+                var maskVal = ToInt(Lookup[obj]);
                 maskVal &= ~ToInt(mask);
-                lookup[obj] = FromInt(maskVal);
+                Lookup[obj] = FromInt(maskVal);
             }
             else
             {
-                lookup.Add(obj, noneValue);
+                Lookup.Add(obj, NoneValue);
             }
         }
 
@@ -133,14 +144,17 @@ namespace UnityCommonLibrary
         {
             return TagsMatch(cmp.gameObject, other.gameObject);
         }
+
         public static bool TagsMatch(Component cmp, GameObject other)
         {
             return TagsMatch(cmp.gameObject, other);
         }
+
         public static bool TagsMatch(GameObject obj, Component other)
         {
             return TagsMatch(obj, other.gameObject);
         }
+
         public static bool TagsMatch(GameObject obj, GameObject other)
         {
             return GetTags(obj).Equals(GetTags(other));
@@ -150,19 +164,22 @@ namespace UnityCommonLibrary
         {
             return SharesAny(cmp.gameObject, other.gameObject);
         }
+
         public static bool SharesAny(Component cmp, GameObject other)
         {
             return SharesAny(cmp.gameObject, other);
         }
+
         public static bool SharesAny(GameObject obj, Component other)
         {
             return SharesAny(obj, other.gameObject);
         }
+
         public static bool SharesAny(GameObject obj, GameObject other)
         {
-            for (int i = 0; i < EnumData<T>.values.Length; i++)
+            for (var i = 0; i < EnumData<T>.Values.Length; i++)
             {
-                var v = EnumData<T>.values[i];
+                var v = EnumData<T>.Values[i];
                 if (SharesTag(obj, other, v))
                 {
                     return true;
@@ -175,21 +192,25 @@ namespace UnityCommonLibrary
         {
             return SharesTag(cmp.gameObject, other.gameObject, tag);
         }
+
         public static bool SharesTag(Component cmp, GameObject other, T tag)
         {
             return SharesTag(cmp.gameObject, other, tag);
         }
+
         public static bool SharesTag(GameObject obj, Component other, T tag)
         {
             return SharesTag(obj, other.gameObject, tag);
         }
+
         public static bool SharesTag(GameObject obj, GameObject other, T tag)
         {
             return HasTags(obj, tag) && HasTags(other, tag);
         }
+
         public static GameObject GetFirstWithTag(T tag)
         {
-            foreach (var kvp in lookup)
+            foreach (var kvp in Lookup)
             {
                 if (HasTags(kvp.Key, tag))
                 {
@@ -198,15 +219,17 @@ namespace UnityCommonLibrary
             }
             return null;
         }
-        public static C GetFirstWithTag<C>(T tag)
+
+        public static TC GetFirstWithTag<TC>(T tag)
         {
             var obj = GetFirstWithTag(tag);
-            return obj == null ? default(C) : obj.GetComponent<C>();
+            return obj == null ? default(TC) : obj.GetComponent<TC>();
         }
+
         public static List<GameObject> GetWithTag(T tag)
         {
             var list = new List<GameObject>();
-            foreach (var kvp in lookup)
+            foreach (var kvp in Lookup)
             {
                 if (HasTags(kvp.Key, tag))
                 {
@@ -220,9 +243,10 @@ namespace UnityCommonLibrary
         {
             return Convert.ToInt32(t);
         }
+
         private static T FromInt(int i)
         {
-            return (T)Enum.ToObject(EnumData<T>.type, i);
+            return (T) Enum.ToObject(EnumData<T>.Type, i);
         }
     }
 }

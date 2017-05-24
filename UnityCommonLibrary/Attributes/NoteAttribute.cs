@@ -1,27 +1,28 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace UnityCommonLibrary.Attributes
 {
-	[System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = true)]
-	public class NoteAttribute : PropertyAttribute
-	{
-		public readonly string text;
-		public readonly MessageType type;
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+    public class NoteAttribute : PropertyAttribute
+    {
+        public enum MessageType
+        {
+            None,
+            Info,
+            Warning,
+            Error
+        }
 
-		public NoteAttribute(string note) : this(note, MessageType.None) { }
+        public readonly string Text;
+        public readonly MessageType Type;
 
-		public NoteAttribute(string text, MessageType type)
-		{
-			this.text = text.Replace("\n", System.Environment.NewLine);
-			this.type = type;
-		}
+        public NoteAttribute(string note) : this(note, MessageType.None) { }
 
-		public enum MessageType
-		{
-			None,
-			Info,
-			Warning,
-			Error
-		}
-	}
+        public NoteAttribute(string text, MessageType type)
+        {
+            Text = text.Replace("\n", Environment.NewLine);
+            Type = type;
+        }
+    }
 }

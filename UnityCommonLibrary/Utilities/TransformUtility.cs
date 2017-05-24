@@ -6,12 +6,13 @@ namespace UnityCommonLibrary.Utility
 {
     public static class TransformUtility
     {
-        private static Queue<Transform> bfsSearchQueue = new Queue<Transform>();
+        private static readonly Queue<Transform> BfsSearchQueue = new Queue<Transform>();
 
-        public static void SetPosition(this Transform transform, Space space, float? x = null, float? y = null, float? z = null)
+        public static void SetPosition(this Transform transform, Space space,
+            float? x = null, float? y = null, float? z = null)
         {
             var newV3 = transform.position;
-            VectorUtility.SetXYZ(ref newV3, x, y, z);
+            VectorUtility.SetXyz(ref newV3, x, y, z);
             if (space == Space.World)
             {
                 transform.position = newV3;
@@ -21,16 +22,20 @@ namespace UnityCommonLibrary.Utility
                 transform.localPosition = newV3;
             }
         }
-        public static void SetLocalScale(this Transform transform, float? x = null, float? y = null, float? z = null)
+
+        public static void SetLocalScale(this Transform transform, float? x = null,
+            float? y = null, float? z = null)
         {
             var newV3 = transform.localScale;
-            VectorUtility.SetXYZ(ref newV3, x, y, z);
+            VectorUtility.SetXyz(ref newV3, x, y, z);
             transform.localScale = newV3;
         }
-        public static void SetEulerAngles(this Transform transform, Space space, float? x = null, float? y = null, float? z = null)
+
+        public static void SetEulerAngles(this Transform transform, Space space,
+            float? x = null, float? y = null, float? z = null)
         {
             var newV3 = transform.eulerAngles;
-            VectorUtility.SetXYZ(ref newV3, x, y, z);
+            VectorUtility.SetXyz(ref newV3, x, y, z);
             if (space == Space.World)
             {
                 transform.rotation = Quaternion.Euler(newV3);
@@ -40,18 +45,22 @@ namespace UnityCommonLibrary.Utility
                 transform.localRotation = Quaternion.Euler(newV3);
             }
         }
+
         public static void Reset(this Transform t)
         {
             Reset(t, TransformElement.All, Space.World);
         }
+
         public static void Reset(this Transform t, TransformElement elements)
         {
             Reset(t, elements, Space.World);
         }
+
         public static void Reset(this Transform t, Space space)
         {
             Reset(t, TransformElement.All, space);
         }
+
         public static void Reset(this Transform t, TransformElement elements, Space space)
         {
             if ((elements & TransformElement.Position) != 0)
@@ -81,7 +90,9 @@ namespace UnityCommonLibrary.Utility
                 t.localScale = Vector3.one;
             }
         }
-        public static void Match(this Transform t, Transform other, TransformElement elements)
+
+        public static void Match(this Transform t, Transform other,
+            TransformElement elements)
         {
             if ((elements & TransformElement.Position) != 0)
             {
@@ -96,57 +107,68 @@ namespace UnityCommonLibrary.Utility
                 t.localScale = other.localScale;
             }
         }
+
         public static Vector3 DirectionTo(this Transform t, Transform other)
         {
             return (other.position - t.position).normalized;
         }
+
         public static Vector3 DirectionTo(this Transform t, Vector3 other)
         {
             return (other - t.position).normalized;
         }
+
         public static Vector3 DirectionTo(this Vector3 v, Vector3 other)
         {
             return (other - v).normalized;
         }
+
         public static Vector3 DirectionTo(this Vector3 v, Transform other)
         {
             return (other.position - v).normalized;
         }
 
-        public static Transform FindChildBFS(this Transform t, string search, StringComparison comparison = StringComparison.CurrentCulture, bool tag = false)
+        public static Transform FindChildBfs(this Transform t, string search,
+            StringComparison comparison = StringComparison.CurrentCulture,
+            bool tag = false)
         {
-            bfsSearchQueue.Clear();
-            for (int i = 0; i < t.childCount; i++)
+            BfsSearchQueue.Clear();
+            for (var i = 0; i < t.childCount; i++)
             {
-                bfsSearchQueue.Enqueue(t.GetChild(i));
+                BfsSearchQueue.Enqueue(t.GetChild(i));
             }
             Transform found = null;
-            while (bfsSearchQueue.Count > 0)
+            while (BfsSearchQueue.Count > 0)
             {
-                var child = bfsSearchQueue.Dequeue();
-                if ((tag && child.tag.Equals(search, comparison)) || child.name.Equals(search, comparison))
+                var child = BfsSearchQueue.Dequeue();
+                if (tag && child.tag.Equals(search, comparison) ||
+                    child.name.Equals(search, comparison))
                 {
                     found = child;
                     break;
                 }
-                for (int i = 0; i < child.childCount; i++)
+                for (var i = 0; i < child.childCount; i++)
                 {
-                    bfsSearchQueue.Enqueue(child.GetChild(i));
+                    BfsSearchQueue.Enqueue(child.GetChild(i));
                 }
             }
-            bfsSearchQueue.Clear();
+            BfsSearchQueue.Clear();
             return found;
         }
-        public static Transform FindChildDFS(this Transform t, string search, StringComparison comparison = StringComparison.CurrentCulture, bool tag = false)
+
+        public static Transform FindChildDfs(this Transform t, string search,
+            StringComparison comparison = StringComparison.CurrentCulture,
+            bool tag = false)
         {
-            for (int i = 0; i < t.childCount; i++)
+            for (var i = 0; i < t.childCount; i++)
             {
                 var child = t.GetChild(i);
-                if ((tag && child.tag.Equals(search, comparison)) || child.name.Equals(search, comparison))
+                if (tag && child.tag.Equals(search, comparison) ||
+                    child.name.Equals(search, comparison))
                 {
                     return child;
                 }
-                child = FindChildDFS(t.GetChild(i), search);
+                child = FindChildDfs(t.GetChild(i), search);
                 if (child)
                 {
                     return child;
@@ -154,12 +176,16 @@ namespace UnityCommonLibrary.Utility
             }
             return null;
         }
-        public static Transform FindParent(this Transform t, string search, StringComparison comparison = StringComparison.CurrentCulture, bool tag = false)
+
+        public static Transform FindParent(this Transform t, string search,
+            StringComparison comparison = StringComparison.CurrentCulture,
+            bool tag = false)
         {
-            Transform transform = t;
+            var transform = t;
             while (transform)
             {
-                if ((tag && transform.tag.Equals(search, comparison)) || transform.name.Equals(search, comparison))
+                if (tag && transform.tag.Equals(search, comparison) ||
+                    transform.name.Equals(search, comparison))
                 {
                     return transform;
                 }
@@ -167,10 +193,11 @@ namespace UnityCommonLibrary.Utility
             }
             return null;
         }
+
         public static Transform[] GetChildren(this Transform transform)
         {
             var array = new Transform[transform.childCount];
-            for (int i = 0; i < array.Length; i++)
+            for (var i = 0; i < array.Length; i++)
             {
                 array[i] = transform.GetChild(i);
             }

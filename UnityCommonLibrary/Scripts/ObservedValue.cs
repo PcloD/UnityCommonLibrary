@@ -2,35 +2,34 @@
 {
     public class ObservedValue<T>
     {
-        public delegate void OnValueChanged(T oldValue, T newValue);
-        public event OnValueChanged ValueChanged;
+        private T _value;
 
-        private T value;
+        public delegate void OnValueChanged(T oldValue, T newValue);
+
+        public event OnValueChanged ValueChanged;
 
         public T Value
         {
-            get
-            {
-                return value;
-            }
+            get { return _value; }
             set
             {
-                if (!Equals(this.value, value))
+                if (!Equals(_value, value))
                 {
-                    var previousValue = this.value;
-                    this.value = value;
+                    var previousValue = _value;
+                    _value = value;
                     if (ValueChanged != null)
                     {
-                        ValueChanged(previousValue, this.value);
+                        ValueChanged(previousValue, _value);
                     }
                 }
             }
         }
 
         public ObservedValue() : this(default(T)) { }
+
         public ObservedValue(T value)
         {
-            this.value = value;
+            _value = value;
         }
 
         public static implicit operator T(ObservedValue<T> t)

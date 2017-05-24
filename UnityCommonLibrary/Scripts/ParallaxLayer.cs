@@ -2,49 +2,49 @@
 
 namespace UnityCommonLibrary
 {
-	[ExecuteInEditMode]
-	public class ParallaxLayer : MonoBehaviour
-	{
-		public new ParallaxCamera camera;
-		public float speedX;
-		public float speedY;
-		public bool reverseDirection;
+    [ExecuteInEditMode]
+    public class ParallaxLayer : MonoBehaviour
+    {
+        public ParallaxCamera Camera;
+        public bool ReverseDirection;
+        public float SpeedX;
+        public float SpeedY;
 
-		private Vector3 prevCamPosition;
-		private bool prevMoveParallax;
+        private Vector3 _prevCamPosition;
+        private bool _prevMoveParallax;
 
-		private void OnEnable()
-		{
-			if(camera == null)
-			{
-				camera = FindObjectOfType<ParallaxCamera>();
-			}
-			if(camera != null)
-			{
-				prevCamPosition = camera.transform.position;
-			}
-		}
+        private void OnEnable()
+        {
+            if (Camera == null)
+            {
+                Camera = FindObjectOfType<ParallaxCamera>();
+            }
+            if (Camera != null)
+            {
+                _prevCamPosition = Camera.transform.position;
+            }
+        }
 
-		private void Update()
-		{
-			if(!camera)
-			{
-				return;
-			}
-			if(camera.moveParallax && !prevMoveParallax)
-			{
-				prevCamPosition = camera.transform.position;
-			}
-			prevMoveParallax = camera.moveParallax;
-			if(!Application.isPlaying && !camera.moveParallax)
-			{
-				return;
-			}
-			var dist = camera.transform.position - prevCamPosition;
-			var dir = (reverseDirection) ? -1f : 1f;
-			transform.position += Vector3.Scale(dist, new Vector3(speedX, speedY)) * dir;
+        private void Update()
+        {
+            if (!Camera)
+            {
+                return;
+            }
+            if (Camera.MoveParallax && !_prevMoveParallax)
+            {
+                _prevCamPosition = Camera.transform.position;
+            }
+            _prevMoveParallax = Camera.MoveParallax;
+            if (!Application.isPlaying && !Camera.MoveParallax)
+            {
+                return;
+            }
+            var dist = Camera.transform.position - _prevCamPosition;
+            var dir = ReverseDirection ? -1f : 1f;
+            transform.position += Vector3.Scale(dist, new Vector3(SpeedX, SpeedY)) * dir;
 
-			prevCamPosition = camera.transform.position;
-		}
-	}
+            _prevCamPosition = Camera.transform.position;
+        }
+    }
 }

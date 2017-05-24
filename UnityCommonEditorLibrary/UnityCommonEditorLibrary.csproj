@@ -64,7 +64,6 @@
     <Compile Include="Inspectors\DisplayNameAttributeDrawer.cs" />
     <Compile Include="Inspectors\ReadOnlyAttributeDrawer.cs" />
     <Compile Include="Inspectors\SequenceInspector.cs" />
-    <Compile Include="Inspectors\SelectorInspector.cs" />
     <Compile Include="Editor\SpriteUtility.cs" />
     <Compile Include="Editor\TestMaterialGenerator.cs" />
     <Compile Include="Editor\UIStyleConsistencyInspector.cs" />

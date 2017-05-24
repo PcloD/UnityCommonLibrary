@@ -4,28 +4,30 @@ using UnityEngine;
 
 namespace UnityCommonEditorLibrary.Inspectors
 {
-	[CustomEditor(typeof(ParallaxCamera))]
-	public class ParallaxCameraInspector : Editor
-	{
-		private ParallaxCamera options;
+    [CustomEditor(typeof(ParallaxCamera))]
+    public class ParallaxCameraInspector : Editor
+    {
+        private ParallaxCamera _options;
 
-		private void Awake()
-		{
-			options = (ParallaxCamera)target;
-		}
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
 
-		public override void OnInspectorGUI()
-		{
-			DrawDefaultInspector();
+            if (GUILayout.Button("Save Position"))
+            {
+                _options.SavePosition();
+                EditorUtility.SetDirty(_options);
+            }
 
-			if(GUILayout.Button("Save Position"))
-			{
-				options.SavePosition();
-				EditorUtility.SetDirty(options);
-			}
+            if (GUILayout.Button("Restore Position"))
+            {
+                _options.RestorePosition();
+            }
+        }
 
-			if(GUILayout.Button("Restore Position"))
-				options.RestorePosition();
-		}
-	}
+        private void Awake()
+        {
+            _options = (ParallaxCamera) target;
+        }
+    }
 }

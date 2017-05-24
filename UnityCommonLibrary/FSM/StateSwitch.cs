@@ -2,58 +2,45 @@
 
 namespace UnityCommonLibrary.FSM
 {
-	/// <summary>
-	/// Implementing the command design pattern,
-	/// stores information about a requested switch.
-	/// </summary>
-	/// <remarks>
-	/// TODO: Determine how we can use this class to pass information
-	/// from one state to another on switch. Maybe look at using generics.
-	/// </remarks>
-	public class StateSwitch<T> where T : struct, IFormattable, IConvertible, IComparable
-	{
-		public delegate void OnSwitch();
-		public event OnSwitch Switch;
+    /// <summary>
+    ///     Implementing the command design pattern,
+    ///     stores information about a requested switch.
+    /// </summary>
+    /// <remarks>
+    ///     TODO: Determine how we can use this class to pass information
+    ///     from one TimerState to another on switch. Maybe look at using generics.
+    /// </remarks>
+    public class StateSwitch<T> where T : struct, IFormattable, IConvertible, IComparable
+    {
+        /// <summary>
+        ///     The StateType of switch to perform.
+        /// </summary>
+        public enum Type
+        {
+            Switch,
+            Rewind
+        }
 
-		private readonly T _state;
-		private readonly Type _type;
+        public delegate void OnSwitch();
 
-		public T state
-		{
-			get
-			{
-				return _state;
-			}
-		}
-		public Type type
-		{
-			get
-			{
-				return _type;
-			}
-		}
+        public event OnSwitch Switch;
 
-		public StateSwitch(T state, Type type)
-		{
-			_state = state;
-			_type = type;
-		}
+        public T State { get; }
 
-		/// <summary>
-		/// The type of switch to perform.
-		/// </summary>
-		public enum Type
-		{
-			Switch,
-			Rewind
-		}
+        public Type StateType { get; }
 
-		internal void FireOnSwitch()
-		{
-			if(Switch != null)
-			{
-				Switch();
-			}
-		}
-	}
+        public StateSwitch(T state, Type stateType)
+        {
+            State = state;
+            StateType = stateType;
+        }
+
+        internal void FireOnSwitch()
+        {
+            if (Switch != null)
+            {
+                Switch();
+            }
+        }
+    }
 }

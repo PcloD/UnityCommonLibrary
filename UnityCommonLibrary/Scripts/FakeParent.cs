@@ -2,42 +2,44 @@
 
 namespace UnityCommonLibrary
 {
-	[ExecuteInEditMode]
-	public class FakeParent : MonoBehaviour
-	{
-		public Transform fakeParent;
-		public bool usePosition;
-		public Vector3 localPosition;
-		public bool useRotation;
-		public Vector3 localRotation;
-		public bool destroyWithParent;
+    [ExecuteInEditMode]
+    public class FakeParent : MonoBehaviour
+    {
+        public bool DestroyWithParent;
+        public Vector3 LocalPosition;
+        public Vector3 LocalRotation;
+        public Transform OriginalParent;
+        public bool UsePosition;
+        public bool UseRotation;
 
-		private bool hadParent;
+        private bool _hadParent;
 
-		private void Update()
-		{
-			if(!fakeParent && hadParent && destroyWithParent)
-			{
-				Destroy(gameObject);
-				return;
-			}
-			else if(!destroyWithParent)
-			{
-				return;
-			}
-			else if(fakeParent)
-			{
-				hadParent = true;
-			}
+        private void Update()
+        {
+            if (!OriginalParent && _hadParent && DestroyWithParent)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            if (!DestroyWithParent)
+            {
+                return;
+            }
+            if (OriginalParent)
+            {
+                _hadParent = true;
+            }
 
-			if(usePosition)
-			{
-				transform.position = fakeParent.transform.position + localPosition;
-			}
-			if(useRotation)
-			{
-				transform.rotation = Quaternion.Euler(fakeParent.transform.eulerAngles + localRotation);
-			}
-		}
-	}
+            if (UsePosition)
+            {
+                transform.position = OriginalParent.transform.position + LocalPosition;
+            }
+            if (UseRotation)
+            {
+                transform.rotation =
+                    Quaternion.Euler(OriginalParent.transform.eulerAngles +
+                                     LocalRotation);
+            }
+        }
+    }
 }

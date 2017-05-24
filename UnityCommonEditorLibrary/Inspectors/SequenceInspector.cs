@@ -4,42 +4,48 @@ using UnityEditor.AnimatedValues;
 
 namespace UnityCommonEditorLibrary.Inspectors
 {
-	[CustomEditor(typeof(Sequence), true)]
-	public class SequenceInspector : Editor
-	{
-		private SerializedProperty executeOnStart;
-		private SerializedProperty loop;
-		private SerializedProperty destroyOnComplete;
-		private AnimBool isFoldout;
+    [CustomEditor(typeof(Sequence), true)]
+    public class SequenceInspector : Editor
+    {
+        private SerializedProperty _destroyOnComplete;
+        private SerializedProperty _executeOnStart;
+        private AnimBool _isFoldout;
+        private SerializedProperty _loop;
 
-		private void OnEnable()
-		{
-			executeOnStart = serializedObject.FindProperty("executeOnStart");
-			loop = serializedObject.FindProperty("loop");
-			destroyOnComplete = serializedObject.FindProperty("destroyOnComplete");
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+            DrawDefaultInspector();
 
-			isFoldout = new AnimBool(false);
-			isFoldout.valueChanged.AddListener(Repaint);
-		}
+            EditorGUI.indentLevel = 1;
+            _isFoldout.target =
+                EditorGUILayout.Foldout(_isFoldout.target, "Sequence Configuration");
+            if (EditorGUILayout.BeginFadeGroup(_isFoldout.faded))
+            {
+                EditorGUI.indentLevel++;
+                _executeOnStart.boolValue =
+                    EditorGUILayout.ToggleLeft(_executeOnStart.displayName,
+                        _executeOnStart.boolValue);
+                _destroyOnComplete.boolValue =
+                    EditorGUILayout.ToggleLeft(_destroyOnComplete.displayName,
+                        _destroyOnComplete.boolValue);
+                _loop.boolValue =
+                    EditorGUILayout.ToggleLeft(_loop.displayName, _loop.boolValue);
+                EditorGUI.indentLevel--;
+            }
+            EditorGUILayout.EndFadeGroup();
 
-		public override void OnInspectorGUI()
-		{
-			serializedObject.Update();
-			DrawDefaultInspector();
+            serializedObject.ApplyModifiedProperties();
+        }
 
-			EditorGUI.indentLevel = 1;
-			isFoldout.target = EditorGUILayout.Foldout(isFoldout.target, "Sequence Configuration");
-			if(EditorGUILayout.BeginFadeGroup(isFoldout.faded))
-			{
-				EditorGUI.indentLevel++;
-				executeOnStart.boolValue = EditorGUILayout.ToggleLeft(executeOnStart.displayName, executeOnStart.boolValue);
-				destroyOnComplete.boolValue = EditorGUILayout.ToggleLeft(destroyOnComplete.displayName, destroyOnComplete.boolValue);
-				loop.boolValue = EditorGUILayout.ToggleLeft(loop.displayName, loop.boolValue);
-				EditorGUI.indentLevel--;
-			}
-			EditorGUILayout.EndFadeGroup();
+        private void OnEnable()
+        {
+            _executeOnStart = serializedObject.FindProperty("executeOnStart");
+            _loop = serializedObject.FindProperty("loop");
+            _destroyOnComplete = serializedObject.FindProperty("destroyOnComplete");
 
-			serializedObject.ApplyModifiedProperties();
-		}
-	}
+            _isFoldout = new AnimBool(false);
+            _isFoldout.valueChanged.AddListener(Repaint);
+        }
+    }
 }

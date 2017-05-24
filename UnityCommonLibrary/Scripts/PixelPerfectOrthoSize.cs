@@ -2,32 +2,32 @@
 
 namespace UnityCommonLibrary
 {
-	[ExecuteInEditMode]
-	[RequireComponent(typeof(Camera))]
-	public class PixelPerfectOrthoSize : MonoBehaviour
-	{
-		public int designWidth;
-		public int designHeight;
-		public bool useWidth;
-		public float pixelsPerUnit;
+    [ExecuteInEditMode]
+    [RequireComponent(typeof(Camera))]
+    public class PixelPerfectOrthoSize : MonoBehaviour
+    {
+        public int DesignHeight;
+        public int DesignWidth;
+        public float PixelsPerUnit;
+        public bool UseWidth;
 
-		private new Camera camera;
+        private Camera _camera;
 
-		private void Awake()
-		{
-			camera = GetComponent<Camera>();
-		}
+        private void Awake()
+        {
+            _camera = GetComponent<Camera>();
+        }
 
-		private void Update()
-		{
-			if(!useWidth && designHeight != 0f)
-			{
-				camera.orthographicSize = (designHeight / pixelsPerUnit) / 2f;
-			}
-			else if(useWidth && designWidth != 0f)
-			{
-				camera.orthographicSize = (designWidth / pixelsPerUnit) / 2f;
-			}
-		}
-	}
+        private void Update()
+        {
+            if (!UseWidth && DesignHeight != 0f)
+            {
+                _camera.orthographicSize = DesignHeight / PixelsPerUnit / 2f;
+            }
+            else if (UseWidth && DesignWidth != 0f)
+            {
+                _camera.orthographicSize = DesignWidth / PixelsPerUnit / 2f;
+            }
+        }
+    }
 }
