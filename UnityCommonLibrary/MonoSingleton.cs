@@ -36,8 +36,8 @@ namespace UnityCommonLibrary
             _instance = all.Length == 0 ? ComponentUtility.Create<T>() : all[0];
             if (all.Length > 1)
             {
-                Debug.LogError(string.Format("FindObjectsOfType<{0}>().Length == {1}",
-                    typeof(T).Name, all.Length));
+                UCLCore.Logger.LogFormat(LogType.Error, "FindObjectsOfType<{0}>().Length == {1}",
+                    typeof(T).Name, all.Length);
             }
             DontDestroyOnLoad(_instance);
         }

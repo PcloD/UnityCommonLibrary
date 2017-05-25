@@ -5,16 +5,18 @@ using UnityEngine;
 namespace UnityCommonEditorLibrary.Inspectors
 {
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
-    public class ReadOnlyAttributeDrawer : DecoratorDrawer
+    public class ReadOnlyAttributeDrawer : PropertyDrawer
     {
-        public override float GetHeight()
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return 0f;
+            return EditorGUI.GetPropertyHeight(property, label, true);
         }
 
-        public override void OnGUI(Rect position)
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             GUI.enabled = false;
+            EditorGUI.PropertyField(position, property, label, true);
+            GUI.enabled = true;
         }
     }
 }

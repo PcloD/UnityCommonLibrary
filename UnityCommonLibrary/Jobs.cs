@@ -95,18 +95,10 @@ namespace UnityCommonLibrary
         {
             while (_onUnityThreadJobs.Count > 0)
             {
-                var count = _onUnityThreadJobs.Count;
                 var job = _onUnityThreadJobs.Dequeue();
-                // Check for infinite loop from a callback adding itself back
                 if (job != null)
                 {
                     job();
-                }
-                if (_onUnityThreadJobs.Count == count)
-                {
-                    Debug.LogFormat("{0} on {1} added job to onthread queue!", job.Method,
-                        job.Target);
-                    break;
                 }
             }
             for (var i = _onUpdateJobs.Count - 1; i >= 0; i--)

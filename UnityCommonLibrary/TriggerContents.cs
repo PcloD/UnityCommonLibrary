@@ -36,7 +36,7 @@ namespace UnityCommonLibrary
             Collider = GetComponent<Collider>();
             if (!Collider.isTrigger)
             {
-                Debug.LogError("COLLIDER MUST BE TRIGGER!");
+                UCLCore.Logger.LogError("", "COLLIDER MUST BE TRIGGER!");
             }
         }
 

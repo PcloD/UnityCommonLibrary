@@ -71,7 +71,7 @@ namespace UnityCommonLibrary
         {
             if (_pool.Count > 0 && ReferenceEquals(_pool.Peek(), obj))
             {
-                Debug.LogError(
+                UCLCore.Logger.LogError("",
                     "Trying to destroy object that is already released to pool.");
             }
             else

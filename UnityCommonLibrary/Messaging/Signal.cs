@@ -21,7 +21,7 @@ namespace UnityCommonLibrary.Messaging
             {
                 if (Subscribers.Count == 0)
                 {
-                    return string.Empty;
+                    return "";
                 }
                 var sb = new StringBuilder();
                 foreach (var s in Subscribers)

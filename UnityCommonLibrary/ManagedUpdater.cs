@@ -42,7 +42,7 @@ namespace UnityCommonLibrary
             }
             if (index == -1)
             {
-                Debug.LogError("No slots available for updateable");
+                UCLCore.Logger.LogError("", "No slots available for updateable");
             }
             else
             {
@@ -55,7 +55,7 @@ namespace UnityCommonLibrary
         {
             if (updaterIndex > _updateables.Length || updaterIndex < 0)
             {
-                Debug.LogError("updaterIndex out of bounds: " + updaterIndex);
+                UCLCore.Logger.LogError("", "updaterIndex out of bounds: " + updaterIndex);
                 return;
             }
             // Eliminate multiple bounds checks
@@ -72,7 +72,7 @@ namespace UnityCommonLibrary
             }
             else
             {
-                Debug.LogError("updatable not located at expected slot");
+                UCLCore.Logger.LogError("", "updatable not located at expected slot");
             }
         }
 

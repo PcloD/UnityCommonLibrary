@@ -151,9 +151,9 @@ namespace UnityCommonEditorLibrary
             var importer = AssetImporter.GetAtPath(texPath) as TextureImporter;
             importer.filterMode = FilterMode.Point;
             importer.maxTextureSize = 32;
-            importer.textureFormat = TextureImporterFormat.AutomaticTruecolor;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
             importer.wrapMode = TextureWrapMode.Repeat;
-            importer.textureType = TextureImporterType.Image;
+            importer.textureType = TextureImporterType.Default;
             importer.SaveAndReimport();
         }
 

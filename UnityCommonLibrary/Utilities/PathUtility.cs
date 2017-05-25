@@ -6,7 +6,7 @@ namespace UnityCommonLibrary.Utility
     {
         public static string Combine(params string[] paths)
         {
-            var path = string.Empty;
+            var path = "";
             foreach (var p in paths)
             {
                 path = Path.Combine(path, p);

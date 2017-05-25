@@ -62,7 +62,6 @@ namespace UnityCommonLibrary.FSM
 
         public delegate void OnStateSwitched(T previousState, T currentState);
 
-        public static event OnLogFormat LogFormat;
         public event OnStateSwitched StateSwitched;
         public T CurrentState { get; private set; }
 
@@ -201,23 +200,6 @@ namespace UnityCommonLibrary.FSM
             Rewind();
         }
 
-        private void Log(string format, params object[] args)
-        {
-            if (!LogEvents)
-            {
-                return;
-            }
-            var str = string.Format("[{0}] {1}", Id, string.Format(format, args));
-            if (LogFormat == null)
-            {
-                Debug.Log(str);
-            }
-            else
-            {
-                LogFormat(str);
-            }
-        }
-
         /// <summary>
         ///     Switches to the provided TimerState instance.
         /// </summary>
@@ -241,10 +223,11 @@ namespace UnityCommonLibrary.FSM
         /// <param name="switch">The StateSwitch instance to process.</param>
         private void SwitchStateRoutine(StateSwitch<T> @switch)
         {
-            Log("Begin SwitchState StateType '{0}'", @switch.StateType);
+            UCLCore.Logger.LogFormat(LogType.Log, "Begin SwitchState StateType '{0}'",
+                @switch.StateType);
             if (!_initialSwitch)
             {
-                Log("Exiting TimerState '{0}'", CurrentState);
+                UCLCore.Logger.LogFormat(LogType.Log, "Exiting TimerState '{0}'", CurrentState);
                 // Exit current
                 MachineStatus = Status.ExitingState;
 
@@ -267,7 +250,7 @@ namespace UnityCommonLibrary.FSM
             // Fire callback for onSwitch
             // TODO: Potentially add a new callback for pre/post switch callbacks
             @switch.FireOnSwitch();
-            Log("Entering TimerState '{0}'", CurrentState);
+            UCLCore.Logger.LogFormat(LogType.Log, "Entering TimerState '{0}'", CurrentState);
             MachineStatus = Status.EnteringState;
             OnStateEnter onEnter;
             if (_onStateEnter.TryGetValue(CurrentState, out onEnter))
