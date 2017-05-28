@@ -43,14 +43,28 @@ namespace UnityCommonLibrary.Messaging
             Signals.AllSignals.Add(this);
         }
 
+        ~BaseSignal()
+        {
+            Signals.AllSignals.Remove(this);
+        }
+
         protected static bool ShouldRemoveCallback(T t)
         {
             var del = t as Delegate;
             return del.Target == null && !del.Method.IsStatic;
         }
 
-        public void Subscribe(T subscriber)
+        /// <summary>
+        /// Adds a subscriber to this signal.
+        /// </summary>
+        /// <param name="subscriber"></param>
+        /// <param name="removeCheck">If true, don't add if it exists already.</param>
+        public void Subscribe(T subscriber, bool removeCheck = true)
         {
+            if (removeCheck)
+            {
+                Unsubscribe(subscriber);
+            }
             Subscribers.Add(subscriber);
         }
 
