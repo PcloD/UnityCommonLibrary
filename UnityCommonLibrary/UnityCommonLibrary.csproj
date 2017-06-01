@@ -81,6 +81,7 @@
     <Compile Include="SimpleSpriteAnimation.cs" />
     <Compile Include="TransformElement.cs" />
     <Compile Include="TransformSettings.cs" />
+    <Compile Include="TriggerContents2D.cs" />
     <Compile Include="TriggerContents.cs" />
     <Compile Include="Time\TimeMode.cs" />
     <Compile Include="Time\TimeSlice.cs" />

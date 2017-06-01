@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace UnityCommonLibrary
 {
-    [RequireComponent(typeof(Collider))]
-    public class TriggerContents : MonoBehaviour
+    [RequireComponent(typeof(Collider2D))]
+    public class TriggerContents2D : MonoBehaviour
     {
-        public readonly Signal<bool, Collider> ContentsChanged = new Signal<bool, Collider>();
+        public readonly Signal<bool, Collider2D> ContentsChanged = new Signal<bool, Collider2D>();
 
-        private readonly HashSet<Collider> _contents = new HashSet<Collider>();
+        private readonly HashSet<Collider2D> _contents = new HashSet<Collider2D>();
 
-        public Collider Trigger { get; private set; }
+        public Collider2D Trigger { get; private set; }
 
-        public HashSet<Collider> Contents
+        public HashSet<Collider2D> Contents
         {
             get
             {
@@ -30,20 +30,20 @@ namespace UnityCommonLibrary
 
         private void Awake()
         {
-            Trigger = GetComponent<Collider>();
+            Trigger = GetComponent<Collider2D>();
             if (!Trigger.isTrigger)
             {
-                UCLCore.Logger.LogError("", "COLLIDER MUST BE TRIGGER!");
+                UCLCore.Logger.LogError("", "COLLIDER2D MUST BE TRIGGER!");
             }
         }
 
-        private void OnTriggerEnter(Collider c)
+        private void OnTriggerEnter2D(Collider2D c)
         {
             _contents.Add(c);
             ContentsChanged.Publish(true, c);
         }
 
-        private void OnTriggerExit(Collider c)
+        private void OnTriggerExit2D(Collider2D c)
         {
             _contents.Remove(c);
             ContentsChanged.Publish(false, c);
