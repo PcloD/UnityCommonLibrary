@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityCommonLibrary;
 using UnityEditor;
 using UnityEditorInternal;
@@ -8,47 +9,84 @@ namespace UnityCommonEditorLibrary
 {
     public class ComponentEditorUtility
     {
-        [MenuItem("CONTEXT/Component/Alphabetize Components")]
-        private static void AlphabetizeComponents(MenuCommand cmd)
+        private abstract class ComponentSorter : IComparer<Component>
+        {
+            protected int SortByName(Component x, Component y)
+            {
+                return string.CompareOrdinal(x.GetType().Name, y.GetType().Name);
+            }
+
+            protected int SortByAssembly(Component x, Component y)
+            {
+                return string.CompareOrdinal(x.GetType().Assembly.FullName,
+                    y.GetType().Assembly.FullName);
+            }
+
+            /// <inheritdoc />
+            public abstract int Compare(Component x, Component y);
+        }
+
+        private class ComponentNameSorter : ComponentSorter
+        {
+            /// <inheritdoc />
+            public override int Compare(Component x, Component y)
+            {
+                return SortByName(x, y);
+            }
+        }
+
+        private class ComponentAssemblySorter : ComponentSorter
+        {
+            /// <inheritdoc />
+            public override int Compare(Component x, Component y)
+            {
+                var order = SortByAssembly(x, y);
+                if (order == 0)
+                {
+                    order = SortByName(x, y);
+                }
+                return order;
+            }
+        }
+
+        [MenuItem("CONTEXT/Component/Sort By Assembly")]
+        private static void SortByAssembly(MenuCommand cmd)
         {
             var component = cmd.context as Component;
             var obj = component.gameObject;
-            var components = obj.GetComponents<Component>().ToList();
-            components.RemoveAll(c => c is Transform);
-            components.RemoveAll(c => c is RectTransform);
-            components.Sort((c1, c2) => c1.GetType().Name.CompareTo(c2.GetType().Name));
-            for (int i = 0; i < components.Count; i++)
+            SortComponents(obj, new ComponentAssemblySorter());
+        }
+
+        [MenuItem("CONTEXT/Component/Sort By Name")]
+        private static void SortByName(MenuCommand cmd)
+        {
+            var component = cmd.context as Component;
+            var obj = component.gameObject;
+            SortComponents(obj, new ComponentNameSorter());
+        }
+
+        private static void SortComponents(GameObject obj, IComparer<Component> sorter)
+        {
+            var sortedComponents = obj.GetComponents<Component>().ToList();
+            sortedComponents.RemoveAll(c => c is Transform);
+            sortedComponents.Sort(sorter);
+            for (int i = 0; i < sortedComponents.Count; i++)
             {
-                var target = components[i];
+                var target = sortedComponents[i];
                 var targetIndex = i + 1;
-                while (true)
+                var currentComponents = obj.GetComponents<Component>().ToList();
+                currentComponents.RemoveAll(c => c is Transform);
+                var currentIndex = currentComponents.IndexOf(target);
+                var distance = currentIndex - targetIndex;
+                for (int j = 0; j < Mathf.Abs(distance); j++)
                 {
-                    var currentComponents = obj.GetComponents<Component>().ToList();
-                    currentComponents.RemoveAll(c => c is Transform);
-                    currentComponents.RemoveAll(c => c is RectTransform);
-                    var currentIndex = currentComponents.IndexOf(target);
-                    if (currentIndex == -1)
+                    if (distance < 0)
                     {
-                        UCLCore.Logger.LogError("", "COMPONENT NOT FOUND: " + target);
-                        break;
-                    }
-                    if (targetIndex > currentIndex)
-                    {
-                        if (!ComponentUtility.MoveComponentDown(target))
-                        {
-                            break;
-                        }
-                    }
-                    else if (targetIndex < currentIndex)
-                    {
-                        if (!ComponentUtility.MoveComponentUp(target))
-                        {
-                            break;
-                        }
+                        ComponentUtility.MoveComponentDown(target);
                     }
                     else
                     {
-                        break;
+                        ComponentUtility.MoveComponentUp(target);
                     }
                 }
             }
@@ -58,22 +96,24 @@ namespace UnityCommonEditorLibrary
         private static void MoveToTop(MenuCommand c)
         {
             var component = c.context as Component;
-            var didMove = ComponentUtility.MoveComponentUp(component);
-            while (didMove)
+            bool didMove;
+            do
             {
                 didMove = ComponentUtility.MoveComponentUp(component);
             }
+            while (didMove);
         }
 
         [MenuItem("CONTEXT/Component/Move to Bottom")]
         private static void MoveToBottom(MenuCommand c)
         {
             var component = c.context as Component;
-            var didMove = ComponentUtility.MoveComponentDown(component);
-            while (didMove)
+            bool didMove;
+            do
             {
                 didMove = ComponentUtility.MoveComponentDown(component);
             }
+            while (didMove);
         }
 
         [MenuItem("CONTEXT/Component/Collapse All")]
@@ -99,7 +139,7 @@ namespace UnityCommonEditorLibrary
         private static void FoldAllOnGameObject(GameObject obj, bool enabled)
         {
             var inspectorWindow = EditorWindow.focusedWindow;
-            var tracker = (ActiveEditorTracker) inspectorWindow
+            var tracker = (ActiveEditorTracker)inspectorWindow
                 .GetType().GetMethod("GetTracker").Invoke(inspectorWindow, null);
             for (var i = 0; i < tracker.activeEditors.Length; i++)
             {
