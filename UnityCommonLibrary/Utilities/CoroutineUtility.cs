@@ -6,7 +6,7 @@ namespace UnityCommonLibrary.Utility
 {
     public static class CoroutineUtility
     {
-        private static readonly Dictionary<string, Coroutine> KeyedRoutines =
+        private static readonly Dictionary<string, Coroutine> _keyedRoutines =
             new Dictionary<string, Coroutine>();
 
         private static EmptyMonoBehaviour _surrogate;
@@ -28,23 +28,23 @@ namespace UnityCommonLibrary.Utility
         public static Coroutine StartCoroutine(string key, IEnumerator routine)
         {
             var coroutine = Surrogate.StartCoroutine(routine);
-            KeyedRoutines.Add(key, coroutine);
+            _keyedRoutines.Add(key, coroutine);
             return coroutine;
         }
 
         public static void StopAllCoroutines()
         {
             Surrogate.StopAllCoroutines();
-            KeyedRoutines.Clear();
+            _keyedRoutines.Clear();
         }
 
         public static void StopKeyedCoroutines()
         {
-            foreach (var coroutine in KeyedRoutines.Values)
+            foreach (var coroutine in _keyedRoutines.Values)
             {
                 StopCoroutine(coroutine);
             }
-            KeyedRoutines.Clear();
+            _keyedRoutines.Clear();
         }
 
         public static void StopCoroutine(IEnumerator routine)
@@ -60,7 +60,7 @@ namespace UnityCommonLibrary.Utility
         public static void StopCoroutine(string key)
         {
             Coroutine routine;
-            if (KeyedRoutines.TryGetValue(key, out routine))
+            if (_keyedRoutines.TryGetValue(key, out routine))
             {
                 Surrogate.StopCoroutine(routine);
             }

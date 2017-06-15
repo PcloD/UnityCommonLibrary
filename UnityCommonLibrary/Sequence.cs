@@ -30,7 +30,7 @@ namespace UnityCommonLibrary
         /// <summary>
         ///     Every existing sequence, for running tasks on all sequences.
         /// </summary>
-        private static readonly List<Sequence> Sequences = new List<Sequence>();
+        private static readonly List<Sequence> _sequences = new List<Sequence>();
 
         /// <summary>
         ///     Should the sequence object be destroyed when complete?
@@ -100,7 +100,7 @@ namespace UnityCommonLibrary
 
         public static void PauseAll()
         {
-            foreach (var s in Sequences)
+            foreach (var s in _sequences)
             {
                 s.Pause();
             }
@@ -108,7 +108,7 @@ namespace UnityCommonLibrary
 
         public static void ResumeAll()
         {
-            foreach (var s in Sequences)
+            foreach (var s in _sequences)
             {
                 s.Resume();
             }
@@ -116,7 +116,7 @@ namespace UnityCommonLibrary
 
         public static void ExecuteAll()
         {
-            foreach (var s in Sequences)
+            foreach (var s in _sequences)
             {
                 s.Execute();
             }
@@ -124,7 +124,7 @@ namespace UnityCommonLibrary
 
         public static void HaltAll()
         {
-            foreach (var s in Sequences)
+            foreach (var s in _sequences)
             {
                 s.Halt();
             }
@@ -302,12 +302,12 @@ namespace UnityCommonLibrary
 
         protected virtual void Awake()
         {
-            Sequences.Add(this);
+            _sequences.Add(this);
         }
 
         protected virtual void OnDestroy()
         {
-            Sequences.Remove(this);
+            _sequences.Remove(this);
         }
 
         protected virtual void Start()

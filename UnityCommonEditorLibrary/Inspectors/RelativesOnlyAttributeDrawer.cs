@@ -14,7 +14,7 @@ namespace UnityCommonEditorLibrary.Inspectors
         /// <summary>
         ///     The error message shown when the rules set are violated.
         /// </summary>
-        private const string ErrorMsg =
+        private const string ERROR_MSG =
                 "This object field only allows assignments from the following relatives:\n\n{0}\n\nThe current value will be unassigned."
             ;
 
@@ -38,7 +38,7 @@ namespace UnityCommonEditorLibrary.Inspectors
                 {
                     // Show error message and unassign value
                     EditorUtility.DisplayDialog("Invalid Reference",
-                        string.Format(ErrorMsg, _target.ValidRelatives), "OK");
+                        string.Format(ERROR_MSG, _target.ValidRelatives), "OK");
                     property.objectReferenceValue = null;
                 }
             }

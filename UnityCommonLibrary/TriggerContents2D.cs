@@ -7,11 +7,9 @@ namespace UnityCommonLibrary
     [RequireComponent(typeof(Collider2D))]
     public class TriggerContents2D : MonoBehaviour
     {
-        public readonly Signal<bool, Collider2D> ContentsChanged = new Signal<bool, Collider2D>();
+        public readonly Message<bool, Collider2D> ContentsChanged = new Message<bool, Collider2D>();
 
         private readonly HashSet<Collider2D> _contents = new HashSet<Collider2D>();
-
-        public Collider2D Trigger { get; private set; }
 
         public HashSet<Collider2D> Contents
         {
@@ -27,6 +25,8 @@ namespace UnityCommonLibrary
         {
             get { return _contents.Count > 0; }
         }
+
+        public Collider2D Trigger { get; private set; }
 
         private void Awake()
         {

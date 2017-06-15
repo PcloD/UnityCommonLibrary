@@ -2,9 +2,9 @@
 
 namespace UnityCommonLibrary.Messaging
 {
-    public static class Signals
+    public static class Messages
     {
-        internal static readonly HashSet<ISignal> AllSignals = new HashSet<ISignal>();
+        internal static readonly HashSet<IMessage> AllSignals = new HashSet<IMessage>();
 
         public static void UnsubscribeFromAll(object target)
         {

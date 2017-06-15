@@ -5,13 +5,13 @@ using UnityCommonLibrary.Utility;
 
 namespace UnityCommonLibrary.Messaging
 {
-    public interface ISignal
+    public interface IMessage
     {
         string SubscriberList { get; }
         void UnsubscribeTarget(object target);
     }
 
-    public abstract class BaseSignal<T> : ISignal where T : class
+    public abstract class BaseMessage<T> : IMessage where T : class
     {
         protected readonly HashSet<T> Subscribers = new HashSet<T>();
 
@@ -34,18 +34,18 @@ namespace UnityCommonLibrary.Messaging
             }
         }
 
-        protected BaseSignal()
+        protected BaseMessage()
         {
             if (!typeof(T).IsSubclassOf(typeof(Delegate)))
             {
                 throw new ArgumentException("T must be of StateType Delegate.");
             }
-            Signals.AllSignals.Add(this);
+            Messages.AllSignals.Add(this);
         }
 
-        ~BaseSignal()
+        ~BaseMessage()
         {
-            Signals.AllSignals.Remove(this);
+            Messages.AllSignals.Remove(this);
         }
 
         protected static bool ShouldRemoveCallback(T t)
@@ -55,7 +55,7 @@ namespace UnityCommonLibrary.Messaging
         }
 
         /// <summary>
-        /// Adds a subscriber to this signal.
+        ///     Adds a subscriber to this signal.
         /// </summary>
         /// <param name="subscriber"></param>
         /// <param name="removeCheck">If true, don't add if it exists already.</param>
@@ -79,7 +79,7 @@ namespace UnityCommonLibrary.Messaging
         }
     }
 
-    public class Signal : BaseSignal<Action>
+    public class Message : BaseMessage<Action>
     {
         public void Publish()
         {
@@ -91,7 +91,7 @@ namespace UnityCommonLibrary.Messaging
         }
     }
 
-    public class Signal<T> : BaseSignal<Action<T>>
+    public class Message<T> : BaseMessage<Action<T>>
     {
         public void Publish(T arg = default(T))
         {
@@ -103,7 +103,7 @@ namespace UnityCommonLibrary.Messaging
         }
     }
 
-    public class Signal<T1, T2> : BaseSignal<Action<T1, T2>>
+    public class Message<T1, T2> : BaseMessage<Action<T1, T2>>
     {
         public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2))
         {
@@ -115,7 +115,7 @@ namespace UnityCommonLibrary.Messaging
         }
     }
 
-    public class Signal<T1, T2, T3> : BaseSignal<Action<T1, T2, T3>>
+    public class Message<T1, T2, T3> : BaseMessage<Action<T1, T2, T3>>
     {
         public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2),
             T3 arg3 = default(T3))
@@ -128,7 +128,7 @@ namespace UnityCommonLibrary.Messaging
         }
     }
 
-    public class Signal<T1, T2, T3, T4> : BaseSignal<Action<T1, T2, T3, T4>>
+    public class Message<T1, T2, T3, T4> : BaseMessage<Action<T1, T2, T3, T4>>
     {
         public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2),
             T3 arg3 = default(T3), T4 arg4 = default(T4))

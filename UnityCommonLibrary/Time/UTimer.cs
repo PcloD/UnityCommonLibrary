@@ -37,13 +37,13 @@ namespace UnityCommonLibrary.Time
         /// <summary>
         ///     All existing timers.
         /// </summary>
-        private static readonly List<UTimer> AllTimers = new List<UTimer>();
+        private static readonly List<UTimer> _allTimers = new List<UTimer>();
 
         /// <summary>
-        ///     A readonly wrapper for <see cref="AllTimers" />
+        ///     A readonly wrapper for <see cref="_allTimers" />
         /// </summary>
         public static ReadOnlyCollection<UTimer> AllReadonly =
-            new ReadOnlyCollection<UTimer>(AllTimers);
+            new ReadOnlyCollection<UTimer>(_allTimers);
 
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace UnityCommonLibrary.Time
         /// <param name="timeMode">The time counting mode to use.</param>
         public UTimer(Mechanism timerMechanism, TimeMode timeMode)
         {
-            AllTimers.Add(this);
+            _allTimers.Add(this);
             TimerMechanism = timerMechanism;
             TimeMode = timeMode;
             Reset();
@@ -149,7 +149,7 @@ namespace UnityCommonLibrary.Time
 
         ~UTimer()
         {
-            AllTimers.Remove(this);
+            _allTimers.Remove(this);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace UnityCommonLibrary.Time
         /// </summary>
         public static void TickAll()
         {
-            foreach (var t in AllTimers)
+            foreach (var t in _allTimers)
             {
                 t.Tick();
             }

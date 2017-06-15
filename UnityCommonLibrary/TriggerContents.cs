@@ -7,11 +7,9 @@ namespace UnityCommonLibrary
     [RequireComponent(typeof(Collider))]
     public class TriggerContents : MonoBehaviour
     {
-        public readonly Signal<bool, Collider> ContentsChanged = new Signal<bool, Collider>();
+        public readonly Message<bool, Collider> ContentsChanged = new Message<bool, Collider>();
 
         private readonly HashSet<Collider> _contents = new HashSet<Collider>();
-
-        public Collider Trigger { get; private set; }
 
         public HashSet<Collider> Contents
         {
@@ -27,6 +25,8 @@ namespace UnityCommonLibrary
         {
             get { return _contents.Count > 0; }
         }
+
+        public Collider Trigger { get; private set; }
 
         private void Awake()
         {

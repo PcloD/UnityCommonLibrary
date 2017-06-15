@@ -7,10 +7,10 @@ namespace UnityCommonLibrary
     public static class MultiTags<T>
         where T : struct, IFormattable, IConvertible, IComparable
     {
-        private static readonly Dictionary<GameObject, T> Lookup =
+        private static readonly Dictionary<GameObject, T> _lookup =
             new Dictionary<GameObject, T>();
 
-        private static readonly T NoneValue = FromInt(0);
+        private static readonly T _noneValue = FromInt(0);
 
         public static bool HasAnyTags(Component cmp, T mask)
         {
@@ -20,9 +20,9 @@ namespace UnityCommonLibrary
         public static bool HasAnyTags(GameObject obj, T mask)
         {
             T found;
-            if (!Lookup.TryGetValue(obj, out found))
+            if (!_lookup.TryGetValue(obj, out found))
             {
-                Lookup.Add(obj, NoneValue);
+                _lookup.Add(obj, _noneValue);
                 return false;
             }
             var foundVal = ToInt(found);
@@ -48,10 +48,10 @@ namespace UnityCommonLibrary
 
         public static bool HasTags(GameObject obj, T mask)
         {
-            var found = NoneValue;
-            if (!Lookup.TryGetValue(obj, out found))
+            var found = _noneValue;
+            if (!_lookup.TryGetValue(obj, out found))
             {
-                Lookup.Add(obj, NoneValue);
+                _lookup.Add(obj, _noneValue);
                 return false;
             }
             var maskVal = ToInt(mask);
@@ -77,10 +77,10 @@ namespace UnityCommonLibrary
 
         public static T GetTags(GameObject obj)
         {
-            var found = NoneValue;
-            if (!Lookup.TryGetValue(obj, out found))
+            var found = _noneValue;
+            if (!_lookup.TryGetValue(obj, out found))
             {
-                Lookup.Add(obj, NoneValue);
+                _lookup.Add(obj, _noneValue);
             }
             return found;
         }
@@ -92,13 +92,13 @@ namespace UnityCommonLibrary
 
         public static void SetTags(GameObject obj, T tags)
         {
-            if (Lookup.ContainsKey(obj))
+            if (_lookup.ContainsKey(obj))
             {
-                Lookup[obj] = tags;
+                _lookup[obj] = tags;
             }
             else
             {
-                Lookup.Add(obj, tags);
+                _lookup.Add(obj, tags);
             }
         }
 
@@ -109,15 +109,15 @@ namespace UnityCommonLibrary
 
         public static void AddTags(GameObject obj, T mask)
         {
-            if (Lookup.ContainsKey(obj))
+            if (_lookup.ContainsKey(obj))
             {
-                var maskVal = ToInt(Lookup[obj]);
+                var maskVal = ToInt(_lookup[obj]);
                 maskVal |= ToInt(mask);
-                Lookup[obj] = FromInt(maskVal);
+                _lookup[obj] = FromInt(maskVal);
             }
             else
             {
-                Lookup.Add(obj, mask);
+                _lookup.Add(obj, mask);
             }
         }
 
@@ -128,15 +128,15 @@ namespace UnityCommonLibrary
 
         public static void RemoveTags(GameObject obj, T mask)
         {
-            if (Lookup.ContainsKey(obj))
+            if (_lookup.ContainsKey(obj))
             {
-                var maskVal = ToInt(Lookup[obj]);
+                var maskVal = ToInt(_lookup[obj]);
                 maskVal &= ~ToInt(mask);
-                Lookup[obj] = FromInt(maskVal);
+                _lookup[obj] = FromInt(maskVal);
             }
             else
             {
-                Lookup.Add(obj, NoneValue);
+                _lookup.Add(obj, _noneValue);
             }
         }
 
@@ -210,7 +210,7 @@ namespace UnityCommonLibrary
 
         public static GameObject GetFirstWithTag(T tag)
         {
-            foreach (var kvp in Lookup)
+            foreach (var kvp in _lookup)
             {
                 if (HasTags(kvp.Key, tag))
                 {
@@ -229,7 +229,7 @@ namespace UnityCommonLibrary
         public static List<GameObject> GetWithTag(T tag)
         {
             var list = new List<GameObject>();
-            foreach (var kvp in Lookup)
+            foreach (var kvp in _lookup)
             {
                 if (HasTags(kvp.Key, tag))
                 {

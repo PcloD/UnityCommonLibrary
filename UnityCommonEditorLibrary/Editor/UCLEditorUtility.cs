@@ -5,17 +5,17 @@ namespace UnityCommonEditorLibrary
 {
     public class UclEditorUtility
     {
-        private static readonly Dictionary<string, bool> Foldouts =
+        private static readonly Dictionary<string, bool> _foldouts =
             new Dictionary<string, bool>();
 
         public static bool Foldout(string key, string display)
         {
-            if (!Foldouts.ContainsKey(key))
+            if (!_foldouts.ContainsKey(key))
             {
-                Foldouts.Add(key, true);
+                _foldouts.Add(key, true);
             }
-            Foldouts[key] = EditorGUILayout.Foldout(Foldouts[key], display);
-            return Foldouts[key];
+            _foldouts[key] = EditorGUILayout.Foldout(_foldouts[key], display);
+            return _foldouts[key];
         }
     }
 }

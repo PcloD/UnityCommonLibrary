@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityCommonLibrary;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -9,32 +8,6 @@ namespace UnityCommonEditorLibrary
 {
     public class ComponentEditorUtility
     {
-        private abstract class ComponentSorter : IComparer<Component>
-        {
-            protected int SortByName(Component x, Component y)
-            {
-                return string.CompareOrdinal(x.GetType().Name, y.GetType().Name);
-            }
-
-            protected int SortByAssembly(Component x, Component y)
-            {
-                return string.CompareOrdinal(x.GetType().Assembly.FullName,
-                    y.GetType().Assembly.FullName);
-            }
-
-            /// <inheritdoc />
-            public abstract int Compare(Component x, Component y);
-        }
-
-        private class ComponentNameSorter : ComponentSorter
-        {
-            /// <inheritdoc />
-            public override int Compare(Component x, Component y)
-            {
-                return SortByName(x, y);
-            }
-        }
-
         private class ComponentAssemblySorter : ComponentSorter
         {
             /// <inheritdoc />
@@ -46,6 +19,32 @@ namespace UnityCommonEditorLibrary
                     order = SortByName(x, y);
                 }
                 return order;
+            }
+        }
+
+        private class ComponentNameSorter : ComponentSorter
+        {
+            /// <inheritdoc />
+            public override int Compare(Component x, Component y)
+            {
+                return SortByName(x, y);
+            }
+        }
+
+        private abstract class ComponentSorter : IComparer<Component>
+        {
+            /// <inheritdoc />
+            public abstract int Compare(Component x, Component y);
+
+            protected int SortByAssembly(Component x, Component y)
+            {
+                return string.CompareOrdinal(x.GetType().Assembly.FullName,
+                    y.GetType().Assembly.FullName);
+            }
+
+            protected int SortByName(Component x, Component y)
+            {
+                return string.CompareOrdinal(x.GetType().Name, y.GetType().Name);
             }
         }
 
@@ -70,7 +69,7 @@ namespace UnityCommonEditorLibrary
             var sortedComponents = obj.GetComponents<Component>().ToList();
             sortedComponents.RemoveAll(c => c is Transform);
             sortedComponents.Sort(sorter);
-            for (int i = 0; i < sortedComponents.Count; i++)
+            for (var i = 0; i < sortedComponents.Count; i++)
             {
                 var target = sortedComponents[i];
                 var targetIndex = i + 1;
@@ -78,7 +77,7 @@ namespace UnityCommonEditorLibrary
                 currentComponents.RemoveAll(c => c is Transform);
                 var currentIndex = currentComponents.IndexOf(target);
                 var distance = currentIndex - targetIndex;
-                for (int j = 0; j < Mathf.Abs(distance); j++)
+                for (var j = 0; j < Mathf.Abs(distance); j++)
                 {
                     if (distance < 0)
                     {
@@ -100,8 +99,7 @@ namespace UnityCommonEditorLibrary
             do
             {
                 didMove = ComponentUtility.MoveComponentUp(component);
-            }
-            while (didMove);
+            } while (didMove);
         }
 
         [MenuItem("CONTEXT/Component/Move to Bottom")]
@@ -112,8 +110,7 @@ namespace UnityCommonEditorLibrary
             do
             {
                 didMove = ComponentUtility.MoveComponentDown(component);
-            }
-            while (didMove);
+            } while (didMove);
         }
 
         [MenuItem("CONTEXT/Component/Collapse All")]
@@ -139,7 +136,7 @@ namespace UnityCommonEditorLibrary
         private static void FoldAllOnGameObject(GameObject obj, bool enabled)
         {
             var inspectorWindow = EditorWindow.focusedWindow;
-            var tracker = (ActiveEditorTracker)inspectorWindow
+            var tracker = (ActiveEditorTracker) inspectorWindow
                 .GetType().GetMethod("GetTracker").Invoke(inspectorWindow, null);
             for (var i = 0; i < tracker.activeEditors.Length; i++)
             {

@@ -7,16 +7,16 @@ namespace UnityCommonEditorLibrary.Inspectors
     [CustomEditor(typeof(CameraBounds2D))]
     public class CameraBounds2DInspector : Editor
     {
-        private const string BoundsmismatchErr =
+        private const string BOUNDSMISMATCH_ERR =
                 "Camera's frustum CANNOT fit into current bounds, camera's position WILL NOT be altered!"
             ;
 
-        private const string NocamErr = "There is no camera assigned!";
+        private const string NOCAM_ERR = "There is no camera assigned!";
 
-        private const string NocolliderErr =
+        private const string NOCOLLIDER_ERR =
             "No collider provided, camera's position WILL NOT be altered!";
 
-        private const string UnboundedErr =
+        private const string UNBOUNDED_ERR =
             "Set to unbounded in all directions, camera's position WILL NOT be altered!";
 
         private SerializedProperty _boundedXMax;
@@ -51,25 +51,25 @@ namespace UnityCommonEditorLibrary.Inspectors
             if (_isBoundsNull)
             {
                 GUI.color = Color.red;
-                EditorGUILayout.LabelField(NocamErr, EditorStyles.helpBox);
+                EditorGUILayout.LabelField(NOCAM_ERR, EditorStyles.helpBox);
             }
             else
             {
                 if (Equals(_bounds.objectReferenceValue, null))
                 {
                     GUI.color = Color.red;
-                    EditorGUILayout.LabelField(NocolliderErr, EditorStyles.helpBox);
+                    EditorGUILayout.LabelField(NOCOLLIDER_ERR, EditorStyles.helpBox);
                 }
                 if (!_obj.CanFit)
                 {
                     GUI.color = Color.red;
-                    EditorGUILayout.LabelField(BoundsmismatchErr, EditorStyles.helpBox);
+                    EditorGUILayout.LabelField(BOUNDSMISMATCH_ERR, EditorStyles.helpBox);
                 }
                 if (!_boundedXMin.boolValue && !_boundedXMax.boolValue &&
                     !_boundedYMin.boolValue && !_boundedYMax.boolValue)
                 {
                     GUI.color = Color.red;
-                    EditorGUILayout.LabelField(UnboundedErr, EditorStyles.helpBox);
+                    EditorGUILayout.LabelField(UNBOUNDED_ERR, EditorStyles.helpBox);
                 }
             }
 

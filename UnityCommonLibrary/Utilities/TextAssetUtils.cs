@@ -5,11 +5,11 @@ namespace UnityCommonLibrary.Utility
 {
     public static class TextAssetUtility
     {
-        private static readonly string[] Newline = {Environment.NewLine};
+        private static readonly string[] _newline = {Environment.NewLine};
 
         public static string[] GetLines(this TextAsset asset)
         {
-            return asset.text.Split(Newline, StringSplitOptions.RemoveEmptyEntries);
+            return asset.text.Split(_newline, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

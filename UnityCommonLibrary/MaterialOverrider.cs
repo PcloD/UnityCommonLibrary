@@ -5,14 +5,14 @@ namespace UnityCommonLibrary
 {
     public static class MaterialOverrider
     {
-        private static readonly Dictionary<Renderer, Material> Overriden =
+        private static readonly Dictionary<Renderer, Material> _overriden =
             new Dictionary<Renderer, Material>();
 
         public static void Override(Renderer renderer, Material material)
         {
-            if (!Overriden.ContainsKey(renderer))
+            if (!_overriden.ContainsKey(renderer))
             {
-                Overriden.Add(renderer, renderer.sharedMaterial);
+                _overriden.Add(renderer, renderer.sharedMaterial);
             }
             renderer.sharedMaterial = material;
         }
@@ -20,18 +20,18 @@ namespace UnityCommonLibrary
         public static void Restore(Renderer renderer)
         {
             Material original;
-            if (Overriden.TryGetValue(renderer, out original))
+            if (_overriden.TryGetValue(renderer, out original))
             {
                 renderer.sharedMaterial = original;
-                Overriden.Remove(renderer);
+                _overriden.Remove(renderer);
             }
         }
 
         public static void RestoreAll()
         {
-            var renderers = new Renderer[Overriden.Count];
+            var renderers = new Renderer[_overriden.Count];
             var index = 0;
-            foreach (var item in Overriden)
+            foreach (var item in _overriden)
             {
                 renderers[index] = item.Key;
             }
@@ -43,7 +43,7 @@ namespace UnityCommonLibrary
 
         public static void Clear()
         {
-            Overriden.Clear();
+            _overriden.Clear();
         }
     }
 }

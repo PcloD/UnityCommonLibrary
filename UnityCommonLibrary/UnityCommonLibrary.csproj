@@ -53,10 +53,10 @@
     <Compile Include="Colliders\ColliderUnityEvents2D.cs" />
     <Compile Include="Colliders\ColliderUnityEvents.cs" />
     <Compile Include="Colliders\ColliderEvents.cs" />
-    <Compile Include="Messaging\Signal.cs" />
-    <Compile Include="Messaging\Signals.cs" />
+    <Compile Include="FSM\BaseStateMachine.cs" />
+    <Compile Include="Messaging\Message.cs" />
+    <Compile Include="Messaging\Messages.cs" />
     <Compile Include="FSM\StateMachine.cs" />
-    <Compile Include="FSM\StateSwitch.cs" />
     <Compile Include="NullLogger.cs" />
     <Compile Include="NullLogHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

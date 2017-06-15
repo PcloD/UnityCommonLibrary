@@ -67,6 +67,7 @@
     <Compile Include="Editor\TestMaterialGenerator.cs" />
     <Compile Include="Editor\UIStyleConsistencyInspector.cs" />
     <Compile Include="Inspectors\SimpleSpriteAnimationInspector.cs" />
+    <Compile Include="Inspectors\TransformInspector.cs" />
     <Compile Include="Inspectors\TriggerContents2DInspector.cs" />
     <Compile Include="Inspectors\TriggerContentsInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

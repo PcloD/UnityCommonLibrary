@@ -6,7 +6,7 @@ namespace UnityCommonLibrary.Utility
 {
     public static class TransformUtility
     {
-        private static readonly Queue<Transform> BfsSearchQueue = new Queue<Transform>();
+        private static readonly Queue<Transform> _bfsSearchQueue = new Queue<Transform>();
 
         public static void SetPosition(this Transform transform, Space space,
             float? x = null, float? y = null, float? z = null)
@@ -132,15 +132,15 @@ namespace UnityCommonLibrary.Utility
             StringComparison comparison = StringComparison.CurrentCulture,
             bool tag = false)
         {
-            BfsSearchQueue.Clear();
+            _bfsSearchQueue.Clear();
             for (var i = 0; i < t.childCount; i++)
             {
-                BfsSearchQueue.Enqueue(t.GetChild(i));
+                _bfsSearchQueue.Enqueue(t.GetChild(i));
             }
             Transform found = null;
-            while (BfsSearchQueue.Count > 0)
+            while (_bfsSearchQueue.Count > 0)
             {
-                var child = BfsSearchQueue.Dequeue();
+                var child = _bfsSearchQueue.Dequeue();
                 if (tag && child.tag.Equals(search, comparison) ||
                     child.name.Equals(search, comparison))
                 {
@@ -149,10 +149,10 @@ namespace UnityCommonLibrary.Utility
                 }
                 for (var i = 0; i < child.childCount; i++)
                 {
-                    BfsSearchQueue.Enqueue(child.GetChild(i));
+                    _bfsSearchQueue.Enqueue(child.GetChild(i));
                 }
             }
-            BfsSearchQueue.Clear();
+            _bfsSearchQueue.Clear();
             return found;
         }
 
