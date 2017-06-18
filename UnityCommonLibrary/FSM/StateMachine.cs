@@ -50,6 +50,10 @@ namespace UnityCommonLibrary.FSM
             {
                 list.RemoveWhere(m => m.Target == obj);
             }
+            foreach (var list in OnStateUpdate.Values)
+            {
+                list.RemoveWhere(m => m.Target == obj);
+            }
         }
     }
 }

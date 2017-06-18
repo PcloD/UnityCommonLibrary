@@ -6,6 +6,21 @@ namespace UnityCommonLibrary.Utility
 {
     public static class GameObjectUtility
     {
+        public static void ForceEnable(this GameObject obj)
+        {
+            if (obj.activeInHierarchy)
+            {
+                return;
+            }
+            var target = obj;
+            do
+            {
+                target.SetActive(true);
+                target = target.transform.parent.gameObject;
+            }
+            while (target != null);
+        }
+
         public static bool MoveToGround(this GameObject obj, LayerMask? mask = null)
         {
             Bounds? bounds = null;

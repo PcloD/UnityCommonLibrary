@@ -17,6 +17,8 @@ namespace UnityCommonLibrary.FSM
             new Dictionary<T, HashSet<T1>>();
         protected readonly Dictionary<T, HashSet<T2>> OnStateExit =
             new Dictionary<T, HashSet<T2>>();
+        protected readonly Dictionary<T, HashSet<Action>> OnStateUpdate =
+            new Dictionary<T, HashSet<Action>>();
 
         public T CurrentState { get; protected set; }
         public T PreviousState { get; protected set; }
@@ -40,26 +42,49 @@ namespace UnityCommonLibrary.FSM
 
         public abstract void RemoveCallbacks(object obj);
 
+        public void Update()
+        {
+            HashSet<Action> callbacks;
+            if (OnStateUpdate.TryGetValue(CurrentState, out callbacks))
+            {
+                foreach (var a in callbacks)
+                {
+                    a();
+                }
+            }
+        }
+
+        public void AddOnUpdate(T state, Action onUpdate)
+        {
+            HashSet<Action> callbacks;
+            if (!OnStateUpdate.TryGetValue(state, out callbacks))
+            {
+                callbacks = new HashSet<Action>();
+                OnStateUpdate.Add(state, callbacks);
+            }
+            callbacks.Add(onUpdate);
+        }
+
         public void AddOnEnter(T state, T1 onEnter)
         {
-            HashSet<T1> list;
-            if (!OnStateEnter.TryGetValue(state, out list))
+            HashSet<T1> callbacks;
+            if (!OnStateEnter.TryGetValue(state, out callbacks))
             {
-                list = new HashSet<T1>();
-                OnStateEnter.Add(state, list);
+                callbacks = new HashSet<T1>();
+                OnStateEnter.Add(state, callbacks);
             }
-            list.Add(onEnter);
+            callbacks.Add(onEnter);
         }
 
         public void AddOnExit(T state, T2 onExit)
         {
-            HashSet<T2> list;
-            if (!OnStateExit.TryGetValue(state, out list))
+            HashSet<T2> callbacks;
+            if (!OnStateExit.TryGetValue(state, out callbacks))
             {
-                list = new HashSet<T2>();
-                OnStateExit.Add(state, list);
+                callbacks = new HashSet<T2>();
+                OnStateExit.Add(state, callbacks);
             }
-            list.Add(onExit);
+            callbacks.Add(onExit);
         }
     }
 }
