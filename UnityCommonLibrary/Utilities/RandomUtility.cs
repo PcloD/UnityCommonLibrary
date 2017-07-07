@@ -30,5 +30,10 @@ namespace UnityCommonLibrary.Utility
         {
             return Random.Range(-1f, 1f);
         }
+
+        public static float Range(Vector2 range)
+        {
+            return Random.Range(range.x, range.y);
+        }
     }
 }

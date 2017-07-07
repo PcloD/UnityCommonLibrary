@@ -4,11 +4,11 @@ namespace UnityCommonLibrary.Messaging
 {
     public static class Messages
     {
-        internal static readonly HashSet<IMessage> AllSignals = new HashSet<IMessage>();
+        internal static readonly HashSet<IMessage> AllMessages = new HashSet<IMessage>();
 
         public static void UnsubscribeFromAll(object target)
         {
-            foreach (var s in AllSignals)
+            foreach (var s in AllMessages)
             {
                 s.UnsubscribeTarget(target);
             }

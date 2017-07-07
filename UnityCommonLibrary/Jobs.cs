@@ -7,29 +7,38 @@ namespace UnityCommonLibrary
 {
     public class Jobs : MonoSingleton<Jobs>
     {
-        private readonly List<Func<bool>> _onFixedUpdateJobs = new List<Func<bool>>();
-        private readonly List<Func<bool>> _onLateUpdateJobs = new List<Func<bool>>();
+        private readonly Dictionary<Guid, Action> _onFixedUpdateJobs
+            = new Dictionary<Guid, Action>();
+        private readonly List<Guid> _onFixedUpdateRemovals =
+            new List<Guid>();
+        private readonly Dictionary<Guid, Action> _onLateUpdateJobs
+            = new Dictionary<Guid, Action>();
+        private readonly List<Guid> _onLateUpdateRemovals =
+            new List<Guid>();
+        private readonly Dictionary<Guid, Action> _onUpdateJobs
+            = new Dictionary<Guid, Action>();
+        private readonly List<Guid> _onUpdateRemovals =
+            new List<Guid>();
         private readonly Queue<Action> _onUnityThreadJobs = new Queue<Action>();
-        private readonly List<Func<bool>> _onUpdateJobs = new List<Func<bool>>();
 
         public static void ExecuteOnUnityThread(Action a)
         {
             Instance._onUnityThreadJobs.Enqueue(a);
         }
 
-        public static void ExecuteOnUpdate(Func<bool> func)
+        public static Guid ExecuteOnUpdate(Action onUpdate)
         {
-            Instance._onUpdateJobs.Add(func);
+            return AddNewEntry(onUpdate, Instance._onUpdateJobs);
         }
 
-        public static void ExecuteOnFixedUpdate(Func<bool> func)
+        public static Guid ExecuteOnFixedUpdate(Action onFixedUpdate)
         {
-            Instance._onFixedUpdateJobs.Add(func);
+            return AddNewEntry(onFixedUpdate, Instance._onFixedUpdateJobs);
         }
 
-        public static void ExecuteOnLateUpdate(Func<bool> func)
+        public static Guid ExecuteOnLateUpdate(Action onLateUpdate)
         {
-            Instance._onLateUpdateJobs.Add(func);
+            return AddNewEntry(onLateUpdate, Instance._onLateUpdateJobs);
         }
 
         public static void ExecuteCoroutine(IEnumerator routine)
@@ -67,28 +76,40 @@ namespace UnityCommonLibrary
             action();
         }
 
-        private void FixedUpdate()
+        private static Guid AddNewEntry(Action onUpdate, Dictionary<Guid, Action> onUpdateJobs)
         {
-            for (var i = _onFixedUpdateJobs.Count - 1; i >= 0; i--)
+            var guid = Guid.NewGuid();
+            onUpdateJobs.Add(guid, onUpdate);
+            return guid;
+        }
+
+        private static void TickLists(List<Guid> removals, Dictionary<Guid, Action> jobs)
+        {
+            foreach (var guid in removals)
             {
-                var job = _onFixedUpdateJobs[i];
-                if (job == null && !job.Method.IsStatic || !job())
+                jobs.Remove(guid);
+            }
+            foreach (var kvp in jobs)
+            {
+                if (kvp.Value == null)
                 {
-                    _onFixedUpdateJobs.RemoveAt(i);
+                    removals.Add(kvp.Key);
+                }
+                else
+                {
+                    kvp.Value();
                 }
             }
         }
 
+        private void FixedUpdate()
+        {
+            TickLists(_onFixedUpdateRemovals, _onFixedUpdateJobs);
+        }
+
         private void LateUpdate()
         {
-            for (var i = _onLateUpdateJobs.Count - 1; i >= 0; i--)
-            {
-                var job = _onLateUpdateJobs[i];
-                if (job == null && !job.Method.IsStatic || !job())
-                {
-                    _onLateUpdateJobs.RemoveAt(i);
-                }
-            }
+            TickLists(_onLateUpdateRemovals, _onLateUpdateJobs);
         }
 
         private void Update()
@@ -101,14 +122,7 @@ namespace UnityCommonLibrary
                     job();
                 }
             }
-            for (var i = _onUpdateJobs.Count - 1; i >= 0; i--)
-            {
-                var job = _onUpdateJobs[i];
-                if (job == null && !job.Method.IsStatic || !job())
-                {
-                    _onUpdateJobs.RemoveAt(i);
-                }
-            }
+            TickLists(_onUpdateRemovals, _onUpdateJobs);
         }
     }
 }

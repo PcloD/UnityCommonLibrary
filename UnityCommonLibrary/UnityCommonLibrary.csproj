@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\AutoInstantiateAttribute.cs" />
+    <Compile Include="Attributes\BoolButton.cs" />
     <Compile Include="Attributes\NullProvider.cs" />
     <Compile Include="Attributes\RelativesOnlyAttribute.cs" />
     <Compile Include="Colliders\ColliderEvents2D.cs" />
@@ -67,7 +68,7 @@
     <Compile Include="Invoker.cs" />
     <Compile Include="Jobs.cs" />
     <Compile Include="IUpdateable.cs" />
-    <Compile Include="LookAtCamera.cs" />
+    <Compile Include="LookAtTarget.cs" />
     <Compile Include="MakeWorldBounds.cs" />
     <Compile Include="ManagedUpdater.cs" />
     <Compile Include="MaterialOverrider.cs" />
@@ -102,7 +103,7 @@
     <Compile Include="Attributes\EnumMaskAttribute.cs" />
     <Compile Include="FakeParent.cs" />
     <Compile Include="Utilities\GizmosUtility.cs" />
-    <Compile Include="Utilities\GOUtility.cs" />
+    <Compile Include="Utilities\GameObjectUtility.cs" />
     <Compile Include="Utilities\GradientUtility.cs" />
     <Compile Include="GravityModifier.cs" />
     <Compile Include="Attributes\NoteAttribute.cs" />

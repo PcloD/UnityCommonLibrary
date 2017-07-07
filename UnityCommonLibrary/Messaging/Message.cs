@@ -40,12 +40,12 @@ namespace UnityCommonLibrary.Messaging
             {
                 throw new ArgumentException("T must be of StateType Delegate.");
             }
-            Messages.AllSignals.Add(this);
+            Messages.AllMessages.Add(this);
         }
 
         ~BaseMessage()
         {
-            Messages.AllSignals.Remove(this);
+            Messages.AllMessages.Remove(this);
         }
 
         protected static bool ShouldRemoveCallback(T t)
@@ -93,7 +93,7 @@ namespace UnityCommonLibrary.Messaging
 
     public class Message<T> : BaseMessage<Action<T>>
     {
-        public void Publish(T arg = default(T))
+        public void Publish(T arg)
         {
             Subscribers.RemoveWhere(ShouldRemoveCallback);
             foreach (var s in Subscribers)
@@ -105,7 +105,7 @@ namespace UnityCommonLibrary.Messaging
 
     public class Message<T1, T2> : BaseMessage<Action<T1, T2>>
     {
-        public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2))
+        public void Publish(T1 arg1, T2 arg2)
         {
             Subscribers.RemoveWhere(ShouldRemoveCallback);
             foreach (var s in Subscribers)
@@ -117,8 +117,7 @@ namespace UnityCommonLibrary.Messaging
 
     public class Message<T1, T2, T3> : BaseMessage<Action<T1, T2, T3>>
     {
-        public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2),
-            T3 arg3 = default(T3))
+        public void Publish(T1 arg1, T2 arg2, T3 arg3)
         {
             Subscribers.RemoveWhere(ShouldRemoveCallback);
             foreach (var s in Subscribers)
@@ -130,8 +129,7 @@ namespace UnityCommonLibrary.Messaging
 
     public class Message<T1, T2, T3, T4> : BaseMessage<Action<T1, T2, T3, T4>>
     {
-        public void Publish(T1 arg1 = default(T1), T2 arg2 = default(T2),
-            T3 arg3 = default(T3), T4 arg4 = default(T4))
+        public void Publish(T1 arg1, T2 arg2, T3 arg3, T4 arg4)
         {
             Subscribers.RemoveWhere(ShouldRemoveCallback);
             foreach (var s in Subscribers)

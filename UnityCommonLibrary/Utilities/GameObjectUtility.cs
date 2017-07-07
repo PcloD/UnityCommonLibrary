@@ -12,11 +12,11 @@ namespace UnityCommonLibrary.Utility
             {
                 return;
             }
-            var target = obj;
+            var target = obj.transform;
             do
             {
-                target.SetActive(true);
-                target = target.transform.parent.gameObject;
+                target.gameObject.SetActive(true);
+                target = target.parent;
             }
             while (target != null);
         }

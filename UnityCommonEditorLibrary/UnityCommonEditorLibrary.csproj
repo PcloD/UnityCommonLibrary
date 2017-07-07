@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Editor\UCLEditorUtility.cs" />
     <Compile Include="Editor\GameObjectEditorUtilities.cs" />
+    <Compile Include="Inspectors\BoolButtonPropertyDrawer.cs" />
     <Compile Include="Inspectors\CameraBounds2DInspector.cs" />
     <Compile Include="Editor\ComponentEditorUtility.cs" />
     <Compile Include="Editor\EditorCoroutine.cs" />

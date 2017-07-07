@@ -32,7 +32,7 @@ namespace UnityCommonLibrary.FSM
             {
                 foreach (var callback in enterCallbacks)
                 {
-                   callback(PreviousState);
+                    callback(PreviousState);
                 }
             }
             StateEnterTime = TimeSlice.Create();
